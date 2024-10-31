@@ -5,7 +5,8 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 declare module '*.vue' {
-  import type { DefineComponent } from 'vue'
+  //@ts-ignore
+  import type { DefineComponent } from 'npm:vue'
   const component: DefineComponent<{}, {}, any>
   export default component
 }
