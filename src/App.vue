@@ -1,20 +1,12 @@
 <script setup lang="ts">
-import Sidebar from "../src/components/sidebar.vue";
-import NiceThings from "../src/components/interesting-hashtags.vue";
-import Feed from "../src/components/feed.vue";
-import Contacts from "../src/components/contacts.vue";
-import Legal from "../src/components/legal.vue";
+import Sidebar from "./components/home_components/sidebar.vue";
+import NiceThings from "./components/home_components/interesting-hashtags.vue";
+import Feed from "./components/home_components/feed.vue";
+import Contacts from "./components/home_components/contacts.vue";
+import Legal from "./components/home_components/legal.vue";
 </script>
 
 
 <template>
-  <div id="main" class="bg-weiss flex p-2">
-    <Sidebar></Sidebar>
-    <nice-things></nice-things>
-    <feed></feed>
-    <div class="w-1/4">
-      <contacts></contacts>
-      <legal></legal>
-    </div>
-  </div>
+  <router-view />
 </template>
