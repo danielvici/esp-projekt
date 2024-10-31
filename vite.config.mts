@@ -1,11 +1,8 @@
-//@ts-ignore
-import { defineConfig } from 'npm:vite'
-//@ts-ignore
-import deno from 'npm:@deno/vite-plugin'
-//@ts-ignore
-import vue from 'npm:@vitejs/plugin-vue'
+import { defineConfig } from 'npm:vite';
+import deno from 'npm:@deno/vite-plugin';
+import vue from 'npm:@vitejs/plugin-vue';
+import "npm:vue-router@4";
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [deno(), vue()],
-})
+});
