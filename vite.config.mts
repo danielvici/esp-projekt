@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite'
-import deno from '@deno/vite-plugin'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite';
+import deno from 'npm:@deno/vite-plugin';
+import vue from 'npm:@vitejs/plugin-vue';
 
-// https://vite.dev/config/
+// Vite configuration
 export default defineConfig({
   plugins: [deno(), vue()],
-})
+});

@@ -1,7 +1,7 @@
 {
   "tasks": {
     "dev": "deno task dev:api & deno task dev:vite",
-    "dev:api": "deno run --allow-env --allow-net api/main.ts",
+    "dev:api": "deno run -A api/main.ts",
     "dev:vite": "deno run -A npm:vite",
     "build": "deno run -A --node-modules-dir npm:vite build",
     "preview": "deno run -A --node-modules-dir npm:vite preview",
@@ -13,7 +13,11 @@
   "imports": {
     "@deno/vite-plugin": "npm:@deno/vite-plugin@^1.0.0",
     "@vitejs/plugin-vue": "npm:@vitejs/plugin-vue@^5.1.4",
-    "vite": "npm:vite@^5.4.9",
+    "autoprefixer": "npm:autoprefixer@^10.4.20",
+    "postcss": "npm:postcss@^8.4.47",
+    "tailwindcss": "npm:tailwindcss@^3.4.14",
+    "url": "npm:url@^0.11.4",
+    "vite": "npm:vite@^5.4.10",
     "vue": "npm:vue@^3.5.12"
   }
 }
