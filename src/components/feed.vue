@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import {valueOf} from "tailwindcss";
+  // import {valueOf} from "tailwindcss";
   const post = ref([
     {id: 1,
       profile_picture: "@/assets/default_pp.png",
