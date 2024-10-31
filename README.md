@@ -45,7 +45,7 @@ $ deno task build
     <li><a href="https://oakserver.github.io/oak/"><img src="https://oakserver.org/oak_logo.svg?__frsh_c=2e345d91800d1e0a52aa35efcaab769fa1768888" width="20" height="20"> Oak</a></li> 
     <li><a href="https://deno.land/x/denodb"><img src="https://github.com/eveningkid/denodb/blob/master/design/logo.png?raw=true" width="20" height="20"> DenoDB</a></li> 
     <li><a href="https://tailwindcss.com/"><img src="https://tailwindcss.com/_next/static/media/tailwindcss-mark.3c5441fc7a190fb1800d4a5c7f07ba4b1345a9c8.svg" width="20" height="20"> TailwindCSS</a></li> 
-    <li><a href="https://vuejs.org/"><img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg" width="20" height="20"> DenoDB</a></li> 
+    <li><a href="https://vuejs.org/"><img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg" width="20" height="20">VueJs</a></li> 
 </ul>
 
 ## Tools used
