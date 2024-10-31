@@ -354,6 +354,25 @@
       "npm:@vitejs/plugin-vue@^5.1.4",
       "npm:vite@^5.4.9",
       "npm:vue@^3.5.12"
-    ]
+    ],
+    "packageJson": {
+      "dependencies": [
+        "npm:@deno/vite-plugin@1",
+        "npm:@tsconfig/node20@^20.1.4",
+        "npm:@types/node@^20.17.0",
+        "npm:@vitejs/plugin-vue@^5.1.4",
+        "npm:@vue/tsconfig@~0.5.1",
+        "npm:autoprefixer@^10.4.20",
+        "npm:deno@~0.1.1",
+        "npm:npm-run-all2@^7.0.1",
+        "npm:postcss@^8.4.47",
+        "npm:tailwindcss@^3.4.14",
+        "npm:typescript@5.6",
+        "npm:vite@^5.4.10",
+        "npm:vue-router@^4.4.5",
+        "npm:vue-tsc@^2.1.6",
+        "npm:vue@^3.5.12"
+      ]
+    }
   }
 }
