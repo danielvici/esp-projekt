@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Sidebar from "@/components/sidebar.vue";
-import NiceThings from "@/components/interesting-hashtags.vue";
-import Feed from "@/components/feed.vue";
-import Contacts from "@/components/contacts.vue";
-import Legal from "components/legal.vue";
+import Sidebar from "../src/components/sidebar.vue";
+import NiceThings from "../src/components/interesting-hashtags.vue";
+import Feed from "../src/components/feed.vue";
+import Contacts from "../src/components/contacts.vue";
+import Legal from "../src/components/legal.vue";
 </script>
 
 

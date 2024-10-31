@@ -55,7 +55,7 @@
       <ul>
         <li v-for="(postitem, indexus) in post" :key="post" class="border border-b-grau-hell rounded-lg p-1 m-2 bg-grau-hell2 flex">
           <!-- POST -->
-          <img src="@/assets/default_pp.png" alt="" class="w-16 h-16">
+          <img src="../assets/default_pp.png" alt="" class="w-16 h-16">
           <div>
             <div> <!-- POST HEADER -->
               <label class="text-lg font-bold m-1">{{postitem.author_display_name}}</label>
@@ -66,13 +66,13 @@
             </div>
             <div class="flex "> <!-- POST FOOTER -->
               <div class="flex"> <!-- Comments -->
-                <img src="@/assets/icons/comment.png" alt="" class="align-middle">
+                <img src="../assets/icons/comment.png" alt="" class="align-middle">
                 <label class="text-sm m-1" v-if="postitem.comments_count != undefined">{{ postitem.comments_count }}</label>
                 <label class="text-sm m-1" v-else>Comments disabled</label>
               </div>
 
               <div class="flex items-center" @click="addLike(indexus)"> <!-- Likes -->
-                <img type="image" alt="" src="@/assets/icons/herz.png" class="align-middle">
+                <img type="image" alt="" src="../assets/icons/herz.png" class="align-middle">
                 <label class="text-sm m-1">{{ postitem.likes }}</label>
               </div><!-- ENDE -->
             </div>

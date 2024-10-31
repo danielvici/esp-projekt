@@ -25,14 +25,14 @@ const sb_settings = () => {
 
 <template>
   <div class="pt-4 pl-1">
-    <img src="@/assets/esp-logo_no_text.png" alt="" class="rounded-lg h-12 w-24">
+    <img src="../assets/esp-logo_no_text.png" alt="" class="rounded-lg h-12 w-24">
     <div class="align-middle space-y-3 pt-3 pl-3">
-      <img src="@/assets/icons/home-black.png" alt="" class="hover:bg-logo-farbe-lila shadow-2xl rounded-lg" v-on:click="sb_home">
-      <img src="@/assets/icons/lupe.png" alt="" class="hover:bg-logo-farbe-lila shadow-2xl rounded-lg" v-on:click="sb_search">
-      <img src="@/assets/icons/glocke.png" alt="" class="hover:bg-logo-farbe-rot shadow-2xl rounded-lg" v-on:click="sb_notifications">
-      <img src="@/assets/icons/mail.png" alt="" class="hover:bg-logo-farbe-rot shadow-2xl rounded-lg" v-on:click="sb_messages">
-      <img src="@/assets/icons/user.png" alt="" class="hover:bg-logo-farbe-blau shadow-2xl rounded-lg"  v-on:click="sb_accounts">
-      <img src="@/assets/icons/zahnrad.png" alt="" class="hover:bg-logo-farbe-blau shadow-2xl rounded-lg" v-on:click="sb_settings">
+      <img src="../assets/icons/home-black.png" alt="" class="hover:bg-logo-farbe-lila shadow-2xl rounded-lg" v-on:click="sb_home">
+      <img src="../assets/icons/lupe.png" alt="" class="hover:bg-logo-farbe-lila shadow-2xl rounded-lg" v-on:click="sb_search">
+      <img src="../assets/icons/glocke.png" alt="" class="hover:bg-logo-farbe-rot shadow-2xl rounded-lg" v-on:click="sb_notifications">
+      <img src="../assets/icons/mail.png" alt="" class="hover:bg-logo-farbe-rot shadow-2xl rounded-lg" v-on:click="sb_messages">
+      <img src="../assets/icons/user.png" alt="" class="hover:bg-logo-farbe-blau shadow-2xl rounded-lg"  v-on:click="sb_accounts">
+      <img src="../assets/icons/zahnrad.png" alt="" class="hover:bg-logo-farbe-blau shadow-2xl rounded-lg" v-on:click="sb_settings">
     </div>
   </div>
 </template>
