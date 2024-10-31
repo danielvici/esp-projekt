@@ -23,6 +23,15 @@ Dev server:
 ```bash
 $ deno task dev
 ```
+API only:
+```bash
+$ deno task dev:api
+```
+
+Vite only:
+```bash
+$ deno task dev:vite
+```
 
 ## Deploy
 
