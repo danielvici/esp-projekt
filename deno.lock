@@ -1039,6 +1039,12 @@
       "npm:url@~0.11.4",
       "npm:vite@^5.4.10",
       "npm:vue@^3.5.12"
-    ]
+    ],
+    "packageJson": {
+      "dependencies": [
+        "npm:@deno/vite-plugin@1",
+        "npm:@vitejs/plugin-vue@^5.1.4"
+      ]
+    }
   }
 }
