@@ -3,12 +3,12 @@
 </script>
 
 <template>
-<label>
+<label class="text-grau2 m-2">
   <a href="">Terms of Service</a>
   -
   <a href="">Privacy Policy</a>
   -
-  <a href="">Imprint</a>
+  <a href="">Imprint</a><br>
   -
   <a href="">Contact</a>
   -

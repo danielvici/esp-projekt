@@ -24,8 +24,8 @@ export default router;
 
 /*
 <script setup lang="ts">
-import Sidebar from "../src/components/sidebar.vue";
-import NiceThings from "../src/components/interesting-hashtags.vue";
+import Sidebar from "../src/components/navigationbar.vue";
+import NiceThings from "../src/components/trending.vue";
 import Feed from "../src/components/feed.vue";
 import Contacts from "../src/components/contacts.vue";
 import Legal from "../src/components/legal.vue";

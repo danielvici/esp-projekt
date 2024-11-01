@@ -1,12 +1,14 @@
 // main API file. Handles all the routing/api stuff
+// @ts-ignore
 import { Router, Application } from "https://deno.land/x/oak/mod.ts";
+// @ts-ignore
 import { oakCors } from "https://deno.land/x/cors/mod.ts";
 
 
 const router = new Router();
 const app = new Application();
 
-// Creates the routes for the API server.
+// Creates the routes for the API server.S
 // Example: localhost:8000/api will show "testAPIPoint"
 // in the HTML
 router
