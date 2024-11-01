@@ -1,7 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
+
+// Vue components imported here.
+// the vue components are the Pages that will be rendered
+// at these URL's.
 import Home from "../components/Home.vue";
 import Login from "../components/Login.vue";
 
+// The routing does not happen automatically
+// Each route has to be defined here, or it wont work.
 const routes = [
     {
         path: "/",
@@ -21,26 +27,3 @@ const router = createRouter({
 });
 
 export default router;
-
-/*
-<script setup lang="ts">
-import Sidebar from "../src/components/sidebar.vue";
-import NiceThings from "../src/components/interesting-hashtags.vue";
-import Feed from "../src/components/feed.vue";
-import Contacts from "../src/components/contacts.vue";
-import Legal from "../src/components/legal.vue";
-</script>
-
-
-<template>
-  <div id="main" class="bg-weiss flex p-2">
-    <Sidebar></Sidebar>
-    <nice-things></nice-things>
-    <feed></feed>
-    <div class="w-1/4">
-      <contacts></contacts>
-      <legal></legal>
-    </div>
-  </div>
-</template>
- */
