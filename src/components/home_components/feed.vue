@@ -61,9 +61,10 @@
 <template>
   <div class="border-x-2 border-x-grau2"> <!-- MAIN -->
     <div> <!-- FEED HEADER -->
-      <h2 class="align-middle p-2 text-xl font-bold text-grau2 border-b-grau2 border-b ">Feed</h2>
-      <div class="flex border-2 border-b-grau2"> <!-- POSTING-->
-        <img src="../../assets/danielvici_pp.png" alt="" class="p-2 rounded-xl w-16 h-16">
+      <h2 class="align-middle p-6 text-xl font-bold text-grau2 border-b-grau2 border-b ">Feed</h2>
+      <!-- POSTING-->
+      <div class="flex border-2 border-b-grau2">
+        <img src="../../assets/danielvici_pp.png" alt="" class="p-2 rounded-full w-16 h-16">
         <form>
           <!-- post_publish ist richtig aber wird falsch angezeigt. File Input geht nicht-->
           <textarea v-model="post_publish" name="post_text" class="bg-hintergrund-farbe rounded-lg m-2 p-1 focus:outline-none text-grau2 w-200p resize-none" rows="3" placeholder="Write something..."></textarea>
@@ -78,27 +79,27 @@
 
     <div> <!-- CONTENT -->
       <ul>
-        <li v-for="(postitem, indexus) in post" :key="post" class="border border-b-grau-hell rounded-lg p-1 m-2 bg-grau-hell2 flex">
+        <li v-for="(postitem, indexus) in post" :key="post" class="border-2 border-b-grau2 p-3 flex">
           <!-- POST -->
-          <img src="../../assets/danielvici_pp.png" alt="" class="w-16 h-16">
+          <img src="../../assets/default_pp.png" alt="" class="rounded-full w-16 h-16">
           <div>
             <div> <!-- POST HEADER -->
-              <label class="text-lg font-bold m-1">{{postitem.author_display_name}}</label>
-              <label class="text-base m-1 text-logo-farbe-blau underline-offset-3">@{{ postitem.author_username }}</label>
+              <label class="text-lg font-bold m-1 text-weiss">{{postitem.author_display_name}}</label>
+              <label class="text-base m-1 underline-offset-3 text-grau2">@{{ postitem.author_username }}</label>
             </div>
             <div class="m-2"> <!-- POST CONTENT -->
-              <p class="text-sm m-1">{{ postitem.content }}</p>
+              <p class="text-sm m-1 text-weiss">{{ postitem.content }}</p>
             </div>
             <div class="flex"> <!-- POST FOOTER -->
               <div class="flex"> <!-- Comments -->
-                <img src="../../assets/icons/comment.png" alt="" class="align-middle">
-                <label class="text-sm m-1" v-if="postitem.comments_count != undefined">{{ postitem.comments_count }}</label>
-                <label class="text-sm m-1" v-else>Comments disabled</label>
+                <img src="../../assets/icons/comment.png" alt="" class="rounded-full align-middle">
+                <label class="text-sm m-1 text-weiss" v-if="postitem.comments_count != undefined">{{ postitem.comments_count }}</label>
+                <label class="text-sm m-1 text-weiss" v-else>Comments disabled</label>
               </div>
 
               <div class="flex items-center" @click="addLike(indexus)"> <!-- Likes -->
                 <img alt="" src="../../assets/icons/herz.png" class="align-middle">
-                <label class="text-sm m-1">{{ postitem.likes }}</label>
+                <label class="text-sm m-1 text-weiss">{{ postitem.likes }}</label>
               </div><!-- ENDE -->
             </div>
           </div>

@@ -3,17 +3,17 @@
 </script>
 
 <template>
-<label class="text-grau2 m-2">
-  <a href="">Terms of Service</a>
-  -
-  <a href="">Privacy Policy</a>
-  -
-  <a href="">Imprint</a><br>
-  -
-  <a href="">Contact</a>
-  -
-  <a href="">Support</a>
-</label>
+  <div class="text-grau2 p-3">
+    <a href="">Terms of Service</a>
+    -
+    <a href="">Privacy Policy</a><br>
+
+    <a href="">Imprint</a>
+    -
+    <a href="">Contact</a>
+    -
+    <a href="">Support</a>
+  </div>
 </template>
 
 <style scoped>
