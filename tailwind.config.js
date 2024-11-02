@@ -17,6 +17,9 @@ export default {
           '500p': '500%',
           '600p': '600%',
         },
+        padding: {
+            '35p':  '30.825%',
+        }
     },
     colors: {
         'logo-farbe-lila': '#5500a2',

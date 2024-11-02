@@ -9,9 +9,18 @@ import QuickSearch from "./home_components/quick_search.vue";
 
 <template>
   <div id="main" class="bg-hintergrund-farbe flex">
-    <div id="left" class="w-72">
+    <div id="left" class="w-72 ">
       <navigationbar></navigationbar>
     </div>
+    <div class="border-x border-x-grau2">
+      <label class="text-weiss text-5xl align-middle mx-60 pt-60">This site is currently Work in Progress...</label>
+    </div>
+    <div id="right">
+      <quick-search> </quick-search>
+      <contacts></contacts>
+      <legal></legal>
+    </div>
+
   </div>
 </template>
 
