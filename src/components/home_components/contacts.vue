@@ -7,18 +7,18 @@ const contacts =[
 </script>
 
 <template>
-  <div class="p-2"> <!--MAIN-->
-    <div class="bg-grau-hell rounded-lg"> <!--HEADER-->
-      <h2 class="align-middle m-2 text-xl p-1">Contacts</h2>
+  <div class="p-2 border-b-2 border-b-grau2"> <!--MAIN-->
+    <div> <!--HEADER-->
+      <h2 class="align-middle m-2 text-xl p-1 pb-4 text-weiss">Contacts</h2>
     </div>
     <div> <!--CONTENT-->
       <ul class="space-y-1">
-        <li v-for="(contact) in contacts" :key="contact" class="bg-grau-hell2 flex rounded-lg">
+        <li v-for="(contact) in contacts" :key="contact" class="flex rounded-lg">
           <!--CONTACT-->
-          <img src="../../assets/default_pp.png" alt="" class="w-16 h-16 mr-2">
+          <img src="../../assets/default_pp.png" alt="" class="w-12 h-12 mr-2">
           <div class="">
-            <label class="text-lg font-bold m-1" >{{ contact.display_name }}</label><br>
-            <p class="text-base m-1 text-logo-farbe-blau underline-offset-3">@{{ contact.username }}</p>
+            <label class=" font-bold m-1 text-weiss">{{ contact.display_name }}</label><br>
+            <p class="text-base m-1 text-grau2 underline-offset-3">@{{ contact.username }}</p>
           </div>
         </li>
       </ul>

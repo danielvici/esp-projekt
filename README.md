@@ -58,8 +58,12 @@ $ deno task build
 </ul>
 
 ## Tools used
+
+
+
 <ul>
     <li><a href="https://www.jetbrains.com/webstorm/"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c0/WebStorm_Icon.svg" width="20" height="20"> JetBrains WebStorm</a></li>
+    <li><a href="https://www.jetbrains.com/datagrip/"><img src="https://seeklogo.com/images/D/datagrip-logo-295CA63255-seeklogo.com.png" width="20" height="20"> JetBrains DataGrip</a></li>
     <li><a href="https://neovim.io/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Neovim-mark-flat.svg/640px-Neovim-mark-flat.svg.png" width="20" height="20"> Neovim</a></li>
 </ul>
 
