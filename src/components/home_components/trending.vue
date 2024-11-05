@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+//  PLACEHOLDER
 const hashtags = [
   {id: 1,name: "xbox", nr_posts: 553,category: "Gaming" } ,
   {id: 2,name: "lol" , nr_posts: 16422, category: "Gaming"},

@@ -1,6 +1,8 @@
 <script setup lang="ts">
   import { ref } from "vue";
   // import {valueOf} from "tailwindcss";
+
+  // PLACEHOLDER
   const post = ref([
     {id: 1,
       profile_picture: "../../assets/default_pp.png",

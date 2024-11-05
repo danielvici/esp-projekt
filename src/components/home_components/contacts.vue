@@ -15,10 +15,10 @@ const contacts =[
       <ul class="space-y-1">
         <li v-for="(contact) in contacts" :key="contact" class="flex rounded-lg">
           <!--CONTACT-->
-          <img src="../../assets/default_pp.png" alt="" class="w-12 h-12 mr-2">
+          <img src="../../assets/default_pp.png" alt="" class="w-12 h-12 mr-2"> <!--PROFILBILD-->
           <div class="">
-            <label class=" font-bold m-1 text-weiss">{{ contact.display_name }}</label><br>
-            <p class="text-base m-1 text-grau2 underline-offset-3">@{{ contact.username }}</p>
+            <label class=" font-bold m-1 text-weiss">{{ contact.display_name }}</label><br> <!-- display name-->
+            <p class="text-base m-1 text-grau2 underline-offset-3">@{{ contact.username }}</p> <!-- username-->
           </div>
         </li>
       </ul>
