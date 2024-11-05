@@ -1,15 +1,19 @@
+// Responsible: Esad Mustafoski
+
+/// <reference lib="deno.ns" />
 // main API file. Handles all the routing/api stuff
 
 // Due to the Language servers, the import statements are
 // shown as errors, @ts-ignore is used to ignore them.
 // This is a Deno file, but the Vue LSP is still
 // attempting to find errors, which causes
-// confusing False errors
+// confusing False error
 
 // +++ IMPORTS ------------------------------------------------------ //
 import { Application, Router } from "https://deno.land/x/oak/mod.ts";
 import { oakCors } from "https://deno.land/x/cors/mod.ts";
 import * as db_utils from "../database/utils.ts";
+
 
 // +++ VARIABLES ---------------------------------------------------- //
 const router = new Router();
@@ -28,7 +32,8 @@ router
         ctx.response.body = "testAPIPoint";
     })
     .get("/api/users", (ctx) => {
-        ctx.response.body = "Info from all users here"; //getAllUsers();
+        const getUsers = db_utils.getAllUsersFromDB();
+        ctx.response.body = getUsers; //getAllUsers();
     })
     .get("/api/posts", async (ctx) => {
         const getPosts = await db_utils.getPostsFromDB();
@@ -36,9 +41,11 @@ router
         ctx.response.body = { getPosts, countedPosts };
     });
 
+
 app.use(oakCors());
 app.use(router.routes());
 app.use(router.allowedMethods());
 
 // @ts-ignore: start app
+export { app };
 await app.listen({ port: 8000 });
