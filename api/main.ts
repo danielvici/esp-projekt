@@ -1,13 +1,8 @@
-// Responsible: Esad Mustafoski
-
 /// <reference lib="deno.ns" />
-// main API file. Handles all the routing/api stuff
-
-// Due to the Language servers, the import statements are
-// shown as errors, @ts-ignore is used to ignore them.
-// This is a Deno file, but the Vue LSP is still
-// attempting to find errors, which causes
-// confusing False error
+/** 
+ * @author Esad Mustafoski
+ * @description Main API file, Handles all the routing/api stuff
+ */
 
 // +++ IMPORTS ------------------------------------------------------ //
 import { Application, Router } from "https://deno.land/x/oak/mod.ts";
@@ -46,6 +41,5 @@ app.use(oakCors());
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-// @ts-ignore: start app
 export { app };
 await app.listen({ port: 8000 });

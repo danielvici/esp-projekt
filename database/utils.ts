@@ -1,4 +1,7 @@
-// Responsible: Esad Mustafoski
+/** 
+ * @author Esad Mustafoski
+ * @description This file is responsible for creating Functions to easily access the Database, Intended for use in the API
+ */
 
 /// <reference lib="deno.ns" />
 
@@ -8,14 +11,14 @@ import { dirname, fromFileUrl, join } from "https://deno.land/std/path/mod.ts";
 // __dirname Is never getting used again, It's only needed because the DB Import
 // from SQLite doesn't like relative paths, so I use this as
 // A Workaround
+
+// +++ VARIABLES ---------------------------------------------------- //
 const _dirname: string = dirname(fromFileUrl(import.meta.url));
 const dbPath: string = join(_dirname, "../database/esp-projekt.sqlite");
-console.log(dbPath);
-console.log(_dirname)
 const db = new DB(dbPath);
-console.log(db)
 
-// Interfaces used for the Lists so no data can be assigned wrongly
+// +++ INTERFACES --------------------------------------------------- //
+// Used in the Functions to define the return type/Avoid type errors
 interface Post {
     posts_uuid: number;
     user_id: number;
@@ -42,8 +45,10 @@ interface Accounts {
     contacts: string;
 }
 
+// +++ FUNCTIONS---------------------------------------------------- //
+
 /**
- * @returns
+ * @returns Array of all Posts in the Database
  */
 async function getPostsFromDB() {
     const data_result: Array<Post> = [];
