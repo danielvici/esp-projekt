@@ -55,7 +55,6 @@ interface Comments {
     likes: number;
 }
 
-
 // +++ FUNCTIONS---------------------------------------------------- //
 
 /**
@@ -72,7 +71,9 @@ async function getPostsFromDB(user_uuid?: string): Promise<Post[]> {
         if (user_uuid === undefined) {
             rows = await db.query(`SELECT * FROM posts`);
         } else {
-            rows = await db.query(`SELECT * FROM posts WHERE user_id = ${user_uuid}`);
+            rows = await db.query(
+                `SELECT * FROM posts WHERE user_id = ${user_uuid}`,
+            );
         }
 
         for (const row of rows) {
@@ -171,14 +172,16 @@ async function countPosts(): Promise<number> {
  * @returns Array of Comments for the Post, or an empty Array if there are no Comments
  */
 async function getCommentsFromDB(post_id?: number): Promise<Comments[]> {
-    const data_result:Array<Comments> = [];
+    const data_result: Array<Comments> = [];
     let rows: Row[] = [];
 
     try {
         if (post_id === undefined) {
             rows = await db.query(`SELECT * FROM comments`);
         } else {
-            rows = await db.query(`SELECT * FROM comments WHERE post_id = ${post_id}`);
+            rows = await db.query(
+                `SELECT * FROM comments WHERE post_id = ${post_id}`,
+            );
         }
 
         for (const row of rows) {
@@ -219,8 +222,37 @@ function getCommentsForComments(comment_id: number) {
  * @param user_id The ID of the User to get
  * @returns All of an users Data from the Database
  * Included: Comments, Posts... Everything including the specific user_uuid in the database
+ * Might be required for Administrating the User
  */
-function getAllUserInfoByID(user_id: number) {
+async function getAllUserInfoByID(user_id: number) {
+    const data_result_account: Array<Accounts> = [];
+    const data_result_post: Array<Post> = [];
+    const data_result_comments: Array<Comments> = [];
+
+    let rowsAccount: Row[] = [];
+    let rowsPost: Row[] = [];
+    let rowsComments: Row[] = [];
+
+    try {
+        const [rowsAccount, rowsPost, rowsComments] = await Promise.all([
+            db.query('SELECT * FROM accounts WHERE uuid = ?', [user_id]),
+            db.query('SELECT * FROM posts WHERE uuid = ?', [user_id]),
+            db.query('SELECT * FROM comments WHERE uuid = ?', [user_id])
+        ]);
+
+    
+
+    } catch (error) {
+        console.error(`
+            Failed to get User Info ${error}
+            rowsAccount: ${rowsAccount}
+            rowsPost: ${rowsPost}
+            rowsComments: ${rowsComments}
+            `);
+        return [];
+    }
+
+    return { data_result_account, data_result_comments, data_result_post };
 }
 
 /**
@@ -246,9 +278,9 @@ export {
     filterForImagePosts,
     filterForTextPosts,
     filterForVideoPosts,
+    getAllUserInfoByID,
     getAllUsersFromDB,
     getCommentsForComments,
     getCommentsFromDB,
     getPostsFromDB,
-    getAllUserInfoByID,
 };

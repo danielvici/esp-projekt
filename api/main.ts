@@ -18,19 +18,19 @@ const app = new Application();
 // Example: localhost:8000/api will show "testAPIPoint"
 // in the HTML
 router
-    .get("/", (ctx) => {
+    .get("/", (ctx):void => {
         ctx.response.body = "ESP API Site";
     })
-    .get("/api", (ctx) => {
+    .get("/api", (ctx):void => {
         ctx.response.body = "testAPIPoint";
     })
-    .get("/api/users", (ctx) => {
-        const getUsers = db_utils.getAllUsersFromDB();
+    .get("/api/users", async (ctx):Promise<void> => {
+        const getUsers = await db_utils.getAllUsersFromDB();
         ctx.response.body = getUsers; //getAllUsers();
     })
-    .get("/api/posts", async (ctx) => {
+    .get("/api/posts", async (ctx):Promise<void> => {
         const getPosts = await db_utils.getPostsFromDB();
-        const countedPosts = await db_utils.countPosts();
+        const countedPosts:number = await db_utils.countPosts();
         ctx.response.body = { getPosts, countedPosts };
     });
 
