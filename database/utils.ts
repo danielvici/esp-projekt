@@ -1,18 +1,19 @@
-/** 
+/**
  * @author Esad Mustafoski
  * @description This file is responsible for creating Functions to easily access the Database, Intended for use in the API
  */
 
 /// <reference lib="deno.ns" />
 
-import { DB } from "https://deno.land/x/sqlite/mod.ts";
+// +++ IMPORTS ------------------------------------------------------ //
+import { DB, Row } from "https://deno.land/x/sqlite/mod.ts";
 import { dirname, fromFileUrl, join } from "https://deno.land/std/path/mod.ts";
 
+// +++ VARIABLES ---------------------------------------------------- //
 // __dirname Is never getting used again, It's only needed because the DB Import
 // from SQLite doesn't like relative paths, so I use this as
 // A Workaround
 
-// +++ VARIABLES ---------------------------------------------------- //
 const _dirname: string = dirname(fromFileUrl(import.meta.url));
 const dbPath: string = join(_dirname, "../database/esp-projekt.sqlite");
 const db = new DB(dbPath);
@@ -45,17 +46,35 @@ interface Accounts {
     contacts: string;
 }
 
+interface Comments {
+    comment_id: number;
+    post_id: number;
+    author_user_id: number;
+    date_created_at: string;
+    text: string;
+    likes: number;
+}
+
+
 // +++ FUNCTIONS---------------------------------------------------- //
 
 /**
+ * @param user_uuid The UUID of the User to get the Posts for. Not required
+ * @description If no user_uuid is provided, all Posts will be returned
+ * @description If a user_uuid is provided, only the Posts from that User will be returned
  * @returns Array of all Posts in the Database
  */
-async function getPostsFromDB() {
+async function getPostsFromDB(user_uuid?: string): Promise<Post[]> {
     const data_result: Array<Post> = [];
-    try {
-        const rows = await db.query(`SELECT * FROM posts`);
+    let rows: Row[];
 
-        // Assuming `db.query` returns an array of arrays or tuples
+    try {
+        if (user_uuid === undefined) {
+            rows = await db.query(`SELECT * FROM posts`);
+        } else {
+            rows = await db.query(`SELECT * FROM posts WHERE user_id = ${user_uuid}`);
+        }
+
         for (const row of rows) {
             const [
                 posts_uuid,
@@ -67,12 +86,12 @@ async function getPostsFromDB() {
             ] = row;
 
             data_result.push({
-                posts_uuid: Number(posts_uuid), // Convert to string if necessary
+                posts_uuid: Number(posts_uuid),
                 user_id: Number(user_id),
-                created_at: String(created_at), // Convert to Date if necessary
+                created_at: String(created_at),
                 post_text: String(post_text),
-                likes: Number(likes), // Convert to number if necessary
-                comments: Number(comments), // Convert to number if necessary
+                likes: Number(likes),
+                comments: Number(comments),
             });
         }
     } catch (error) {
@@ -84,7 +103,7 @@ async function getPostsFromDB() {
 /**
  * @returns Array of all Users in the Database
  */
-async function getAllUsersFromDB() {
+async function getAllUsersFromDB(): Promise<Accounts[]> {
     const accounts_list: Array<Accounts> = [];
     try {
         const rows = await db.query("SELECT * FROM accounts");
@@ -131,6 +150,7 @@ async function getAllUsersFromDB() {
 
 // Test Function, not useful
 // Promise needed because of "await"
+// It indicates that the function resolves something
 async function countPosts(): Promise<number> {
     let count = 0;
     try {
@@ -145,10 +165,47 @@ async function countPosts(): Promise<number> {
 }
 
 /**
- * @param post_id The ID of the Post to get the Comments for
+ * @param post_id The ID of the Post to get the Comments for. Not required
+ * @description If no post_id is provided, all Comments will be returned
+ * @description If a post_id is provided, only the Comments for that Post will be returned
  * @returns Array of Comments for the Post, or an empty Array if there are no Comments
  */
-function getCommentsForPost(post_id: number) {
+async function getCommentsFromDB(post_id?: number): Promise<Comments[]> {
+    const data_result:Array<Comments> = [];
+    let rows: Row[] = [];
+
+    try {
+        if (post_id === undefined) {
+            rows = await db.query(`SELECT * FROM comments`);
+        } else {
+            rows = await db.query(`SELECT * FROM comments WHERE post_id = ${post_id}`);
+        }
+
+        for (const row of rows) {
+            const [
+                comment_id,
+                post_id,
+                author_user_id,
+                date_created_at,
+                text,
+                likes,
+            ] = row;
+
+            data_result.push({
+                comment_id: Number(comment_id),
+                post_id: Number(post_id),
+                author_user_id: Number(author_user_id),
+                date_created_at: String(date_created_at),
+                text: String(text),
+                likes: Number(likes),
+            });
+        }
+    } catch (error) {
+        console.error("Error fetching comments", error, "Post ID:", post_id);
+        return [];
+    }
+
+    return data_result;
 }
 
 /**
@@ -160,18 +217,16 @@ function getCommentsForComments(comment_id: number) {
 
 /**
  * @param user_id The ID of the User to get
- * @returns The User with the given ID, or null if the User doesn't exist
+ * @returns All of an users Data from the Database
+ * Included: Comments, Posts... Everything including the specific user_uuid in the database
  */
-function getUserInfoByID(user_id: number) {
+function getAllUserInfoByID(user_id: number) {
 }
 
 /**
  * @param user_id The ID of the User to get the Posts for
  * @returns Array of Posts from the User, or an empty Array if the User doesn't exist or has no Posts
  */
-function getAllPostsFromUser(user_id: number) {
-}
-
 // Filter Functions
 function filterForImagePosts(posts_to_filter: Array<any>) {
     return [];
@@ -185,16 +240,15 @@ function filterForTextPosts() {
     return [];
 }
 
-// Export all Functions to make this a module
+// Exporting all functions as this is a module
 export {
     countPosts,
     filterForImagePosts,
     filterForTextPosts,
     filterForVideoPosts,
-    getAllPostsFromUser,
     getAllUsersFromDB,
     getCommentsForComments,
-    getCommentsForPost,
+    getCommentsFromDB,
     getPostsFromDB,
-    getUserInfoByID,
+    getAllUserInfoByID,
 };

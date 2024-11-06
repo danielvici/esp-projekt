@@ -1,7 +1,12 @@
-// Responsible: Esad Mustafoski
+/**
+ * @author Esad Mustafoski
+ * @file db.test.ts
+ * This file is made to test the Database Functions
+ */
 
 /// <reference lib="deno.ns" />
-// GENERATED USING AI, DO NOT USE YET
+
+// +++ IMPORTS ------------------------------------------------------ //
 import {
   assert,
   assertEquals,
@@ -10,6 +15,7 @@ import {
 
 import * as db_utils from "../database/utils.ts";
 
+// +++ TESTS ------------------------------------------------------- //
 // Database Tests
 Deno.test("Database Connection", async () => {
   const users = await db_utils.getAllUsersFromDB();
@@ -20,12 +26,15 @@ Deno.test("Database Connection", async () => {
 Deno.test("getAllUsersFromDB returns array of users with correct properties", async () => {
   const users = await db_utils.getAllUsersFromDB();
   assert(Array.isArray(users), "Expected users to be an array");
-  
+
   if (users.length > 0) {
-      const user = users[0];
-      assert(typeof user.user_id === "number", "user_id should be a number");
-      assert(typeof user.username === "string", "username should be a string");
-      assert(typeof user.user_email === "string", "user_email should be a string");
+    const user = users[0];
+    assert(typeof user.user_id === "number", "user_id should be a number");
+    assert(typeof user.username === "string", "username should be a string");
+    assert(
+      typeof user.user_email === "string",
+      "user_email should be a string",
+    );
   }
 });
 
@@ -33,13 +42,16 @@ Deno.test("getAllUsersFromDB returns array of users with correct properties", as
 Deno.test("getPostsFromDB returns array of posts with correct structure", async () => {
   const posts = await db_utils.getPostsFromDB();
   assert(Array.isArray(posts), "Expected posts to be an array");
-  
+
   if (posts.length > 0) {
-      const post = posts[0];
-      assert(typeof post.posts_uuid === "number", "posts_uuid should be a number");
-      assert(typeof post.user_id === "number", "user_id should be a number");
-      assert(typeof post.post_text === "string", "post_text should be a string");
-      assert(typeof post.likes === "number", "likes should be a number");
+    const post = posts[0];
+    assert(
+      typeof post.posts_uuid === "number",
+      "posts_uuid should be a number",
+    );
+    assert(typeof post.user_id === "number", "user_id should be a number");
+    assert(typeof post.post_text === "string", "post_text should be a string");
+    assert(typeof post.likes === "number", "likes should be a number");
   }
 });
 
@@ -47,12 +59,12 @@ Deno.test("countPosts returns valid number", async () => {
   const count = await db_utils.countPosts();
   assert(typeof count === "number", "Count should be a number");
   assert(count >= 0, "Count should be non-negative");
-  
+
   const posts = await db_utils.getPostsFromDB();
   assertEquals(count, posts.length, "Count should match number of posts");
 });
 
-// Filter Tests
+// Filter Tests (Will not work until the functions are implemented)
 Deno.test("filterForImagePosts returns array", () => {
   const mockPosts: Array<any> = [];
   const result = db_utils.filterForImagePosts(mockPosts);
@@ -81,43 +93,47 @@ Deno.test("getPostsFromDB handles errors gracefully", async () => {
 });
 
 // Comments Tests
-Deno.test("getCommentsForPost handles invalid post_id", () => {
-  const result = db_utils.getCommentsForPost(-1);
-  assertEquals(result, undefined, "Should handle invalid post_id");
+Deno.test("getCommentsFromDB handles invalid post_id", async () => {
+  const result = await db_utils.getCommentsFromDB(-1);
+  assertEquals(result, [], "Should handle invalid post_id");
 });
 
-Deno.test("getCommentsForComments handles invalid comment_id", () => {
+Deno.test("getCommentsFromDB handles invalid comment_id", () => {
   const result = db_utils.getCommentsForComments(-1);
   assertEquals(result, undefined, "Should handle invalid comment_id");
 });
 
 // User Info Tests
 Deno.test("getUserInfoByID handles invalid user_id", () => {
-  const result = db_utils.getUserInfoByID(-1);
+  const result = db_utils.getAllUserInfoByID(-1);
   assertEquals(result, undefined, "Should handle invalid user_id");
 });
 
-Deno.test("getAllPostsFromUser handles invalid user_id", () => {
-  const result = db_utils.getAllPostsFromUser(-1);
-  assertEquals(result, undefined, "Should handle invalid user_id");
+Deno.test("getPostsFromDB handles invalid user_id", async () => {
+  const result = await db_utils.getPostsFromDB("invalid");
+  assertEquals(result, [], "Should handle invalid user_id");
 });
 
 // Data Validation Tests
 Deno.test("User data types are correct", async () => {
   const users = await db_utils.getAllUsersFromDB();
   if (users.length > 0) {
-      const user = users[0];
-      assertMatch(user.user_email, /^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Email should be valid format");
-      assert(user.password.length >= 1, "Password should not be empty");
+    const user = users[0];
+    assertMatch(
+      user.user_email,
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      "Email should be valid format",
+    );
+    assert(user.password.length >= 1, "Password should not be empty");
   }
 });
 
 Deno.test("Post data types are correct", async () => {
   const posts = await db_utils.getPostsFromDB();
   if (posts.length > 0) {
-      const post = posts[0];
-      assert(post.likes >= 0, "Likes should be non-negative");
-      assert(post.comments >= 0, "Comments should be non-negative");
-      assert(post.post_text.length > 0, "Post text should not be empty");
+    const post = posts[0];
+    assert(post.likes >= 0, "Likes should be non-negative");
+    assert(post.comments >= 0, "Comments should be non-negative");
+    assert(post.post_text.length > 0, "Post text should not be empty");
   }
 });
