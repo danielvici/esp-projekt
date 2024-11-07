@@ -8,6 +8,7 @@
 // +++ IMPORTS ------------------------------------------------------ //
 import { DB, Row } from "https://deno.land/x/sqlite/mod.ts";
 import { dirname, fromFileUrl, join } from "https://deno.land/std/path/mod.ts";
+import * as db_create from "./create_db.ts";
 
 // +++ VARIABLES ---------------------------------------------------- //
 // __dirname Is never getting used again, It's only needed because the DB Import
@@ -57,6 +58,14 @@ interface Comments {
 
 // +++ FUNCTIONS---------------------------------------------------- //
 
+function insertSamples(): void {
+    db_create.insertSampleData();
+}
+
+function createDatabaseIfNotExist(): void {
+    db_create.createDatabase();
+}
+
 /**
  * @param user_uuid The UUID of the User to get the Posts for. Not required
  * @description If no user_uuid is provided, all Posts will be returned
@@ -68,12 +77,17 @@ async function getPostsFromDB(user_uuid?: string): Promise<Post[]> {
     let rows: Row[];
 
     try {
-        if (user_uuid === undefined) {
-            rows = await db.query(`SELECT * FROM posts`);
-        } else {
+        try {
+            if (user_uuid === undefined) {
+                rows = await db.query(`SELECT * FROM posts`);
+            } else {
             rows = await db.query(
-                `SELECT * FROM posts WHERE user_id = ${user_uuid}`,
+               `SELECT * FROM posts WHERE user_id = ${user_uuid}`,
             );
+        }
+        } catch (error) {
+        console.error("Error fetching posts", error, "User UUID:", user_uuid);
+        return [];
         }
 
         for (const row of rows) {
@@ -229,30 +243,80 @@ async function getAllUserInfoByID(user_id: number) {
     const data_result_post: Array<Post> = [];
     const data_result_comments: Array<Comments> = [];
 
-    let rowsAccount: Row[] = [];
-    let rowsPost: Row[] = [];
-    let rowsComments: Row[] = [];
-
     try {
         const [rowsAccount, rowsPost, rowsComments] = await Promise.all([
-            db.query('SELECT * FROM accounts WHERE uuid = ?', [user_id]),
-            db.query('SELECT * FROM posts WHERE uuid = ?', [user_id]),
-            db.query('SELECT * FROM comments WHERE uuid = ?', [user_id])
+            db.query("SELECT * FROM accounts WHERE uuid = ?", [user_id]),
+            db.query("SELECT * FROM posts WHERE uuid = ?", [user_id]),
+            db.query("SELECT * FROM comments WHERE uuid = ?", [user_id]),
         ]);
 
-    
+        for (const row in rowsAccount) {
+            const [user_id,user_group,bio,displayname,username,user_email,password,
+                firstname,surname,account_created,blocked_users,followers,following,
+                contacts,
+            ] = row;
+            data_result_account.push({
+                user_id: Number(user_id),
+                user_group: String(user_group),
+                bio: String(bio),
+                displayname: String(displayname),
+                username: String(username),
+                user_email: String(user_email),
+                password: String(password),
+                firstname: String(firstname),
+                surname: String(surname),
+                account_created: String(account_created),
+                blocked_users: String(blocked_users),
+                followers: String(followers),
+                following: String(following),
+                contacts: String(contacts),
+            });
+        }
+        for (const row in rowsPost) {
+            const [
+                posts_uuid,
+                user_id,
+                created_at,
+                post_text,
+                likes,
+                comments,
+            ] = row;
+            data_result_post.push({
+                posts_uuid: Number(posts_uuid),
+                user_id: Number(user_id),
+                created_at: String(created_at),
+                post_text: String(post_text),
+                likes: Number(likes),
+                comments: Number(comments),
+            });
+        }
+
+        for (const row in rowsComments) {
+            const [
+                comment_id,
+                post_id,
+                author_user_id,
+                date_created_at,
+                text,
+                likes,
+            ] = row;
+            data_result_comments.push({
+                comment_id: Number(comment_id),
+                post_id: Number(post_id),
+                author_user_id: Number(author_user_id),
+                date_created_at: String(date_created_at),
+                text: String(text),
+                likes: Number(likes),
+            });
+        }
 
     } catch (error) {
-        console.error(`
-            Failed to get User Info ${error}
-            rowsAccount: ${rowsAccount}
-            rowsPost: ${rowsPost}
-            rowsComments: ${rowsComments}
-            `);
+        console.error(`Failed to get User Info ${error}`);
         return [];
     }
 
-    return { data_result_account, data_result_comments, data_result_post };
+    const result = { data_result_account, data_result_comments, data_result_post };
+    return result;
 }
 
 /**
@@ -264,16 +328,18 @@ function filterForImagePosts(posts_to_filter: Array<any>) {
     return [];
 }
 
-function filterForVideoPosts() {
+function filterForVideoPosts(posts_to_filter: Array<any>) {
     return [];
 }
 
-function filterForTextPosts() {
+function filterForTextPosts(posts_to_filter: Array<any>) {
     return [];
 }
 
 // Exporting all functions as this is a module
 export {
+    createDatabaseIfNotExist,
+    insertSamples,
     countPosts,
     filterForImagePosts,
     filterForTextPosts,

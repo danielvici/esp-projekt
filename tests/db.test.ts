@@ -72,12 +72,12 @@ Deno.test("filterForImagePosts returns array", () => {
 });
 
 Deno.test("filterForVideoPosts returns array", () => {
-  const result = db_utils.filterForVideoPosts();
+  const result = db_utils.filterForVideoPosts([]);
   assert(Array.isArray(result), "Should return an array");
 });
 
 Deno.test("filterForTextPosts returns array", () => {
-  const result = db_utils.filterForTextPosts();
+  const result = db_utils.filterForTextPosts([]);
   assert(Array.isArray(result), "Should return an array");
 });
 
@@ -104,13 +104,13 @@ Deno.test("getCommentsFromDB handles invalid comment_id", () => {
 });
 
 // User Info Tests
-Deno.test("getUserInfoByID handles invalid user_id", () => {
-  const result = db_utils.getAllUserInfoByID(-1);
-  assertEquals(result, undefined, "Should handle invalid user_id");
+Deno.test("getUserInfoByID handles invalid user_id", async () => {
+  const result = await db_utils.getAllUserInfoByID(-1);
+  assertEquals(result, [], "Should handle invalid user_id");
 });
 
 Deno.test("getPostsFromDB handles invalid user_id", async () => {
-  const result = await db_utils.getPostsFromDB("invalid");
+  const result = await db_utils.getPostsFromDB("-1");
   assertEquals(result, [], "Should handle invalid user_id");
 });
 

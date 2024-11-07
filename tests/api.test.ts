@@ -13,6 +13,9 @@ import { app } from "../api/main.ts";
 // +++ TESTS ------------------------------------------------------- //
 Deno.test("GET /api returns testAPIPoint", async () => {
   const request = await superoak(app);
-  await request.get("/api").expect(200).expect("testAPIPoint");
+  await request
+    .get("/api")
+    .timeout(5000) // 5 seconds timeout
+    .expect(200)
+    .expect("testAPIPoint");
 });
-
