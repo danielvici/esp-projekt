@@ -6,6 +6,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../components/Home.vue";
 import Login from "../components/Login.vue";
 import wip from "../components/wip.vue";
+import settings from "../components/settings.vue";
+import nottifications from "../components/notifications.vue";
 // The routing does not happen automatically
 // Each route has to be defined here, or it wont work.
 const routes = [
@@ -24,6 +26,16 @@ const routes = [
         name: "Work in Progress",
         component: wip,
     },
+    {
+        path: "/settings",
+        name: "Settings",
+        component: settings,
+    },
+    {
+        path: "/notifications",
+        name: "Notifications",
+        component: nottifications,
+    }
 ]
 
 const router = createRouter({
