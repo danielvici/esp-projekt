@@ -56,8 +56,93 @@ interface Comments {
     likes: number;
 }
 
-// +++ FUNCTIONS---------------------------------------------------- //
+// +++ Helper ------------------------------------------------------ //
+function mapPostRow(row: Row): Post {
+    const [posts_uuid, user_id, created_at, post_text, likes, comments] = row;
+    return {
+        posts_uuid: Number(posts_uuid),
+        user_id: Number(user_id),
+        created_at: String(created_at),
+        post_text: String(post_text),
+        likes: Number(likes),
+        comments: Number(comments),
+    };
+}
 
+function mapAccountRow(row: Row): Accounts {
+    const [
+        user_id,
+        user_group,
+        bio,
+        displayname,
+        username,
+        user_email,
+        password,
+        firstname,
+        surname,
+        account_created,
+        blocked_users,
+        followers,
+        following,
+        contacts,
+    ] = row;
+    return {
+        user_id: Number(user_id),
+        user_group: String(user_group),
+        bio: String(bio),
+        displayname: String(displayname),
+        username: String(username),
+        user_email: String(user_email),
+        password: String(password),
+        firstname: String(firstname),
+        surname: String(surname),
+        account_created: String(account_created),
+        blocked_users: String(blocked_users),
+        followers: String(followers),
+        following: String(following),
+        contacts: String(contacts),
+    };
+}
+
+function mapCommentRow(row: Row): Comments {
+    const [
+        comment_id,
+        post_id,
+        author_user_id,
+        date_created_at,
+        text,
+        likes,
+    ] = row;
+    return {
+        comment_id: Number(comment_id),
+        post_id: Number(post_id),
+        author_user_id: Number(author_user_id),
+        date_created_at: String(date_created_at),
+        text: String(text),
+        likes: Number(likes),
+    };
+}
+
+// "T" is a generic type, it can be anything and makes the function "flexible"(?)
+async function queryDatabase<T>(query: string, params: any[], mapRow: (row: Row) => T,): Promise<T[]> {
+    const results: T[] = [];
+    try {
+        const rows = await db.query(query, params);
+        for (const row of rows) {
+            results.push(mapRow(row));
+        }
+    } catch (error) {
+        console.error("Database query error:", error);
+    }
+    return results;
+}
+
+// +++ FUNCTIONS --------------------------------------------------- //
+
+/**
+ * See:
+ * @file ./create_db.ts
+ */
 function insertSamples(): void {
     db_create.insertSampleData();
 }
@@ -73,110 +158,19 @@ function createDatabaseIfNotExist(): void {
  * @returns Array of all Posts in the Database
  */
 async function getPostsFromDB(user_uuid?: string): Promise<Post[]> {
-    const data_result: Array<Post> = [];
-    let rows: Row[];
-
-    try {
-        try {
-            if (user_uuid === undefined) {
-                rows = await db.query(`SELECT * FROM posts`);
-            } else {
-            rows = await db.query(
-               `SELECT * FROM posts WHERE user_id = ${user_uuid}`,
-            );
-        }
-        } catch (error) {
-        console.error("Error fetching posts", error, "User UUID:", user_uuid);
-        return [];
-        }
-
-        for (const row of rows) {
-            const [
-                posts_uuid,
-                user_id,
-                created_at,
-                post_text,
-                likes,
-                comments,
-            ] = row;
-
-            data_result.push({
-                posts_uuid: Number(posts_uuid),
-                user_id: Number(user_id),
-                created_at: String(created_at),
-                post_text: String(post_text),
-                likes: Number(likes),
-                comments: Number(comments),
-            });
-        }
-    } catch (error) {
-        console.error("Error fetching posts", error);
-    }
-    return data_result;
-}
+    const query = user_uuid
+      ? `SELECT * FROM posts WHERE user_id = ?`
+      : `SELECT * FROM posts`;
+    const params = user_uuid ? [user_uuid] : [];
+    return await queryDatabase<Post>(query, params, mapPostRow);
+  }
 
 /**
  * @returns Array of all Users in the Database
  */
 async function getAllUsersFromDB(): Promise<Accounts[]> {
-    const accounts_list: Array<Accounts> = [];
-    try {
-        const rows = await db.query("SELECT * FROM accounts");
-
-        for (const row of rows) {
-            const [
-                user_id,
-                user_group,
-                bio,
-                displayname,
-                username,
-                user_email,
-                password,
-                firstname,
-                surname,
-                account_created,
-                blocked_users,
-                followers,
-                following,
-                contacts,
-            ] = row;
-            accounts_list.push({
-                user_id: Number(user_id),
-                user_group: String(user_group),
-                bio: String(bio),
-                displayname: String(displayname),
-                username: String(username),
-                user_email: String(user_email),
-                password: String(password),
-                firstname: String(firstname),
-                surname: String(surname),
-                account_created: String(account_created),
-                blocked_users: String(blocked_users),
-                followers: String(followers),
-                following: String(following),
-                contacts: String(contacts),
-            });
-        }
-    } catch (error) {
-        console.error("Error fetching users", error);
-    }
-    return accounts_list;
-}
-
-// Test Function, not useful
-// Promise needed because of "await"
-// It indicates that the function resolves something
-async function countPosts(): Promise<number> {
-    let count = 0;
-    try {
-        for (const [c] of await db.query("SELECT COUNT(*) FROM posts")) {
-            count = c as number;
-        }
-    } catch (error) {
-        console.error("Error counting posts:", error);
-    }
-    console.log("Total posts:", count);
-    return count;
+    const query = `SELECT * FROM accounts`;
+    return await queryDatabase<Accounts>(query, [], mapAccountRow);
 }
 
 /**
@@ -186,43 +180,11 @@ async function countPosts(): Promise<number> {
  * @returns Array of Comments for the Post, or an empty Array if there are no Comments
  */
 async function getCommentsFromDB(post_id?: number): Promise<Comments[]> {
-    const data_result: Array<Comments> = [];
-    let rows: Row[] = [];
-
-    try {
-        if (post_id === undefined) {
-            rows = await db.query(`SELECT * FROM comments`);
-        } else {
-            rows = await db.query(
-                `SELECT * FROM comments WHERE post_id = ${post_id}`,
-            );
-        }
-
-        for (const row of rows) {
-            const [
-                comment_id,
-                post_id,
-                author_user_id,
-                date_created_at,
-                text,
-                likes,
-            ] = row;
-
-            data_result.push({
-                comment_id: Number(comment_id),
-                post_id: Number(post_id),
-                author_user_id: Number(author_user_id),
-                date_created_at: String(date_created_at),
-                text: String(text),
-                likes: Number(likes),
-            });
-        }
-    } catch (error) {
-        console.error("Error fetching comments", error, "Post ID:", post_id);
-        return [];
-    }
-
-    return data_result;
+    const query = post_id
+      ? `SELECT * FROM comments WHERE post_id = ?`
+      : `SELECT * FROM comments`;
+    const params = post_id ? [post_id] : [];
+    return await queryDatabase<Comments>(query, params, mapCommentRow);
 }
 
 /**
@@ -238,92 +200,15 @@ function getCommentsForComments(comment_id: number) {
  * Included: Comments, Posts... Everything including the specific user_uuid in the database
  * Might be required for Administrating the User
  */
-async function getAllUserInfoByID(user_id: number) {
-    const data_result_account: Array<Accounts> = [];
-    const data_result_post: Array<Post> = [];
-    const data_result_comments: Array<Comments> = [];
-
-    try {
-        const [rowsAccount, rowsPost, rowsComments] = await Promise.all([
-            db.query("SELECT * FROM accounts WHERE uuid = ?", [user_id]),
-            db.query("SELECT * FROM posts WHERE uuid = ?", [user_id]),
-            db.query("SELECT * FROM comments WHERE uuid = ?", [user_id]),
-        ]);
-
-        for (const row in rowsAccount) {
-            const [user_id,user_group,bio,displayname,username,user_email,password,
-                firstname,surname,account_created,blocked_users,followers,following,
-                contacts,
-            ] = row;
-            data_result_account.push({
-                user_id: Number(user_id),
-                user_group: String(user_group),
-                bio: String(bio),
-                displayname: String(displayname),
-                username: String(username),
-                user_email: String(user_email),
-                password: String(password),
-                firstname: String(firstname),
-                surname: String(surname),
-                account_created: String(account_created),
-                blocked_users: String(blocked_users),
-                followers: String(followers),
-                following: String(following),
-                contacts: String(contacts),
-            });
-        }
-        for (const row in rowsPost) {
-            const [
-                posts_uuid,
-                user_id,
-                created_at,
-                post_text,
-                likes,
-                comments,
-            ] = row;
-            data_result_post.push({
-                posts_uuid: Number(posts_uuid),
-                user_id: Number(user_id),
-                created_at: String(created_at),
-                post_text: String(post_text),
-                likes: Number(likes),
-                comments: Number(comments),
-            });
-        }
-
-        for (const row in rowsComments) {
-            const [
-                comment_id,
-                post_id,
-                author_user_id,
-                date_created_at,
-                text,
-                likes,
-            ] = row;
-            data_result_comments.push({
-                comment_id: Number(comment_id),
-                post_id: Number(post_id),
-                author_user_id: Number(author_user_id),
-                date_created_at: String(date_created_at),
-                text: String(text),
-                likes: Number(likes),
-            });
-        }
-
-    } catch (error) {
-        console.error(`Failed to get User Info ${error}`);
-        return [];
-    }
-
-    const result = { data_result_account, data_result_comments, data_result_post };
-    return result;
+async function getAllUserInfoByID(user_id: string) {
+    // Will be rewritten to use the queryDatabase function
 }
 
 /**
  * @param user_id The ID of the User to get the Posts for
  * @returns Array of Posts from the User, or an empty Array if the User doesn't exist or has no Posts
  */
-// Filter Functions
+// Filter Functions, Not yet implemented
 function filterForImagePosts(posts_to_filter: Array<any>) {
     return [];
 }
@@ -339,14 +224,10 @@ function filterForTextPosts(posts_to_filter: Array<any>) {
 // Exporting all functions as this is a module
 export {
     createDatabaseIfNotExist,
-    insertSamples,
-    countPosts,
-    filterForImagePosts,
-    filterForTextPosts,
-    filterForVideoPosts,
     getAllUserInfoByID,
     getAllUsersFromDB,
     getCommentsForComments,
     getCommentsFromDB,
     getPostsFromDB,
+    insertSamples,
 };

@@ -1121,6 +1121,11 @@
     "https://deno.land/x/superoak/mod.ts": "https://deno.land/x/superoak@4.8.1/mod.ts"
   },
   "remote": {
+    "https://deno.land/std@0.115.0/_wasm_crypto/crypto.js": "1c565287b35f6eb1aa58499d0f4fbac99a9c30eb9a735c512d193a6493499e84",
+    "https://deno.land/std@0.115.0/_wasm_crypto/crypto.wasm.js": "e93d38b215c05c552669e9565654599b13e7898ebd3f10ac91e39413efda4b84",
+    "https://deno.land/std@0.115.0/_wasm_crypto/mod.ts": "9afe300945fe7e5bcec231b52b0016d8442d026b823f619bb5939b2cf66ff21b",
+    "https://deno.land/std@0.115.0/crypto/mod.ts": "8e1ec0ff94a4f08e3c4f72de5b88781566481602614e62291aa7ae7444ba11f0",
+    "https://deno.land/std@0.115.0/encoding/base64.ts": "0b58bd6477214838bf711eef43eac21e47ba9e5c81b2ce185fe25d9ecab3ebb3",
     "https://deno.land/std@0.115.1/async/deadline.ts": "1d6ac7aeaee22f75eb86e4e105d6161118aad7b41ae2dd14f4cfd3bf97472b93",
     "https://deno.land/std@0.115.1/async/debounce.ts": "b2f693e4baa16b62793fd618de6c003b63228db50ecfe3bd51fc5f6dc0bc264b",
     "https://deno.land/std@0.115.1/async/deferred.ts": "ab60d46ba561abb3b13c0c8085d05797a384b9f182935f051dc67136817acdee",

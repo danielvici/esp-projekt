@@ -1,9 +1,9 @@
+/// <reference lib="deno.ns" />
+
 /**
  * @author Esad Mustafoski
  * @description This file is responsible for creating the database and the tables
  */
-
-/// <reference lib="deno.ns" />
 
 // +++ IMPORTS ------------------------------------------------------ //
 import { DB } from "https://deno.land/x/sqlite/mod.ts";
@@ -50,9 +50,9 @@ export function createDatabase(): void {
             likes INTEGER
         )
     `);
-}
+};
 
-// Sample data generated using online generators
+// Sample data generated using AI, does not work yet and will be adjusted
 export function insertSampleData(): void {
     db.query(`INSERT INTO accounts (user_group, user_bio, user_displayname, user_username, user_email, password, firstname, surname, account_created, followers, following, contacts) VALUES
         ('admin', 'Admin bio', 'Admin User', 'admin', 'admin@example.com', 'hashedpass1', 'Admin', 'User', '2024-01-01', '[]', '[]', '[]', '[]'),
