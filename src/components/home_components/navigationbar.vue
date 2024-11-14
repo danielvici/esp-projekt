@@ -55,7 +55,7 @@ function fun_route(destination: string) {
     <div class="items-center flex justify-center"><!-- BILD-->
       <img src="../../assets/esp-logo_no_text.png" alt="" class="rounded-lg h-12 w-24 mx-auto" @click="fun_route('home')">
     </div>
-    <div class="align-middle space-y-5 pt-3 pl-3 pb-4 font-bold text-xl"> <!-- Icons (Bild) und Text                                  Damit der Text weiß ist muss zwei mal gedrückt werden manchmal-->
+    <div class="align-middle space-y-5 pt-3 pl-3 pb-4 pr-4 font-bold text-xl"> <!-- Icons (Bild) und Text                                  Damit der Text weiß ist muss zwei mal gedrückt werden manchmal-->
       <label class="flex text-center text-grau2 hover:bg-logo-farbe-lila shadow-2xl rounded-lg" @click="fun_route('home')" :class="{'text-weiss': selected_destination === 'home' || selected_destination === ''}"><img  class="pr-2" src="../../assets/icons/home.png" alt=""> Home</label>
       <label class="flex text-center text-grau2 hover:bg-logo-farbe-lila shadow-2xl rounded-lg" @click="fun_route('search')" :class="{'text-weiss': selected_destination === 'search'}"><img class="pr-2" src="../../assets/icons/lupe.png" alt="">Search</label>
       <label class="flex text-center text-grau2 hover:bg-logo-farbe-rot shadow-2xl rounded-lg" @click="fun_route('notifications')" :class="{'text-weiss': selected_destination === 'notifications'}"><img class="pr-2" src="../../assets/icons/glocke.png" alt="">Notifications</label>
