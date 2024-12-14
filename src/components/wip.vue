@@ -13,11 +13,9 @@ import QuickSearch from "./home_components/quick_search.vue";
       <navigationbar></navigationbar>
     </div>
     <div class="border-x border-x-grau2">
-      <label class="text-weiss text-5xl align-middle mx-60 pt-60">This site is currently Work in Progress...</label>
+      <label class="text-weiss text-5xl align-middle pt-60">This site is currently Work in Progress...</label>
     </div>
-    <div id="right">
-      <quick-search> </quick-search>
-      <contacts></contacts>
+    <div id="right" class="ml-auto flex">
       <legal></legal>
     </div>
 

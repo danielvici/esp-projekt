@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import Settings_account from "./settings_account.vue";
 import Settings_account_main from "./settings_account_main.vue";
+import Sps_main from "./sps_main.vue";
 
 const props = defineProps({
   selectedSetting: String
@@ -19,7 +20,7 @@ console.log(`Setting got (SM): ${props.selectedSetting}`);
 <template>
   <div class="text-weiss">
     <div v-if="props.selectedSetting === 'setting_account'" class=""> <!-- ACCOUNT SETTINGS-->
-      <div class="border-x-grau2 border-x-2 border-b-grau2 border-b-2"> <!-- HEADER - ACCOUNT SETTINGS-->
+      <div class="border-r-grau2 border-r-1 border-r border-b-grau2 border-b-2"> <!-- HEADER - ACCOUNT SETTINGS-->
         <h1 class="text-weiss text-3xl p-4">Account Settings</h1>
       </div>
       <div class="flex flex-row content-center justify-center autofill:"> <!-- BODY - ACCOUNT SETTINGS-->
@@ -32,11 +33,11 @@ console.log(`Setting got (SM): ${props.selectedSetting}`);
 
 
     <div v-else-if="props.selectedSetting === 'setting_privacy'"> <!-- PRIVACY AND SAFTEY-->
-      <div class="border-x-grau2 border-x-2 border-b-grau2 border-b-2"> <!-- HEADER PRIVACY-->
+      <div class="border-r-grau2 border-r-2 border-r border-b-grau2 border-b-2"> <!-- HEADER PRIVACY-->
         <h1 class="text-weiss text-3xl p-4">Privacy and Saftey</h1>
       </div>
       <div> <!-- BODY - ACCOUNT SETTINGS-->
-        <label>MOIN1</label>
+        <sps_main></sps_main>
       </div>
     </div>
 

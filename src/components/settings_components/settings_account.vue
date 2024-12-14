@@ -12,7 +12,7 @@ function updateAccountSetting(setting: string) {
 </script>
 
 <template>
-  <div class="border-x border-x-grau2 "> <!-- MAIN DIV -->
+  <div class=""> <!-- MAIN DIV -->
     <div class="flex flex-col text-xl pl-4 pt-5 pr-4 space-y-5 text-grau2"> <!-- BODY -->
       <label @click="updateAccountSetting('sa_account-information')" :class="{'text-weiss': selectedSetting === 'sa_account-information' || selectedSetting === ''}">Account Information</label>
       <label @click="updateAccountSetting('sa_reset-password')" :class="{'text-weiss': selectedSetting === 'sa_reset-password'}">Reset Password</label>

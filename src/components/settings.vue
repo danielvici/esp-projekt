@@ -17,7 +17,7 @@ function handleUpdateSetting(setting: string) {
 
 <template>
   <div id="main" class="bg-hintergrund-farbe flex">
-    <div id="left" class="border-1 border-b-grau w-72">
+    <div id="left" class="border-r border-r-1 border-r-grau2 w-72">
       <navigationbar></navigationbar>
       <settings_sidebar @updateSetting="handleUpdateSetting"></settings_sidebar>
     </div>

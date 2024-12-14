@@ -51,7 +51,7 @@ function fun_route(destination: string) {
 </script>
 
 <template>
-  <div class="pt-4 border-b-2 border-b-grau2">
+  <div class="pt-4 border-b-2 border-b-grau2 border-r-1 border-r-grau2">
     <div class="items-center flex justify-center"><!-- BILD-->
       <img src="../../assets/esp-logo_no_text.png" alt="" class="rounded-lg h-12 w-24 mx-auto" @click="fun_route('home')">
     </div>

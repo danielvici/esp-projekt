@@ -21,7 +21,7 @@ function handleSubmit(event: Event) {
     <div class="px-20 pt-7"><!--  FORM --->
       <form class="flex flex-col items-center" @submit.prevent="handleSubmit">
         <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" type="text" placeholder="Username or E-Mail"><br>
-        <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" type="text" placeholder="Password"><br>
+        <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" type="password" placeholder="Password"><br>
         <button class="m-4 bg-grau-dunkel w-full max-w-xs p-4 text-weiss rounded-lg">Login</button>
       </form>
     </div>
