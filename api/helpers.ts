@@ -7,7 +7,8 @@
  * 
  */
 import { Context } from "https://deno.land/x/oak/mod.ts";
-import { hash } from "node:crypto";
+import { encodeHex } from "jsr:@std/encoding/hex";
+// import { hash } from "node:crypto";
 
 export type ApiResponse = {
     status: number;
@@ -37,8 +38,18 @@ const errorResponse = (ctx: Context, status: number, message: string): void => {
 /** 
  * @description Hashing Function for Passwords/etc 
  * @param password The password to hash
- * Works only up to 5 Megabytes
  */
-const hashPassword = async (password: string): Promise<string> => {
-    return hash("sha256", password);
+const hashPassword = async(password: string): Promise<string> => {
+    const to_hash = password;
+    const buffer = new TextEncoder().encode(to_hash);
+    const hash_buffer = await crypto.subtle.digest("SHA-256", buffer);
+    const hash = await encodeHex(hash_buffer);
+    
+    return hash;
 }
+
+export {
+    sendResponse,
+    errorResponse,
+    hashPassword
+};

@@ -174,6 +174,17 @@ async function getAllUsersFromDB(): Promise<Accounts[]> {
 }
 
 /**
+ * @param username 
+ * @returns Returns the Accounts for the User with the given username
+ */
+async function getUserByUsername(username: string): Promise<Accounts> {
+    const query = `SELECT * FROM accounts WHERE user_username = '${username}'`;
+    const params:string[] = [];
+    const result = await queryDatabase<Accounts>(query, params, mapAccountRow);
+    return result[0];
+}
+
+/**
  * @param post_id The ID of the Post to get the Comments for. Not required
  * @description If no post_id is provided, all Comments will be returned
  * @description If a post_id is provided, only the Comments for that Post will be returned
@@ -192,6 +203,7 @@ async function getCommentsFromDB(post_id?: number): Promise<Comments[]> {
  * @returns Array of Comments for the Comment, or an empty Array if there are no Comments
  */
 function getCommentsForComments(comment_id: number) {
+    // Will be rewritten to use the queryDatabase function
 }
 
 /**
@@ -221,11 +233,34 @@ function filterForTextPosts(posts_to_filter: Array<any>) {
     return [];
 }
 
+
+// Register/Login/User
+
+/**
+ * @param user The name of the User to add
+ * @param password The password of the User to add
+ * @returns Array of Posts from the User, or an empty Array if the User doesn't exist or has no Posts
+ */
+function registerUser (user: string, password: string, userGroup: string, displayname: string, user_email: string, firstname: string, surname: string, account_created: string): string {
+    const query_user_exists = `SELECT * FROM accounts WHERE user_username = '${user}'`;
+    if (!query_user_exists) {
+        return "noUser";
+    }
+
+    const query_add_user = `INSERT INTO accounts (user_username, password, user_group, user_displayname, user_email, firstname, surname, account_created) VALUES ('${user}', '${password}', '${userGroup}', '${displayname}', '${user_email}', '${firstname}', '${surname}', '${account_created}')`;
+    db.query(query_add_user);
+    console.log(`New user: ${user}`)
+
+    return "newUser";
+}
+
 // Exporting all functions as this is a module
 export {
+    registerUser,
     createDatabaseIfNotExist,
     getAllUserInfoByID,
     getAllUsersFromDB,
+    getUserByUsername,
     getCommentsForComments,
     getCommentsFromDB,
     getPostsFromDB,
