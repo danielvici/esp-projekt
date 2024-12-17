@@ -202,6 +202,7 @@ async function api_login(ctx: Context): Promise<string> {
         return "Error";
     }
     
+    helper_utils.sendResponse(ctx, { status: 200, body: "Success" });
     return "Success";
 }
 
