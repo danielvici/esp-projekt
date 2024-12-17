@@ -1,3 +1,4 @@
+/// <reference lib="deno.ns" />
 import './assets/main.css';
 import { createApp } from 'vue';
 // @ts-ignore: 

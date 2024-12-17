@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import { createRouter, createWebHistory } from "vue-router";
 
 // Vue components imported here.
