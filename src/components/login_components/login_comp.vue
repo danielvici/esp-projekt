@@ -1,9 +1,40 @@
 <script setup lang="ts">
 import router from "../../router";
+import { ref } from 'vue';
 
-function login() {
-  // alert("Account deleted. You will be redirected to the login page.");
-  router.push("/");
+async function login() {
+
+  const username = ref('testuser');
+  const password = ref('testpassword');
+
+
+    const response = await fetch('http://localhost:8000/api/account/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+        body: JSON.stringify({ username: username.value, password: password.value }),
+      });
+  /*
+  if (!response.ok) {
+    throw new Error(`Fehler beim Login: ${response.status} - ${response.statusText}`);
+  }
+   */
+
+  const data = await response.json();
+  // Handle successful login (e.g., store user data in Vuex)
+  console.log(response);
+  /*
+  console.log('Erfolgreich eingeloggt:', data);
+
+  console.error('Fehler beim Login:', error);
+
+   */
+    // Handle login error (e.g., display an error message to the user)
+
+
+  alert("Logged in. You will be redirected to the login page.");
+  router.push('/');
 }
 
 function handleSubmit(event: Event) {
