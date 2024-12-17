@@ -154,7 +154,7 @@ async function api_register(ctx: Context): Promise<void> {
         const body = ctx.request.body;
         const result = await body.json();
         const { username, password, userGroup, displayname, user_email, firstname, surname} = result;
-        const account_created = `${Math.floor(Date.now() / 1000)}${new Date().toLocaleDateString('en-GB').split('/').join('.')}`;
+        const account_created = `${Math.floor(Date.now() / 1000)}-${new Date().toLocaleDateString('en-GB').split('/').join('-')}`;
 
 
         if ( !username || !password || !userGroup || !displayname || !user_email || !firstname || !surname) {
