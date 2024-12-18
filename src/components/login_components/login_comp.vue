@@ -2,39 +2,39 @@
 import router from "../../router";
 import { ref } from 'vue';
 
+let input_username_mail = ref("");
+let input_user_password = ref("");
+
 async function login() {
 
-  const username = ref('testuser');
-  const password = ref('testpassword');
 
+  const username = input_username_mail;
+  const password = input_user_password;
 
+  console.log("Username: " + username.value + ", Password: " + password.value);
+
+  try {
     const response = await fetch('http://localhost:8000/api/account/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'login/json',
       },
-        body: JSON.stringify({ username: username.value, password: password.value }),
-      });
-  /*
-  if (!response.ok) {
-    throw new Error(`Fehler beim Login: ${response.status} - ${response.statusText}`);
+      body: JSON.stringify({username: username.value, password: password.value}),
+    });
+
+
+    if (response["status"] == 200) {
+      alert("You will be now redirected")
+      router.push('/');
+    } else {
+      alert("Username/E-Mail or Password are wrong");
+    }
+
+    const data = await response.json();
+    console.log(response);
+  } catch (e) {
+    console.log("An error has occurred. Please try again later.");
   }
-   */
-
-  const data = await response.json();
-  // Handle successful login (e.g., store user data in Vuex)
-  console.log(response);
-  /*
-  console.log('Erfolgreich eingeloggt:', data);
-
-  console.error('Fehler beim Login:', error);
-
-   */
-    // Handle login error (e.g., display an error message to the user)
-
-
-  alert("Logged in. You will be redirected to the login page.");
-  router.push('/');
 }
 
 function handleSubmit(event: Event) {
@@ -51,9 +51,9 @@ function handleSubmit(event: Event) {
     </div>
     <div class="px-20 pt-7"><!--  FORM --->
       <form class="flex flex-col items-center" @submit.prevent="handleSubmit">
-        <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" type="text" placeholder="Username or E-Mail"><br>
-        <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" type="password" placeholder="Password"><br>
-        <button class="m-4 bg-grau-dunkel w-full max-w-xs p-4 text-weiss rounded-lg">Login</button>
+        <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="input_username_mail" type="text" placeholder="Username or E-Mail"><br>
+        <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="input_user_password" type="password" placeholder="Password"><br>
+        <button class="m-4 bg-grau-dunkel w-full max-w-xs p-4 text-weiss rounded-lg" @click="login()">Login</button>
       </form>
     </div>
   </div>
