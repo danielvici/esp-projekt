@@ -8,6 +8,7 @@ import Login from "../components/Login.vue";
 import wip from "../components/wip.vue";
 import settings from "../components/settings.vue";
 import nottifications from "../components/notifications.vue";
+import register from "../components/register.vue";
 // The routing does not happen automatically
 // Each route has to be defined here, or it wont work.
 const routes = [
@@ -35,7 +36,13 @@ const routes = [
         path: "/notifications",
         name: "Notifications",
         component: nottifications,
+    },
+    {
+        path: "/register",
+        name: "Register",
+        component: register,
     }
+
 ]
 
 const router = createRouter({

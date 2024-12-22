@@ -1,0 +1,75 @@
+<script setup lang="ts">
+
+import {ref} from "vue";
+import router from "../../router";
+
+let register_input_username = ref("");
+let register_input_displayname = ref("");
+let register_input_password = ref("");
+let register_input_email = ref("");
+
+async function register() {
+
+
+  const username = register_input_username;
+  const displayname = register_input_displayname;
+  const email = register_input_email;
+  const password = register_input_password;
+  const std_text = "default";
+
+
+  console.log("Username: " + username.value + ", Password: " + password.value);
+
+  try {
+    const response = await fetch('http://localhost:8000/api/account/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'login/json',
+      },
+      body: JSON.stringify({username: username.value, password: password.value, userGroup: "user", displayname: displayname.value, user_email: email.value, firstname: std_text, surname: std_text}),
+    });
+
+
+    if (response["status"] == 200) {
+      alert("Account created! You will be now redirected");
+      router.push('/');
+      router.go(1);
+    } else {
+      alert("Something went wrong. Please try again later.");
+    }
+
+    const data = await response.json();
+    console.log(response);
+  } catch (e) {
+    console.log("An error has occurred. Please try again later.");
+  }
+}
+
+function handleSubmit(event: Event) {
+  event.preventDefault();
+  register();
+}
+</script>
+
+<template>
+  <div id="main" class="bg-hintergrund-farbe p-2 border-x border-x-grau2 px-20">
+    <div class="text-3xl pt-32"> <!-- ÜBERSCHRIFT-->
+      <p class="text-weiss text-center">Welcome to <label class="bg-schwarz p-1 rounded-lg mr-1"><span class="text-logo-farbe-lila">E</span><span class="text-logo-farbe-rot">S</span><span class="text-logo-farbe-blau">P</span></label>!</p>
+      <p class="text-weiss text-center pt-2">Join today!</p>
+    </div>
+    <div class="px-20 pt-7"> <!--  FORM --->
+      <form class="flex flex-col items-center" action="register_main.vue">
+        <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="register_input_username" type="text" placeholder="Username" required><br>
+        <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="register_input_displayname" type="text" placeholder="Displayname" required><br>
+        <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="register_input_email" type="email" placeholder="E-Mail" required><br>
+        <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="register_input_password " type="password" placeholder="Password" required><br>
+        <button class="m-4 bg-button-farbe w-full max-w-xs p-4 text-schwarz rounded-lg hover:shadow-2xl hover:shadow-grau-dunkel">Create Account</button>
+      </form>
+      <p class="text-weiss text-center">Already have an account? <router-link to="/register" class="text-button-farbe">Login</router-link></p>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+
+</style>

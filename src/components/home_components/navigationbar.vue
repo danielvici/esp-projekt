@@ -53,7 +53,7 @@ function fun_route(destination: string) {
 <template>
   <div class="pt-4 border-b-2 border-b-grau2 border-r-1 border-r-grau2">
     <div class="items-center flex justify-center"><!-- BILD-->
-      <img src="../../assets/esp-logo_no_text.png" alt="" class="rounded-lg h-12 w-24 mx-auto" @click="fun_route('home')">
+      <img src="../../assets/esp-logo_no_text.png" alt="" class="rounded-lg h-12 w-24 mx-auto hover:shadow-2xl hover:shadow-grau-dunkel" @click="fun_route('home')">
     </div>
     <div class="align-middle space-y-3 pt-4 pl-3 pb-4 pr-4 font-bold text-xl"> <!-- Icons (Bild) und Text                                  Damit der Text weiß ist muss zwei mal gedrückt werden manchmal-->
       <label class="flex text-center text-grau2 hover:bg-logo-farbe-lila rounded-lg" @click="fun_route('home')"          :class="{'text-weiss': selected_destination === 'home' || selected_destination === ''}"><img class="mr-2 p-1 bg-logo-farbe-lila rounded-lg" src="../../assets/icons/home.png" alt=""> Home</label>
