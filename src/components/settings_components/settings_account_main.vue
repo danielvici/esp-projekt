@@ -12,7 +12,7 @@ console.log(`Setting got (SAM): ${props2.selectedAccountSetting}`);
 </script>
 
 <template>
-  <div class="border-x-2 border-x-grau2"> <!-- MAIN DIV -->
+  <div class="border-l-2 border-l-grau2"> <!-- MAIN DIV -->
     <div v-if="props2.selectedAccountSetting === 'sa_account-information'">
       <sa_account-information_comp></sa_account-information_comp>
     </div>

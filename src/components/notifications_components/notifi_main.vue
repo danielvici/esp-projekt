@@ -85,7 +85,7 @@ function go_filter(){
     <form @submit.prevent="go_filter">
       <label class="p-2 text-xl text-weiss">Filter</label>
       <label class="m-2 accent-logo-farbe-blau">You Following<input type="checkbox" class="m-1 mr-3" v-model="check_type.f"></label>
-      <label class="m-2 accent-logo-farbe-lila">Messages<input type="checkbox" class="m-1 mr-3" v-model="check_type.m"></label>
+      <label class="m-2 accent-logo-farbe-rot">Messages<input type="checkbox" class="m-1 mr-3" v-model="check_type.m"></label>
       <!--<label class="m-2 accent-logo-farbe-rot">Other<input type="checkbox" class="m-1 mr-3" v-model="check_type.o"></label>-->
 
       <label class="p2">Sort by <select name="sorting" id="notification_sorting" class="mr-3 bg-hintergrund-farbe text-weiss" v-model="check_type.sorting">

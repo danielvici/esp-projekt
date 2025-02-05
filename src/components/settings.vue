@@ -5,6 +5,8 @@ import Settings_sidebar from "./settings_components/settings_sidebar.vue";
 import Settings_navbar from "./settings_components/settings_navbar.vue";
 import Settings_main from "./settings_components/settings_main.vue";
 import Navigationbar from "./home_components/navigationbar.vue";
+import Contacts from "./home_components/contacts.vue";
+import Quick_search from "./home_components/quick_search.vue";
 
 const selectedSetting = ref('');
 
@@ -17,14 +19,16 @@ function handleUpdateSetting(setting: string) {
 
 <template>
   <div id="main" class="bg-hintergrund-farbe flex">
-    <div id="left" class="border-r border-r-1 border-r-grau2 w-72">
+    <div id="left" class=" w-72">
       <navigationbar></navigationbar>
       <settings_sidebar @updateSetting="handleUpdateSetting"></settings_sidebar>
     </div>
-    <div class="w-100p">
+    <div class="w-100p border-x-grau2 border-x-2">
       <settings_main :selectedSetting="selectedSetting"></settings_main>
     </div>
     <div class="w-1/4">
+      <quick_search></quick_search>
+      <contacts></contacts>
       <legal></legal>
     </div>
   </div>

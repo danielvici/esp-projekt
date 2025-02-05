@@ -19,8 +19,8 @@ console.log(`Setting got (SM): ${props.selectedSetting}`);
 
 <template>
   <div class="text-weiss">
-    <div v-if="props.selectedSetting === 'setting_account'" class=""> <!-- ACCOUNT SETTINGS-->
-      <div class="border-r-grau2 border-r-1 border-r border-b-grau2 border-b-2"> <!-- HEADER - ACCOUNT SETTINGS-->
+    <div v-if="props.selectedSetting === 'setting_account'"> <!-- ACCOUNT SETTINGS-->
+      <div class="border-r-grau2 border-r-1 border-b-grau2 border-b-2"> <!-- HEADER - ACCOUNT SETTINGS-->
         <h1 class="text-weiss text-3xl p-4">Account Settings</h1>
       </div>
       <div class="flex flex-row content-center justify-center autofill:"> <!-- BODY - ACCOUNT SETTINGS-->
@@ -33,7 +33,7 @@ console.log(`Setting got (SM): ${props.selectedSetting}`);
 
 
     <div v-else-if="props.selectedSetting === 'setting_privacy'"> <!-- PRIVACY AND SAFTEY-->
-      <div class="border-r-grau2 border-r-2 border-r border-b-grau2 border-b-2"> <!-- HEADER PRIVACY-->
+      <div class="border-r-grau2 border-r-2 border-b-grau2 border-b-2"> <!-- HEADER PRIVACY-->
         <h1 class="text-weiss text-3xl p-4">Privacy and Saftey</h1>
       </div>
       <div> <!-- BODY - ACCOUNT SETTINGS-->
@@ -58,10 +58,10 @@ console.log(`Setting got (SM): ${props.selectedSetting}`);
     </div>
 
     <div v-else-if="props.selectedSetting === ''"> <!-- IF NOTHING SELECTED-->
-      <div class="border-x-grau2 border-x-2 border-b-grau2 border-b-2"> <!-- HEADER - ACCOUNT SETTINGS-->
+      <div class="border-r-grau2 border-r-1 border-b-grau2 border-b-2"> <!-- HEADER - ACCOUNT SETTINGS-->
         <h1 class="text-weiss text-3xl p-4">Account Settings</h1>
       </div>
-      <div class="flex flex-row content-center justify-center autofill:"> <!-- BODY - ACCOUNT SETTINGS-->
+      <div class="flex flex-row content-center justify-center"> <!-- BODY - ACCOUNT SETTINGS-->
         <settings_account class="basis-1/2" @updateAccountSetting="handleUpdateAccountSetting"></settings_account>
         <settings_account_main class="basis-1/2" :selectedAccountSetting="selectedAccountSetting"></settings_account_main>
       </div>

@@ -41,10 +41,9 @@
       comments_count: 500000, likes: 100000},
   ])
 
-  const addLike = (index: number) => {
+  function addLike(index: number) {
     post.value[index].likes += 1;
     console.log("New Like Amount: ", post.value[index].likes);
-
   }
   function post_publish_func(text:string) {
     console.log("Post: ", text);
@@ -63,7 +62,7 @@
 <template>
   <div class="border-x-2 border-x-grau2"> <!-- MAIN -->
     <div> <!-- FEED HEADER -->
-      <h2 class="align-middle p-6 text-xl font-bold text-grau2 border-b-grau2 border-b ">Feed</h2>
+      <h2 class="align-middle p-6 text-3xl text-weiss border-b-grau2 border-b ">Feed</h2>
       <!-- POSTING-->
       <div class="flex border-2 border-b-grau2">
         <img src="../../assets/danielvici_pp.png" alt="" class="p-2 rounded-full w-16 h-16">
@@ -87,7 +86,7 @@
           <div>
             <div> <!-- POST HEADER -->
               <label class="text-lg font-bold m-1 text-weiss">{{postitem.author_display_name}}</label>
-              <label class="text-base m-1 underline-offset-3 text-grau2">@{{ postitem.author_username }}</label>
+              <label class="text-base m-1 text-grau2">@{{ postitem.author_username }}</label>
             </div>
             <div class="m-2"> <!-- POST CONTENT -->
               <p class="text-sm m-1 text-weiss">{{ postitem.content }}</p>

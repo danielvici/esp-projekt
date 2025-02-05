@@ -10,9 +10,9 @@
 
     <a href="">Imprint</a>
     -
-    <a href="">Contact</a>
+    <a href="https://esp-projekt.notion.site/191fb990f26c808298dad302e97fb299?pvs=105">Contact</a>
     -
-    <a href="">Support</a>
+    <a href="https://esp-projekt.notion.site/191fb990f26c808298dad302e97fb299?pvs=105">Support</a>
   </div>
 </template>
 
