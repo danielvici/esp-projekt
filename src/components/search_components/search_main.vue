@@ -67,6 +67,7 @@ for(let i =0; i < dinge.value.length; i++) {
 function go_fs(){
   console.log("These Filter applied: ", JSON.stringify(search_filter_status.value));
   feed.value = [];
+  feed2.value = [];
 
 
   dinge.value.forEach((dinge) => {
@@ -75,32 +76,37 @@ function go_fs(){
     }
   })
   let i = 0;
-  feed2.value.forEach(() => {
-    switch (feed2.value[i].type) {
-      case "user":
-        if (feed2.value[i].displayname.includes(usr_search) || feed2.value[i].username.includes(usr_search)) {
-          feed.value.push(feed2.value[i]);
-        }
-        console.log("User: ", feed2.value[i].displayname);
-        break;
-      case "post":
-        if (feed2.value[i].text_content.includes(usr_search) || feed2.value[i].author.includes(usr_search)) {
-          feed.value.push(feed2.value[i]);
-        }
-        console.log("Post: ", feed2.value[i]);
-        break;
-      case "hashtag":
-        if (feed2.value[i].hashtag.includes(usr_search)) {
-          feed.value.push(feed2.value[i]);
-        }
-        console.log("Hashtag: ", feed2.value[i].hashtag);
-        break;
-      default:
-        console.log("No Results Found");
-        break;
-    }
-    i++;
-  })
+  if (usr_search == undefined) {
+    feed = feed2;
+    return;
+  } else {
+    feed2.value.forEach(() => {
+      switch (feed2.value[i].type) {
+        case "user":
+          if (feed2.value[i].displayname.includes(usr_search) || feed2.value[i].username.includes(usr_search)) {
+            feed.value.push(feed2.value[i]);
+          }
+          console.log("User: ", feed2.value[i].displayname);
+          break;
+        case "post":
+          if (feed2.value[i].text_content.includes(usr_search) || feed2.value[i].author.includes(usr_search)) {
+            feed.value.push(feed2.value[i]);
+          }
+          console.log("Post: ", feed2.value[i]);
+          break;
+        case "hashtag":
+          if (feed2.value[i].hashtag.includes(usr_search)) {
+            feed.value.push(feed2.value[i]);
+          }
+          console.log("Hashtag: ", feed2.value[i].hashtag);
+          break;
+        default:
+          console.log("No Results Found");
+          break;
+      }
+      i++;
+    })
+  }
 
 
   console.log("Feed:", feed.value);
