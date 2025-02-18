@@ -58,14 +58,14 @@ function handleSubmit(event: Event) {
       <p class="text-weiss text-center pt-2">Join today!</p>
     </div>
     <div class="px-20 pt-7"> <!--  FORM --->
-      <form class="flex flex-col items-center" action="register_main.vue">
+      <form class="flex flex-col items-center" @submit.prevent="register">
         <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="register_input_username" type="text" placeholder="Username" required><br>
         <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="register_input_displayname" type="text" placeholder="Displayname" required><br>
         <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="register_input_email" type="email" placeholder="E-Mail" required><br>
         <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="register_input_password " type="password" placeholder="Password" required><br>
-        <button class="m-4 bg-button-farbe w-full max-w-xs p-4 text-schwarz rounded-lg hover:shadow-2xl hover:shadow-grau-dunkel">Create Account</button>
+        <button class="m-4 bg-button-farbe w-full max-w-xs p-4 text-schwarz rounded-lg">Create Account</button>
       </form>
-      <p class="text-weiss text-center">Already have an account? <router-link to="/register" class="text-button-farbe">Login</router-link></p>
+      <p class="text-weiss text-center">Already have an account? <router-link to="/login" class="text-button-farbe">Login</router-link></p>
     </div>
   </div>
 </template>

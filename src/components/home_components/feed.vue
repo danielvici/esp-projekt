@@ -1,6 +1,24 @@
 <script setup lang="ts">
-  import { ref } from "vue";
+import {onMounted, ref} from "vue";
+  import router from "../../router";
   // import {valueOf} from "tailwindcss";
+
+  function checkLoginStatus() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn === 'true') {
+      console.log("User is logged in");
+      // Perform actions for logged-in users
+    } else {
+      console.log("User is not logged in");
+      // Redirect to login page or show a message
+      // router.push('/login');
+    }
+  }
+
+  // Call this function on component mount or when needed
+  onMounted(() => {
+    checkLoginStatus();
+  });
 
   // PLACEHOLDER
   const post = ref([
@@ -60,7 +78,7 @@
 </script>
 
 <template>
-  <div class="border-x-2 border-x-grau2"> <!-- MAIN -->
+  <div class="border-x border-x-grau2"> <!-- MAIN -->
     <div> <!-- FEED HEADER -->
       <h2 class="align-middle p-6 text-3xl text-weiss border-b-grau2 border-b ">Feed</h2>
       <!-- POSTING-->

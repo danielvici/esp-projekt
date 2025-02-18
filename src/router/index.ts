@@ -48,7 +48,6 @@ const routes = [
         name: "Search",
         component: search,
     }
-
 ]
 
 const router = createRouter({

@@ -1,43 +1,49 @@
 <script setup lang="ts">
 import router from "../../router";
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 let input_username_mail = ref("");
 let input_user_password = ref("");
+let rememberMe = ref(false);
+
+onMounted(() => {
+  if (localStorage.getItem('username')) {
+    input_username_mail.value = localStorage.getItem('username') || "";
+    input_user_password.value = localStorage.getItem('password') || "";
+    rememberMe.value = true;
+  }
+});
 
 async function login(event: Event) {
   event.preventDefault();
 
-
   const username = input_username_mail;
   const password = input_user_password;
-
-  console.log("Username: " + username.value + ", Password: " + password.value);
 
   try {
     const response = await fetch('http://localhost:8000/api/account/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'login/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({username: username.value, password: password.value}),
+      body: JSON.stringify({ username: username.value, password: password.value }),
     });
 
-
-    if (response["status"] == 200) {
-      alert("You will be now redirected")
+    if (response.status === 200) {
+      if (rememberMe.value) {
+        localStorage.setItem('username', username.value);
+      }
+      localStorage.setItem('isLoggedIn', 'true'); // Set the login flag
+      alert("You will be now redirected");
       router.push('/');
     } else {
       alert("Username/E-Mail or Password are wrong");
     }
-
-    const data = await response.json();
-    console.log(response);
   } catch (e) {
     console.log("An error has occurred. Please try again later.");
+    console.log(e)
   }
 }
-
 </script>
 
 <template>
@@ -50,8 +56,8 @@ async function login(event: Event) {
       <form class="flex flex-col items-center" @submit.prevent="login">
         <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="input_username_mail" type="text" placeholder="Username or E-Mail"><br>
         <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="input_user_password" type="password" placeholder="Password"><br>
-        <button class="m-4 bg-button-farbe w-full max-w-xs p-4 text-schwarz rounded-lg hover:shadow-2xl hover:shadow-grau-dunkel">Login</button>
-        <p class="text-weiss"><input type="checkbox" > Remeber me</p>
+        <button class="m-4 bg-button-farbe w-full max-w-xs p-4 text-schwarz rounded-lg">Login</button>
+        <p class="text-weiss"><input type="checkbox"> Remeber me</p>
       </form>
     </div>
     <div>
