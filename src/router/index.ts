@@ -10,6 +10,7 @@ import settings from "../components/settings.vue";
 import nottifications from "../components/notifications.vue";
 import register from "../components/register.vue";
 import search from "../components/search.vue";
+import post from '../components/posts.vue';
 // The routing does not happen automatically
 // Each route has to be defined here, or it won't work.
 const routes = [
@@ -47,6 +48,12 @@ const routes = [
         path: "/search",
         name: "Search",
         component: search,
+    },
+    {
+        path: '/post/:id',
+        name: 'PostDetail',
+        component: post,
+        props: true
     }
 ]
 

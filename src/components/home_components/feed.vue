@@ -91,10 +91,9 @@ import {onMounted, ref} from "vue";
             <input class="text-weiss" type="file" accept=".png, .jpg, .jpeg">
             <button id="post_publish" name="post_publishss" class="text-weiss p-1 m-2 rounded-lg py-3 px-5 bg-button-farbe" @click.prevent="post_publish_func(post_publish)" type="button">Post</button>
           </div>
-          </form>
+        </form>
       </div>
     </div>
-
 
     <div> <!-- CONTENT -->
       <ul>
@@ -119,6 +118,10 @@ import {onMounted, ref} from "vue";
               <div class="flex items-center" @click="addLike(indexus)"> <!-- Likes -->
                 <img alt="" src="../../assets/icons/herz.png" class="align-middle">
                 <label class="text-sm m-1 text-weiss">{{ postitem.likes }}</label>
+              </div>
+
+              <div class="flex items-center mx-2"> <!-- View Post -->
+                <router-link :to="{ name: 'PostDetail', params: { id: postitem.id } }" class="text-weiss">View Post</router-link>
               </div><!-- ENDE -->
             </div>
           </div>
