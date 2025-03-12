@@ -6,7 +6,6 @@ import Settings_navbar from "./settings_components/settings_navbar.vue";
 import Settings_main from "./settings_components/settings_main.vue";
 import Navigationbar from "./home_components/navigationbar.vue";
 import Contacts from "./home_components/contacts.vue";
-import Quick_search from "./home_components/quick_search.vue";
 
 const selectedSetting = ref('');
 
@@ -27,7 +26,6 @@ function handleUpdateSetting(setting: string) {
       <settings_main :selectedSetting="selectedSetting"></settings_main>
     </div>
     <div class="w-1/4">
-      <quick_search></quick_search>
       <contacts></contacts>
       <legal></legal>
     </div>

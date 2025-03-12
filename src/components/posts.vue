@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import Trending from "./home_components/trending.vue";
 import Navigationbar from "./home_components/navigationbar.vue";
-import QuickSearch from "./home_components/quick_search.vue";
 import Contacts from "./home_components/contacts.vue";
 import Legal from "./home_components/legal.vue";
 
@@ -44,7 +42,6 @@ onMounted(async () => {
       </div>
     </div>
     <div class="w-1/4">
-      <quick-search></quick-search>
       <contacts></contacts>
       <legal></legal>
     </div>

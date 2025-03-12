@@ -2,8 +2,6 @@
 import Legal from "./home_components/legal.vue";
 import Navigationbar from "./home_components/navigationbar.vue";
 import Notifi_comp from "./notifications_components/notifi_main.vue";
-import Notif_sidebar from "./notifications_components/notif_sidebar.vue";
-import Quick_search from "./home_components/quick_search.vue";
 import Contacts from "./home_components/contacts.vue";
 
 </script>
@@ -20,7 +18,6 @@ import Contacts from "./home_components/contacts.vue";
       <notifi_comp></notifi_comp>
     </div>
     <div class="w-1/4">
-      <quick_search></quick_search>
       <contacts></contacts>
       <legal></legal>
     </div>

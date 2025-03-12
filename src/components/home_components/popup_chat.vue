@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, defineEmits, onMounted, watch } from 'vue';
+import {defineProps, defineEmits, onMounted, watch, ref} from 'vue';
 
 let current_contact = null;
 let self = "danielvici123";
@@ -13,7 +13,8 @@ const nachrichten = [
   { username: "jetbrains", message: "Wie kann ich Plugins effizient verwalten?", msg_id: 6, chat_id: 41235 }
 ];
 
-let geladeneNachrichten = [];
+let geladeneNachrichten = ref([]);
+const send_message = ref("");
 const props = defineProps({
   contact: Object
 });
@@ -25,17 +26,23 @@ function closeChat() {
 }
 
 function openCHAT() {
-  geladeneNachrichten = [];
+  geladeneNachrichten.value = [];
   console.log("Chat geöffnet");
   current_contact = props.contact;
   console.log(current_contact);
 
   nachrichten.forEach((nachricht) => {
     if (nachricht.username == current_contact.username) {
-      geladeneNachrichten.push(nachricht);
+      geladeneNachrichten.value.push(nachricht);
     }
   });
   console.log(geladeneNachrichten);
+}
+
+function sendMessage(){
+  event.preventDefault();
+  // API nachricht senden
+  console.log("Nachricht gesendet")
 }
 
 onMounted(() => {
@@ -48,13 +55,13 @@ watch(() => props.contact, () => {
 </script>
 
 <template>
-  <div class="fixed bottom-0 right-0 m-4 p-4 bg-schwarz text-weiss rounded-lg shadow-lg w-80">
+  <div class="fixed bottom-0 right-0 m-3 p-4 bg-schwarz text-weiss rounded-lg shadow-lg w-80">
     <div class="flex justify-between items-center bborder-b-2 border-b-grau2">
       <div class="flex">
         <h3 class="text-lg font-bold">{{ contact.display_name }}</h3>
         <a class="px-2">@{{ contact.username }}</a>
       </div>
-      <button @click="closeChat" class="text-logo-farbe-rot">X</button>
+      <button @click="closeChat" class="text-logo-farbe-rot"><img src="../../assets/icons/x-klein.png" alt=""></button>
     </div>
     <div class="mt-2">
       <ul class="space-y-2">
@@ -67,6 +74,12 @@ watch(() => props.contact, () => {
           </div>
         </li>
       </ul>
+      <div>
+        <form class="flex mt-4" @submit="sendMessage">
+          <label><input v-model="send_message" class="bg-schwarz outline-none border-b-2 mt-2 py-2 px-1" placeholder="Message"></label>
+          <button type="submit"><img src="../../assets/icons/send.png" alt="senden" class="ml-4 mt-1"></button>
+        </form>
+      </div>
     </div>
   </div>
 </template>

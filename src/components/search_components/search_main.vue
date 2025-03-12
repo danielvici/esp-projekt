@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {ref} from "vue";
+import router from "../../router";
 
 const hashtags = [ // DIESE HASTAGS SIND NUR FÜR DIE TRANDING DA
   {id: 8,name: "gym", nr_posts: 2144, category: "Lifestyle"},
@@ -145,11 +146,11 @@ function go_fs(){
   <!-- ### ### ### ### ### ### ### -->
   <div>
     <div>
-      <a class="text-2xl flex justify-center mt-4">Result(s):</a> <!-- RESULTS -->
+      <a class="text-2xl flex justify-center mt-4">Result(s):</a> <!-- ---------RESULTS---------------- -->
     </div>
     <div v-if="feed.length > 0">
       <div v-for="(bing, i) in feed" :key="bing" class=""> <!-- SEARCH RESULTS -->
-        <div v-if="bing.type === 'user'" class="pt-2 p-3 border-b-grau2 border-b"> <!-- USER RESULT -->
+        <div v-if="bing.type === 'user'" class="pt-2 p-3 border-b-grau2 border-b" @click="router.push('/profile/${bing.username}')"> <!-- --- USER RESULT --- -->
           <div class="flex">
             <img src="/src/assets/default_pp.png" alt="profile picture" class="rounded-full w-16 h-16">
             <div class="">

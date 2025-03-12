@@ -5,6 +5,7 @@
 import router from "../../router";
 import { ref, onMounted } from 'vue';
 
+let self = ref("danielvici123");
 
 </script>
 
@@ -18,7 +19,7 @@ import { ref, onMounted } from 'vue';
       <label class="flex text-center text-grau2 hover:bg-logo-farbe-lila rounded-lg" @click="router.push('/search')">        <img class="mr-2 p-1 bg-logo-farbe-lila rounded-lg" src="../../assets/icons/lupe.png" alt="">Search</label>
       <label class="flex text-center text-grau2 hover:bg-logo-farbe-rot  rounded-lg" @click="router.push('/notifications')"> <img class="mr-2 p-1 bg-logo-farbe-rot  rounded-lg" src="../../assets/icons/glocke.png" alt="">Notifications</label>
       <label class="flex text-center text-grau2 hover:bg-logo-farbe-rot  rounded-lg" @click="router.push('/wip')">           <img class="mr-2 p-1 bg-logo-farbe-rot  rounded-lg" src="../../assets/icons/mail.png" alt="">Messages</label>
-      <label class="flex text-center text-grau2 hover:bg-logo-farbe-blau rounded-lg" @click="router.push('/wip')">           <img class="mr-2 p-1 bg-logo-farbe-blau rounded-lg" src="../../assets/icons/user.png" alt="">Profile</label>
+      <label class="flex text-center text-grau2 hover:bg-logo-farbe-blau rounded-lg" @click="router.push(`/profile/${self}`)">           <img class="mr-2 p-1 bg-logo-farbe-blau rounded-lg" src="../../assets/icons/user.png" alt="">Profile</label>
       <label class="flex text-center text-grau2 hover:bg-logo-farbe-blau rounded-lg" @click="router.push('/settings')">      <img class="mr-2 p-1 bg-logo-farbe-blau rounded-lg" src="../../assets/icons/zahnrad.png" alt="">Settings</label>
     </div>
   </div>

@@ -7,10 +7,11 @@ import Home from "../components/Home.vue";
 import Login from "../components/Login.vue";
 import wip from "../components/wip.vue";
 import settings from "../components/settings.vue";
-import nottifications from "../components/notifications.vue";
+import notifications from "../components/notifications.vue";
 import register from "../components/register.vue";
 import search from "../components/search.vue";
 import post from '../components/posts.vue';
+import profile from "../components/profile.vue";
 // The routing does not happen automatically
 // Each route has to be defined here, or it won't work.
 const routes = [
@@ -37,7 +38,7 @@ const routes = [
     {
         path: "/notifications",
         name: "Notifications",
-        component: nottifications,
+        component: notifications,
     },
     {
         path: "/register",
@@ -53,6 +54,12 @@ const routes = [
         path: '/post/:id',
         name: 'PostDetail',
         component: post,
+        props: true
+    },
+    {
+        path: '/profile/:username',
+        name: 'Profile ',
+        component: profile,
         props: true
     }
 ]

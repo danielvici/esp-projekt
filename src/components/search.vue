@@ -1,6 +1,6 @@
 <script setup>
 
-import Quick_search from "./home_components/quick_search.vue";
+
 import Navigationbar from "./home_components/navigationbar.vue";
 import Legal from "./home_components/legal.vue";
 import Search_main from "./search_components/search_main.vue";
@@ -19,7 +19,6 @@ import Contacts from "./home_components/contacts.vue";
       <search_main></search_main>
     </div>
     <div class="w-1/4">
-      <quick_search></quick_search>
       <contacts></contacts>
       <legal></legal>
     </div>
