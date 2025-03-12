@@ -13,6 +13,8 @@
     <a href="https://esp-projekt.notion.site/191fb990f26c808298dad302e97fb299?pvs=105">Contact</a>
     -
     <a href="https://esp-projekt.notion.site/191fb990f26c808298dad302e97fb299?pvs=105">Support</a>
+    -
+    <a href="https://icons8.com"> Icons by icons8.com</a>
   </div>
 </template>
 
