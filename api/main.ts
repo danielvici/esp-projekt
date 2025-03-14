@@ -1,7 +1,7 @@
 /// <reference lib="deno.ns" />
 /**
  * @author Esad Mustafoski
- * @ðescription Main API file, Handles all the routing/api stuff
+ * @description Main API file, Handles all the routing/api stuff
  */
 
 // +++ IMPORTS ------------------------------------------------------ //
@@ -10,10 +10,12 @@ import {
   Context,
   Next,
   Router,
-} from "https://deno.land/x/oak/mod.ts";
-import { oakCors } from "https://deno.land/x/cors/mod.ts";
+} from "https://deno.land/x/oak@v17.1.2/mod.ts";
+import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 import * as db_utils from "../database/utils.ts";
 import * as helper_utils from "./helpers.ts";
+
+import {} from "./helpers/mod.ts";
 
 // +++ VARIABLES / TYPES --------------------------------------------- //
 const router = new Router();
@@ -63,13 +65,36 @@ router
   .get("/api/users", api_getAllUsers)
   .get("/api/user/:id/info", api_user_getInfo);
 
+// -- Chat routes --
+router
+  .get("/api/chats", api_getChats)
+  .get("/api/chat/:id", api_getChatById)
+  .post("/api/chat/create", api_createChat)
+  .post("/api/chat/:id/message", api_sendMessage)
+  .delete("/api/chat/:id", api_deleteChat);
+
 // -- Post routes --
 router
-  .get("/api/posts", api_posts_getAll);
+  .get("/api/posts", api_posts_getAll)
+  .get("/api/post/:id", api_getPostById)
+  .post("/api/post/create", api_createPost)
+  .put("/api/post/:id", api_updatePost)
+  .delete("/api/post/:id", api_deletePost)
+  .post("/api/post/:id/like", api_likePost);
+
+// -- Comment Routes --
+router
+  .get("/api/post/:id/comments", api_getPostComments)
+  .post("/api/post/:id/comment", api_createComment)
+  .put("/api/comment/:id", api_updateComment)
+  .delete("/api/comment/:id", api_deleteComment)
+  .post("/api/comment/:id/like", api_likeComment);
 
 
 // +++ FUNCTIONS ----------------------------------------------------- //
-async function authenticator(ctx: Context, next: Next): Promise<void> {
+
+// ABANDONED FUNCTIONS
+async function _authenticator(ctx: Context, next: Next): Promise<void> {
   const authHeader = ctx.request.headers.get("Authorization");
 
   if (!authHeader) {
@@ -78,6 +103,8 @@ async function authenticator(ctx: Context, next: Next): Promise<void> {
     return;
   }
 
+  // Bearer check
+  // Bearer is often used for authentication in API's
   const match = authHeader.match(/^Bearer (.+)$/);
   if (!match) {
     ctx.response.status = 401;
@@ -96,7 +123,7 @@ async function authenticator(ctx: Context, next: Next): Promise<void> {
   }
 }
 
-async function tokenChecker(ctx: Context, next: Next): Promise<void> {
+async function _tokenChecker(ctx: Context, next: Next): Promise<void> {
   // logic below (TODO):
   /**
    * 1. check if the token is valid
@@ -107,12 +134,9 @@ async function tokenChecker(ctx: Context, next: Next): Promise<void> {
    */
 }
 
-async function api_getAllUsers(ctx: Context): Promise<void> {
-  const getUsers = await db_utils.getAllUsersFromDB();
-  ctx.response.body = getUsers;
-}
 
-// Users
+
+// API: Users
 async function api_user_getInfo(ctx: any): Promise<void> {
   const id = ctx.params.id;
 
@@ -135,15 +159,17 @@ async function api_user_getInfo(ctx: any): Promise<void> {
   }
 }
 
-// Posts
+async function api_getAllUsers(ctx: Context): Promise<void> {
+  const getUsers = await db_utils.getAllUsersFromDB();
+  ctx.response.body = getUsers;
+}
+// API: Posts
 async function api_posts_getAll(ctx: Context): Promise<void> {
   const posts = await db_utils.getPostsFromDB();
   ctx.response.body = posts;
 }
 
-// Comments (missing)
-
-// login/register
+// API: login/register
 async function api_register(ctx: Context): Promise<void> {
   try {
     const body = ctx.request.body;
@@ -157,6 +183,7 @@ async function api_register(ctx: Context): Promise<void> {
       firstname,
       surname,
     } = result;
+    // Claude 3-5 Sonnet was used for the first Date formatting
     const account_created = `${Math.floor(Date.now() / 1000)}-${
       new Date().toLocaleDateString("en-GB").split("/").join("-")
     }`;
@@ -218,10 +245,10 @@ async function api_login(ctx: Context): Promise<string> {
     const storedSalt = user.password_salt;
     // Salt the provided password with the stored salt
     const saltedPassword = `${password}${storedSalt}`;
-    // Hash the salted password
+    // Hash the salted password 
     const hash = await helper_utils.hashPassword(saltedPassword);
 
-    // Compare with stored hash
+    // Compare the phashed password with the stored hash
     if (user.password !== hash) {
       helper_utils.errorResponse(ctx, 401, "Invalid password");
       return "Error";

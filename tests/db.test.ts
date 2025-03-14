@@ -13,7 +13,7 @@ import {
   assertMatch,
 } from "https://deno.land/std/assert/mod.ts";
 
-import * as db_utils from "../database/utils.ts";
+import * as db_utils from "../database/db_utils.ts";
 
 // +++ TESTS ------------------------------------------------------- //
 // Database Tests
