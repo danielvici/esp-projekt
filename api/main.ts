@@ -134,8 +134,6 @@ async function _tokenChecker(ctx: Context, next: Next): Promise<void> {
    */
 }
 
-
-
 // API: Users
 async function api_user_getInfo(ctx: any): Promise<void> {
   const id = ctx.params.id;
