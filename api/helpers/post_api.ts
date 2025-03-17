@@ -4,11 +4,12 @@
  * @description API file for Posts
  */
 
+// +++ IMPORTS ------------------------------------------------------ //
 import * as db_utils from "../../database/utils.ts";
 import * as helper_utils from "../helpers.ts";
 import { Context } from "https://deno.land/x/oak@v17.1.2/mod.ts";
 
-// Post functions
+// +++ FUNCTIONS ----------------------------------------------------- //
 async function api_getPostById(ctx: any): Promise<void> {
   try {
     const postId = ctx.params.id;
@@ -135,3 +136,11 @@ async function api_likePost(ctx: any): Promise<void> {
     helper_utils.errorResponse(ctx, 500, "Error liking post");
   }
 }
+
+export {
+  api_createPost,
+  api_deletePost,
+  api_getPostById,
+  api_likePost,
+  api_updatePost,
+};

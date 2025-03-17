@@ -4,10 +4,11 @@
  * @description API file for Comments
  */
 
-
+// +++ IMPORTS ------------------------------------------------------ //
 import * as db_utils from "../../database/utils.ts";
 import * as helper_utils from "../helpers.ts";
 
+// +++ FUNCTIONS ----------------------------------------------------- //
 async function api_getPostComments(ctx: any): Promise<void> {
   try {
     const postId = ctx.params.id;
@@ -20,6 +21,7 @@ async function api_getPostComments(ctx: any): Promise<void> {
     ctx.response.body = comments;
   } catch (error) {
     helper_utils.errorResponse(ctx, 500, "Error retrieving comments");
+    console.log(error);
   }
 }
 
@@ -52,6 +54,7 @@ async function api_createComment(ctx: any): Promise<void> {
     });
   } catch (error) {
     helper_utils.errorResponse(ctx, 500, "Error creating comment");
+    console.log(error);
   }
 }
 
@@ -79,6 +82,7 @@ async function api_updateComment(ctx: any): Promise<void> {
     });
   } catch (error) {
     helper_utils.errorResponse(ctx, 500, "Error updating comment");
+    console.log(error);
   }
 }
 
@@ -97,6 +101,7 @@ async function api_deleteComment(ctx: any): Promise<void> {
     });
   } catch (error) {
     helper_utils.errorResponse(ctx, 500, "Error deleting comment");
+    console.log(error);
   }
 }
 
@@ -124,5 +129,14 @@ async function api_likeComment(ctx: any): Promise<void> {
     });
   } catch (error) {
     helper_utils.errorResponse(ctx, 500, "Error liking comment");
+    console.log(error);
   }
 }
+
+export {
+  api_createComment,
+  api_deleteComment,
+  api_getPostComments,
+  api_likeComment,
+  api_updateComment,
+};

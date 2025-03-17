@@ -15,7 +15,31 @@ import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 import * as db_utils from "../database/utils.ts";
 import * as helper_utils from "./helpers.ts";
 
-import {} from "./helpers/mod.ts";
+import {
+  // --- Post --- //
+  api_getPostById,
+  api_createPost,
+  api_updatePost,
+  api_deletePost,
+  api_likePost,
+
+  // --- Comment --- //
+  api_getPostComments,
+  api_createComment,
+  api_updateComment,
+  api_deleteComment,
+  api_likeComment,
+
+  // --- User --- //
+  api_getAllUsers,
+
+  // --- Chat --- //
+  api_createChat,
+  api_deleteChat,
+  api_getChatById,
+  api_getChats,
+  api_sendMessage,
+} from "./helpers/mod.ts";
 
 // +++ VARIABLES / TYPES --------------------------------------------- //
 const router = new Router();
@@ -54,18 +78,18 @@ router
   .post("/api/account/delete-account", () => {}) // TODO
   .post("/api/account/block", () => {}); // TODO
 
-// -- Auth Routes --
+// -- Auth Routes -- //
 router
   .get("/api/auth", () => {}) // TODO
   .get("/api/auth/verify", () => {}) // TODO
   .get("/api/auth/refresh", () => {}); // TODO
 
-// -- User routes --
+// -- User routes -- //
 router
   .get("/api/users", api_getAllUsers)
-  .get("/api/user/:id/info", api_user_getInfo);
+  // .get("/api/user/:id/info", api_user_getInfo);
 
-// -- Chat routes --
+// -- Chat routes -- //
 router
   .get("/api/chats", api_getChats)
   .get("/api/chat/:id", api_getChatById)
@@ -73,7 +97,7 @@ router
   .post("/api/chat/:id/message", api_sendMessage)
   .delete("/api/chat/:id", api_deleteChat);
 
-// -- Post routes --
+// -- Post routes -- //
 router
   .get("/api/posts", api_posts_getAll)
   .get("/api/post/:id", api_getPostById)
@@ -82,7 +106,7 @@ router
   .delete("/api/post/:id", api_deletePost)
   .post("/api/post/:id/like", api_likePost);
 
-// -- Comment Routes --
+// -- Comment Routes -- //
 router
   .get("/api/post/:id/comments", api_getPostComments)
   .post("/api/post/:id/comment", api_createComment)
@@ -93,7 +117,7 @@ router
 
 // +++ FUNCTIONS ----------------------------------------------------- //
 
-// ABANDONED FUNCTIONS
+// ABANDONED FUNCTIONS //
 async function _authenticator(ctx: Context, next: Next): Promise<void> {
   const authHeader = ctx.request.headers.get("Authorization");
 
@@ -104,7 +128,7 @@ async function _authenticator(ctx: Context, next: Next): Promise<void> {
   }
 
   // Bearer check
-  // Bearer is often used for authentication in API's
+  // Bearer is often used for authentication in API's and is a standard, I check it using RegEx (Regular Expressions)
   const match = authHeader.match(/^Bearer (.+)$/);
   if (!match) {
     ctx.response.status = 401;
@@ -115,7 +139,7 @@ async function _authenticator(ctx: Context, next: Next): Promise<void> {
   const token = match[1];
 
   try {
-    // Token logic missing, not tried or attempted yet.
+    // Token logic missing, unattempted.
     await next();
   } catch (error) {
     ctx.response.status = 401;
@@ -134,40 +158,13 @@ async function _tokenChecker(ctx: Context, next: Next): Promise<void> {
    */
 }
 
-// API: Users
-async function api_user_getInfo(ctx: any): Promise<void> {
-  const id = ctx.params.id;
-
-  if (!id) {
-    ctx.response.status = 400;
-    ctx.response.body = { error: "User ID required" };
-    return;
-  }
-
-  try {
-    const user = await db_utils.getAllUserInfoByID(id);
-    if (user === null || user === undefined) {
-      helper_utils.errorResponse(ctx, 404, "User not found");
-      return;
-    }
-
-    ctx.response.body = user;
-  } catch (error) {
-    helper_utils.errorResponse(ctx, 500, error as string);
-  }
-}
-
-async function api_getAllUsers(ctx: Context): Promise<void> {
-  const getUsers = await db_utils.getAllUsersFromDB();
-  ctx.response.body = getUsers;
-}
-// API: Posts
+// API: Posts //
 async function api_posts_getAll(ctx: Context): Promise<void> {
   const posts = await db_utils.getPostsFromDB();
   ctx.response.body = posts;
 }
 
-// API: login/register
+// API: login/register //
 async function api_register(ctx: Context): Promise<void> {
   try {
     const body = ctx.request.body;

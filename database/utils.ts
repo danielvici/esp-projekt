@@ -3,6 +3,7 @@
  * @description This file is responsible for creating Functions to easily access the Database, Intended for use in the API
  */
 /// <reference lib="deno.ns" />
+
 // +++ IMPORTS ------------------------------------------------------ //
 import { DB } from "https://deno.land/x/sqlite@v3.9.1/mod.ts";
 import {
@@ -14,13 +15,14 @@ import * as db_create from "./create_db.ts";
 
 // Import all internal utilities with renamed imports to avoid naming conflicts
 import {
-  // --- Account Functions ---
+  // --- Account Functions --- //
   getAllUsersFromDB as getAllUsersFromDBInternal,
   getUserByUsername as getUserByUsernameInternal,
   // getAllUserInfoByID as getAllUserInfoByIDInternal,
+  // Accidentally deleted function...
   registerUser as registerUserInternal,
   
-  // --- Post Functions ---
+  // --- Post Functions --- //
   getPostsFromDB as getPostsFromDBInternal,
   getPostById as getPostByIdInternal,
   createPost as createPostInternal,
@@ -29,15 +31,16 @@ import {
   likePost as likePostInternal,
   filterPosts,
   
-  // --- Comment Functions ---
+  // --- Comment Functions --- //
   getCommentsFromDB as getCommentsFromDBInternal,
   // getCommentsForComments as getCommentsForCommentsInternal,
+  // Accidentally deleted function...
   createComment as createCommentInternal,
   updateComment as updateCommentInternal,
   deleteComment as deleteCommentInternal,
   likeComment as likeCommentInternal,
   
-  // --- Chat Functions ---
+  // --- Chat Functions --- //
   getUserChats as getUserChatsInternal,
   getChatById as getChatByIdInternal,
   getChatMessages as getChatMessagesInternal,
@@ -45,7 +48,7 @@ import {
   addMessageToChat as addMessageToChatInternal,
   deleteChat as deleteChatInternal,
   
-  // --- Mapper Functions ---
+  // --- Mapper Functions --- //
   queryDatabase as queryDatabaseInternal,
 } from "./helpers/utils/mod.ts";
 
