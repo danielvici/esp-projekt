@@ -4,6 +4,8 @@
  * @file api/helpers.ts
  * @description Helper functions for the API
  */
+
+// +++ IMPORTS ------------------------------------------------------ //
 import { Context } from "https://deno.land/x/oak/mod.ts";
 import { encodeHex } from "jsr:@std/encoding/hex";
 // import { hash } from "node:crypto";
@@ -13,7 +15,8 @@ export type ApiResponse = {
   body: unknown;
 };
 
-// --- Helper Functions --- //
+
+// +++ FUNCTIONS ---------------------------------------------------- //
 /**
  * @description Sends a response to the client
  * @usage sendResponse(ctx, { status: 200, body: { message: "Success" } })
