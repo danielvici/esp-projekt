@@ -101,3 +101,6 @@ export function insertSampleData(): void {
     `,
   );
 }
+
+createDatabase();
+insertSampleData();
