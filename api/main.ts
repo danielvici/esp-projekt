@@ -16,29 +16,26 @@ import * as db_utils from "../database/utils.ts";
 import * as helper_utils from "./helpers.ts";
 
 import {
-  // --- Post --- //
-  api_getPostById,
-  api_createPost,
-  api_updatePost,
-  api_deletePost,
-  api_likePost,
-
-  // --- Comment --- //
-  api_getPostComments,
-  api_createComment,
-  api_updateComment,
-  api_deleteComment,
-  api_likeComment,
-
-  // --- User --- //
-  api_getAllUsers,
-
   // --- Chat --- //
   api_createChat,
+  api_createComment,
+  api_createPost,
   api_deleteChat,
+  api_deleteComment,
+  api_deletePost,
+  // --- User --- //
+  api_getAllUsers,
   api_getChatById,
   api_getChats,
+  // --- Post --- //
+  api_getPostById,
+  // --- Comment --- //
+  api_getPostComments,
+  api_likeComment,
+  api_likePost,
   api_sendMessage,
+  api_updateComment,
+  api_updatePost,
 } from "./helpers/mod.ts";
 
 // +++ VARIABLES / TYPES --------------------------------------------- //
@@ -86,8 +83,8 @@ router
 
 // -- User routes -- //
 router
-  .get("/api/users", api_getAllUsers)
-  // .get("/api/user/:id/info", api_user_getInfo);
+  .get("/api/users", api_getAllUsers);
+// .get("/api/user/:id/info", api_user_getInfo);
 
 // -- Chat routes -- //
 router
@@ -113,7 +110,6 @@ router
   .put("/api/comment/:id", api_updateComment)
   .delete("/api/comment/:id", api_deleteComment)
   .post("/api/comment/:id/like", api_likeComment);
-
 
 // +++ FUNCTIONS ----------------------------------------------------- //
 
@@ -196,7 +192,7 @@ async function api_register(ctx: Context): Promise<void> {
     // Then hash the salted password
     const hash = await helper_utils.hashPassword(saltedPassword);
 
-    const userId = await db_utils.registerUser(
+    const userId = db_utils.registerUser(
       username,
       hash,
       salt,
@@ -240,7 +236,7 @@ async function api_login(ctx: Context): Promise<string> {
     const storedSalt = user.password_salt;
     // Salt the provided password with the stored salt
     const saltedPassword = `${password}${storedSalt}`;
-    // Hash the salted password 
+    // Hash the salted password
     const hash = await helper_utils.hashPassword(saltedPassword);
 
     // Compare the phashed password with the stored hash

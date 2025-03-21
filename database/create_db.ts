@@ -6,8 +6,12 @@
  */
 
 // +++ IMPORTS ------------------------------------------------------ //
-import { DB } from "https://deno.land/x/sqlite/mod.ts";
-import { dirname, fromFileUrl, join } from "https://deno.land/std/path/mod.ts";
+import { DB } from "https://deno.land/x/sqlite@v3.9.1/mod.ts";
+import {
+  dirname,
+  fromFileUrl,
+  join,
+} from "https://deno.land/std@0.224.0/path/mod.ts";
 
 // +++ VARIABLES ---------------------------------------------------- //
 const _dirname: string = dirname(fromFileUrl(import.meta.url));
@@ -33,7 +37,7 @@ export function createDatabase(): void {
             following TEXT,
             contacts TEXT
         );
-        
+
         CREATE TABLE IF NOT EXISTS posts (
             posts_uuid INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER,
@@ -43,7 +47,7 @@ export function createDatabase(): void {
             likes INTEGER,
             comments INTEGER
         );
-    
+
         CREATE TABLE IF NOT EXISTS comments (
             comment_id INTEGER PRIMARY KEY AUTOINCREMENT,
             post_id INTEGER,
@@ -51,7 +55,7 @@ export function createDatabase(): void {
             date_created_at TEXT,
             text TEXT,
             likes INTEGER
-        )
+        ); -- Added semicolon here
 
         CREATE TABLE IF NOT EXISTS messages (
             message_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -61,7 +65,7 @@ export function createDatabase(): void {
             timestamp TEXT,
             FOREIGN KEY (chat_id) REFERENCES chats (chat_id),
             FOREIGN KEY (sender_id) REFERENCES accounts (user_id)
-        )
+        );
 
     CREATE TABLE IF NOT EXISTS chats (
     chat_id INTEGER PRIMARY KEY AUTOINCREMENT,
