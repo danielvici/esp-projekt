@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import {countPosts} from "../../../database/utils";
 
 const route = useRoute();
 const router = useRouter();
@@ -99,7 +98,7 @@ function addLike(index: number) {
 
   <div> <!-- POSTS -->
     <div>
-      <h2 class="align-middle  mt-4 p-6 text-2xl text-weiss border-y-grau2 border-y ">Posts ({{countPosts()}})</h2>
+      <h2 class="align-middle  mt-4 p-6 text-2xl text-weiss border-y-grau2 border-y ">Posts (x)</h2>
     </div>
     <ul>
       <li v-for="(postitem, indexus) in post" :key="post" class="border-2 border-b-grau2 p-3 flex">
