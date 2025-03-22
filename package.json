@@ -2,5 +2,9 @@
   "dependencies": {
     "@deno/vite-plugin": "^1.0.0",
     "@vitejs/plugin-vue": "^5.1.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.2",
+    "vite-plugin-checker": "^0.9.1"
   }
 }

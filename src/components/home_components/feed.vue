@@ -2,24 +2,22 @@
 import {onMounted, ref} from "vue";
   import router from "../../router";
   // import {valueOf} from "tailwindcss";
-
-  function checkLoginStatus() {
+/* PRÜFEN OB USER EINGELOGGT IST
+#########################################
+* function checkLoginStatus() {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     if (isLoggedIn === 'true') {
-      console.log("User is logged in");
-      // Perform actions for logged-in users
+        console.log("User is logged in");
     } else {
-      console.log("User is not logged in");
-      // Redirect to login page or show a message
-      // router.push('/login');
+        console.log("User is not logged in");
+        router.push('/login');
     }
-  }
+}
 
-  // Call this function on component mount or when needed
-  onMounted(() => {
+onMounted(() => {
     checkLoginStatus();
-  });
-
+});
+* */
   // PLACEHOLDER
   const post = ref([
     {id: 1,

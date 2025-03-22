@@ -1,19 +1,19 @@
-<script setup lang="ts">
-import Feed from "./home_components/feed.vue";
+<script setup>
+
 import Contacts from "./home_components/contacts.vue";
+import Feed from "./home_components/feed.vue";
 import Legal from "./home_components/legal.vue";
 import Navigationbar from "./home_components/navigationbar.vue";
-import Trending from "./home_components/trending.vue";
+import Msg_main from "./messages_components/msg_main.vue";
 </script>
 
-
 <template>
-  <div id="main" class="flex">
-    <div id="left" class="border border-b-grau w-72">
+  <div id="main" class=" flex">
+    <div id="left" class="w-72">
       <navigationbar></navigationbar>
     </div>
     <div class="w-100p">
-      <feed></feed>
+      <msg_main></msg_main>
     </div>
     <div class="w-1/4">
       <contacts></contacts>
@@ -21,3 +21,7 @@ import Trending from "./home_components/trending.vue";
     </div>
   </div>
 </template>
+
+<style scoped>
+
+</style>

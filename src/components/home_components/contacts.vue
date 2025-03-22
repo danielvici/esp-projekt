@@ -6,6 +6,7 @@ const contacts = [
   { display_name: "Linux Enjoyer", username: "lunix" },
   { display_name: "XBOX", username: "xbox" },
   { display_name: "JETBrains", username: "jetbrains" },
+  { display_name: "klopupser13", username: "theopampa",}
 ];
 
 const selectedContact = ref(null);

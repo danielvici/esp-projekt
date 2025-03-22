@@ -1,5 +1,5 @@
 import './assets/main.css';
-import { createApp } from 'vue';
+import {createApp, onMounted} from 'vue';
 // @ts-ignore: 
 import App from '../src/App.vue';
 // @ts-ignore: 

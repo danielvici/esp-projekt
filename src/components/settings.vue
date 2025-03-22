@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 import Legal from "./home_components/legal.vue";
 import Settings_sidebar from "./settings_components/settings_sidebar.vue";
-import Settings_navbar from "./settings_components/settings_navbar.vue";
 import Settings_main from "./settings_components/settings_main.vue";
 import Navigationbar from "./home_components/navigationbar.vue";
 import Contacts from "./home_components/contacts.vue";

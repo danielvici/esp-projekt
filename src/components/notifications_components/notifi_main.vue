@@ -79,7 +79,11 @@ function go_filter(){
 
 <template>
 <div>
+  <div class="border-b-grau2 border-b-2">
+    <h1 class="text-weiss text-3xl p-4">Notifications</h1>
+  </div>
   <div class="text-grau2 p-5 border-b-2 "><!-- FILTER -->
+
     <!-- Wenn das Form submited wurde wird die Seite nicht-->
     <!-- neugeladen und die Funktion -->
     <form @submit.prevent="go_filter">

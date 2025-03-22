@@ -12,9 +12,6 @@ import Contacts from "./home_components/contacts.vue";
       <navigationbar></navigationbar>
     </div>
     <div class="w-100p border-x-2 border-x-grau2">
-      <div class="border-b-grau2 border-b-2">
-        <h1 class="text-weiss text-3xl p-4">Notifications</h1>
-      </div>
       <notifi_comp></notifi_comp>
     </div>
     <div class="w-1/4">

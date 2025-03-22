@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import Settings_account from "./settings_account.vue";
 import Settings_account_main from "./settings_account_main.vue";
 import Sps_main from "./sps_main.vue";
+import So_main from "./so_main.vue";
 
 const props = defineProps({
   selectedSetting: String
@@ -21,7 +22,7 @@ console.log(`Setting got (SM): ${props.selectedSetting}`);
   <div class="text-weiss">
     <div v-if="props.selectedSetting === 'setting_account'"> <!-- ACCOUNT SETTINGS-->
       <div class="border-r-grau2 border-r-1 border-b-grau2 border-b-2"> <!-- HEADER - ACCOUNT SETTINGS-->
-        <h1 class="text-weiss text-3xl p-4">Account Settings</h1>
+        <h1 class="text-weiss text-3xl p-4">Account</h1>
       </div>
       <div class="flex flex-row content-center justify-center autofill:"> <!-- BODY - ACCOUNT SETTINGS-->
         <settings_account class="basis-1/2" @updateAccountSetting="handleUpdateAccountSetting"></settings_account>
@@ -49,7 +50,10 @@ console.log(`Setting got (SM): ${props.selectedSetting}`);
     </div>
 
     <div v-else-if="props.selectedSetting === 'setting_other'"> <!-- OTHER -->
-      <label>MOIN4</label>
+      <div class="border-r-grau2 border-r-1 border-b-grau2 border-b-2"> <!-- HEADER - ACCOUNT SETTINGS-->
+        <h1 class="text-weiss text-3xl p-4">Other</h1>
+      </div>
+      <so_main></so_main>
     </div>
 
 
@@ -59,7 +63,7 @@ console.log(`Setting got (SM): ${props.selectedSetting}`);
 
     <div v-else-if="props.selectedSetting === ''"> <!-- IF NOTHING SELECTED-->
       <div class="border-r-grau2 border-r-1 border-b-grau2 border-b-2"> <!-- HEADER - ACCOUNT SETTINGS-->
-        <h1 class="text-weiss text-3xl p-4">Account Settings</h1>
+        <h1 class="text-weiss text-3xl p-4">Account</h1>
       </div>
       <div class="flex flex-row content-center justify-center"> <!-- BODY - ACCOUNT SETTINGS-->
         <settings_account class="basis-1/2" @updateAccountSetting="handleUpdateAccountSetting"></settings_account>

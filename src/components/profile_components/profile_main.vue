@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import {countPosts} from "../../../database/utils";
 
 const route = useRoute();
 const router = useRouter();
@@ -26,10 +27,12 @@ const post = ref([
 
 ])
 
-
-
+onMounted(async () => {
+  const countPosts = post.value.length;
+});
+//Wird bearbeitet wenn API dazu da ist.
+/*
 function fetchProfile(userId) {
-  // Replace with your actual API call
   return fetch(`/api/profile/${userId}`)
       .then(response => {
         if (!response.ok) {
@@ -48,7 +51,6 @@ onMounted(async () => {
     console.error('Error fetching profile:', error);
   }
 });
-
 router.beforeEach((to, from, next) => {
   if ((from.name === 'Feed' || from.name === 'Settings') && to.name === 'Profile') {
     // Set profile to 'danielvici123'
@@ -65,7 +67,7 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
-
+*/
 
 function addLike(index: number) {
   post.value[index].likes += 1;
@@ -97,7 +99,7 @@ function addLike(index: number) {
 
   <div> <!-- POSTS -->
     <div>
-      <h2 class="align-middle  mt-4 p-6 text-2xl text-weiss border-y-grau2 border-y ">Posts</h2>
+      <h2 class="align-middle  mt-4 p-6 text-2xl text-weiss border-y-grau2 border-y ">Posts ({{countPosts()}})</h2>
     </div>
     <ul>
       <li v-for="(postitem, indexus) in post" :key="post" class="border-2 border-b-grau2 p-3 flex">
