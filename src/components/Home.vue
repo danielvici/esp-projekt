@@ -9,7 +9,7 @@ import Trending from "./home_components/trending.vue";
 
 <template>
   <div id="main" class="flex">
-    <div id="left" class="border border-b-grau w-72">
+    <div id="left" class="w-72">
       <navigationbar></navigationbar>
     </div>
     <div class="w-100p">

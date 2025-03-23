@@ -21,7 +21,8 @@ export default {
             '35p':  '30.825%',
         }
     },
-    colors: {
+      plugins: ['tailwind-scrollbar', 'tailwind-scrollbar-hide'],
+      colors: {
         'logo-farbe-lila': '#5500a2',
         'logo-farbe-rot': '#a2002b',
         'logo-farbe-blau': '#0b1074',

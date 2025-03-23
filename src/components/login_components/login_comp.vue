@@ -10,7 +10,7 @@ onMounted(() => {
   if (localStorage.getItem('username')) {
     input_username_mail.value = localStorage.getItem('username') || "";
     input_user_password.value = localStorage.getItem('password') || "";
-    rememberMe.value = true;
+    rememberMe.value = false;
   }
 });
 
@@ -30,10 +30,8 @@ async function login(event: Event) {
     });
 
     if (response.status === 200) {
-      if (rememberMe.value) {
-        localStorage.setItem('username', username.value);
-      }
       localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('username', username.value);
       alert("You will be now redirected");
       router.push('/');
     } else {
@@ -57,7 +55,7 @@ async function login(event: Event) {
         <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="input_username_mail" type="text" placeholder="Username or E-Mail"><br>
         <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="input_user_password" type="password" placeholder="Password"><br>
         <button class="m-4 bg-button-farbe w-full max-w-xs p-4 text-schwarz rounded-lg">Login</button>
-        <p class="text-weiss"><input type="checkbox"> Remeber me</p>
+        <p class="text-weiss"><input type="checkbox" v-model="rememberMe"> Remeber me</p>
       </form>
     </div>
     <div>

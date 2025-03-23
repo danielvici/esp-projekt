@@ -1,7 +1,10 @@
 {
   "dependencies": {
     "@deno/vite-plugin": "^1.0.0",
-    "@vitejs/plugin-vue": "^5.1.4"
+    "@vitejs/plugin-vue": "^5.1.4",
+    "tailwind-scrollbar": "^4.0.1",
+    "tailwind-scrollbar-hide": "^2.0.0",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "typescript": "^5.8.2",
