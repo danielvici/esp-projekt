@@ -29,7 +29,8 @@ async function createFeed() {
         likes: post.likes,
         comments: post.comments,
         displayname: user ? user.displayname : 'Unknown',
-        username: user ? user.username : 'unknown_user'
+        username: user ? user.username : 'unknown_user',
+        user_id: post.user_id,
       };
     });
 
@@ -52,28 +53,31 @@ onMounted(async () => {
 
 
 
-  async function addLike(index: number) {
-    post_nr = index.toString()
-    const response = await fetch(`http://localhost:8000/api/post/${post_nr}/like`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json',},
-    });
-    if (!response.ok) {
-      alert('Failed to like post');
-    } else{
-      console.log("New Like Amount: ", upc.value[index].likes);
-    }
-  }
-  function post_create_func(text:string) {
+  async function addLike(post_id: string | number, user_id: number, index: number) {
+    try {
+      upc.value[index].likes++;
+      const response = await fetch(`http://localhost:8000/api/post/${post_id}/like`, {
+        method: 'POST',
+        headers: {'content-type': 'application/json'},
+        body: `{"userId":${user_id}}`,
+      });
 
+      console.log('Antwort-Status:', response.status);
 
-    console.log("Post: ", text);
-    if (text === undefined || text === "") {
-      console.log("Post is empty");
-      alert("Post is empty");
-      return;
-    } else {
-      console.log("Post is not empty");
+      if (!response.ok) {
+        const errorText = await response.text(); // Versuche, den Fehlertext vom Server zu bekommen
+        console.error('Server-Fehlertext:', errorText);
+        upc.value[index].likes--;
+        throw new Error(`HTTP error! status: ${response.status}, text: ${errorText}`);
+      }
+
+      const data = await response.json();
+      console.log('Antwort vom Server:', data);
+
+      return data;
+    } catch (error) {
+      console.error('Fehler beim Liken des Posts:', error);
+      throw error;
     }
   }
 
@@ -127,7 +131,7 @@ onMounted(async () => {
                 <label class="text-sm m-1 text-weiss" v-else>Comments disabled</label>
               </div>
 
-              <div class="flex items-center" @click="addLike(indexus)"> <!-- Likes -->
+              <div class="flex items-center" @click="addLike(postitem.post_id, postitem.user_id, indexus)"> <!-- Likes -->
                 <img alt="" src="../../assets/icons/herz.png" class="align-middle">
                 <label class="text-sm m-1 text-weiss">{{ postitem.likes }}</label>
               </div>

@@ -125,6 +125,34 @@ function copyLink(post_id: string | number) {
   alert("Copied to clipboard");
 }
 
+async function addLike(post_id: string | number, user_id: number) {
+  try {
+    post.value.likes++;
+    const response = await fetch(`http://localhost:8000/api/post/${post_id}/like`, {
+      method: 'POST',
+      headers: {'content-type': 'application/json'},
+      body: `{"userId":${user_id}}`,
+    });
+
+    console.log('Antwort-Status:', response.status);
+
+    if (!response.ok) {
+      const errorText = await response.text(); // Versuche, den Fehlertext vom Server zu bekommen
+      console.error('Server-Fehlertext:', errorText);
+      post.value.likes--;
+      throw new Error(`HTTP error! status: ${response.status}, text: ${errorText}`);
+    }
+
+    const data = await response.json();
+    console.log('Antwort vom Server:', data);
+
+    return data;
+  } catch (error) {
+    console.error('Fehler beim Liken des Posts:', error);
+    throw error;
+  }
+}
+
 </script>
 
 <template>
@@ -155,7 +183,7 @@ function copyLink(post_id: string | number) {
               <label class="text-sm m-1 text-weiss" v-if="post.comments != undefined">{{ post.comments }}</label>
               <label class="text-sm m-1 text-weiss" v-else>Comments disabled</label>
             </div>
-            <div class="flex items-center" @click="addLike(post.post_uuid)"> <!-- Likes -->
+            <div class="flex items-center" @click="addLike(post.post_uuid, post.user_id)"> <!-- Likes -->
               <img alt="" src="../assets/icons/herz.png" class="align-middle">
               <label class="text-sm m-1 text-weiss">{{ post.likes }}</label>
             </div>
