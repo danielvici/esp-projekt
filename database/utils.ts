@@ -1,8 +1,9 @@
+/// <reference lib="deno.ns" />
+
 /**
  * @author Esad Mustafoski
  * @description This file is responsible for creating Functions to easily access the Database, Intended for use in the API
  */
-/// <reference lib="deno.ns" />
 
 // +++ IMPORTS ------------------------------------------------------ //
 import { DB } from "https://deno.land/x/sqlite@v3.9.1/mod.ts";
@@ -21,7 +22,7 @@ import {
   // getAllUserInfoByID as getAllUserInfoByIDInternal,
   // Accidentally deleted function...
   registerUser as registerUserInternal,
-  
+
   // --- Post Functions --- //
   getPostsFromDB as getPostsFromDBInternal,
   getPostById as getPostByIdInternal,
@@ -30,7 +31,7 @@ import {
   deletePost as deletePostInternal,
   likePost as likePostInternal,
   filterPosts,
-  
+
   // --- Comment Functions --- //
   getCommentsFromDB as getCommentsFromDBInternal,
   // getCommentsForComments as getCommentsForCommentsInternal,
@@ -39,7 +40,7 @@ import {
   updateComment as updateCommentInternal,
   deleteComment as deleteCommentInternal,
   likeComment as likeCommentInternal,
-  
+
   // --- Chat Functions --- //
   getUserChats as getUserChatsInternal,
   getChatById as getChatByIdInternal,
@@ -47,7 +48,7 @@ import {
   createChat as createChatInternal,
   addMessageToChat as addMessageToChatInternal,
   deleteChat as deleteChatInternal,
-  
+
   // --- Mapper Functions --- //
   queryDatabase as queryDatabaseInternal,
 } from "./helpers/utils/mod.ts";
@@ -89,7 +90,8 @@ export function insertSamples(): void {
 
 // +++ ACCOUNT FUNCTIONS -------------------------------------------- //
 export const getAllUsersFromDB = () => getAllUsersFromDBInternal(db);
-export const getUserByUsername = (username: string) => getUserByUsernameInternal(db, username);
+export const getUserByUsername = (username: string) =>
+  getUserByUsernameInternal(db, username);
 // export const getAllUserInfoByID = (user_id: string) => getAllUserInfoByIDInternal(db, user_id);
 export const registerUser = (
   user: string,
@@ -101,21 +103,23 @@ export const registerUser = (
   firstname: string,
   surname: string,
   account_created: string,
-) => registerUserInternal(
-  db,
-  user,
-  password,
-  salt,
-  userGroup,
-  displayname,
-  user_email,
-  firstname,
-  surname,
-  account_created,
-);
+) =>
+  registerUserInternal(
+    db,
+    user,
+    password,
+    salt,
+    userGroup,
+    displayname,
+    user_email,
+    firstname,
+    surname,
+    account_created,
+  );
 
 // +++ POST FUNCTIONS ----------------------------------------------- //
-export const getPostsFromDB = (user_uuid?: string) => getPostsFromDBInternal(db, user_uuid);
+export const getPostsFromDB = (user_uuid?: string) =>
+  getPostsFromDBInternal(db, user_uuid);
 export const getPostById = (postId: string) => getPostByIdInternal(db, postId);
 export const createPost = (
   userId: string,
@@ -129,10 +133,12 @@ export const updatePost = (
   postType?: string,
 ) => updatePostInternal(db, postId, postText, postType);
 export const deletePost = (postId: string) => deletePostInternal(db, postId);
-export const likePost = (postId: string, userId: string) => likePostInternal(db, postId, userId);
+export const likePost = (postId: string, userId: string) =>
+  likePostInternal(db, postId, userId);
 
 // +++ COMMENT FUNCTIONS -------------------------------------------- //
-export const getCommentsFromDB = (post_id?: number) => getCommentsFromDBInternal(db, post_id);
+export const getCommentsFromDB = (post_id?: number) =>
+  getCommentsFromDBInternal(db, post_id);
 // export const getCommentsForComments = (comment_id: number) => getCommentsForCommentsInternal(db, comment_id);
 export const createComment = (
   postId: string,
@@ -140,18 +146,21 @@ export const createComment = (
   createdAt: string,
   text: string,
 ) => createCommentInternal(db, postId, userId, createdAt, text);
-export const updateComment = (commentId: string, text: string) => updateCommentInternal(db, commentId, text);
-export const deleteComment = (commentId: string) => deleteCommentInternal(db, commentId);
-export const likeComment = (commentId: string, userId: string) => likeCommentInternal(db, commentId, userId);
+export const updateComment = (commentId: string, text: string) =>
+  updateCommentInternal(db, commentId, text);
+export const deleteComment = (commentId: string) =>
+  deleteCommentInternal(db, commentId);
+export const likeComment = (commentId: string, userId: string) =>
+  likeCommentInternal(db, commentId, userId);
 
 // +++ CHAT FUNCTIONS ----------------------------------------------- //
-export const getUserChats = (userId: string) => getUserChatsInternal(db, userId);
+export const getUserChats = (userId: string) =>
+  getUserChatsInternal(db, userId);
 export const getChatById = (chatId: string) => getChatByIdInternal(db, chatId);
-export const getChatMessages = (chatId: string) => getChatMessagesInternal(db, chatId);
-export const createChat = (
-  participants: string[],
-  chatName: string,
-) => createChatInternal(db, participants, chatName);
+export const getChatMessages = (chatId: string) =>
+  getChatMessagesInternal(db, chatId);
+export const createChat = (participants: string[], chatName: string) =>
+  createChatInternal(db, participants, chatName);
 export const addMessageToChat = (
   chatId: string,
   senderId: string,

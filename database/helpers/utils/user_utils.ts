@@ -29,8 +29,7 @@ function registerUser(
   surname: string,
   account_created: string,
 ): string {
-  const query_user_exists =
-    `SELECT * FROM accounts WHERE user_username = '${user}'`;
+  const query_user_exists = `SELECT * FROM accounts WHERE user_username = '${user}'`;
   if (!query_user_exists) {
     return "noUser";
   }
@@ -68,9 +67,12 @@ function registerUser(
             '[]'
         )`;
   db.query(query_add_user);
+  let userId = db.query(
+    `SELECT user_id FROM accounts WHERE user_username = '${user}'`,
+  );
   console.log(`New user: ${user}`);
 
-  return "newUser";
+  return userId;
 }
 
 /**
@@ -88,7 +90,12 @@ async function getAllUsersFromDB(db: DB): Promise<Accounts[]> {
 async function getUserByUsername(db: DB, username: string): Promise<Accounts> {
   const query = `SELECT * FROM accounts WHERE username = '${username}'`;
   const params: string[] = [];
-  const result = await queryDatabase<Accounts>(db, query, params, mapAccountRow);
+  const result = await queryDatabase<Accounts>(
+    db,
+    query,
+    params,
+    mapAccountRow,
+  );
   return result[0];
 }
 

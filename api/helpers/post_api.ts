@@ -46,9 +46,10 @@ async function api_createPost(ctx: Context): Promise<void> {
     }
 
     // Create timestamp in the format expected by the database
-    const createdAt = `${Math.floor(Date.now() / 1000)}-${
-      new Date().toLocaleDateString("en-GB").split("/").join("-")
-    }`;
+    const createdAt = `${Math.floor(Date.now() / 1000)}-${new Date()
+      .toLocaleDateString("en-GB")
+      .split("/")
+      .join("-")}`;
 
     const postId = await db_utils.createPost(
       userId,
