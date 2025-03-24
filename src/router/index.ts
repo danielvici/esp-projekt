@@ -56,7 +56,6 @@ const routes = [
         path: "/post/:id",
         name: "PostDetail",
         component: post,
-        props: true,
         meta: { requiresAuth: true }
     },
     {

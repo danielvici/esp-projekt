@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import {useRoute, useRouter} from 'vue-router';
 import Navigationbar from './home_components/navigationbar.vue';
 import Contacts from './home_components/contacts.vue';
 import Legal from './home_components/legal.vue';
-import router from '../router';
-import {consoleLog} from "vite-plugin-checker/dist/logger";
 
 interface Post {
   post_uuid: number;
@@ -25,38 +23,56 @@ interface User {
 }
 
 interface Comment {
-  comment_uuid: number;
-  user_id: number;
+  comment_id: number;
+  author_user_id: number;
   post_id: number;
-  comment_text: string;
+  text: string;
+  likes: number;
   created_at: string;
   displayname: string;
   username: string;
 }
 
+const route = useRoute();
+const router = useRouter();
+
 const post = ref<Post | null>(null);
 const user = ref<User | null>(null);
 const comments = ref<Comment[] | null>(null);
+let post_id = ref();
 
 onMounted(async () => {
-  const post_id = localStorage.getItem('viewedpost');
-  console.log(post_id);
-  if (post_id === null) {
-    alert('No post selected. You will be redirected to the feed.');
+  console.log("PARAMS: "+ route.path);
+  const pathArray = route.path.split('/');
+  console.log(pathArray);
+
+  if (pathArray.length > 2) {
+    post_id.value = pathArray[2];
+
+  }
+
+  if (!post_id) {
+    alert('No post selected. Redirecting to feed.');
     await router.push('/');
     return;
   }
 
-  getPost(parseInt(post_id));
-  getComment(parseInt(post_id));
+  getPost(parseInt(post_id.value));
+  getComment(parseInt(post_id.value));
 });
 
 
 
-async function getPost(post_id: number) {
+async function getPost(post_id: any) {
   try {
     const post_response =  await fetch(`http://localhost:8000/api/post/${post_id}`, { method: 'GET' });
     const fetchedPost: Post = await post_response.json();
+
+    if(post_response.status === 404) {
+      console.error("No comments found.");
+      await router.push('/');
+      return;
+    }
 
     const user_response = await fetch('http://localhost:8000/api/users', { method: 'GET' });
     const usersDATA = await user_response.json();
@@ -76,8 +92,7 @@ async function getPost(post_id: number) {
   }
 }
 
-
-async function getComment(post_id: number) {
+async function getComment(post_id: any) {
   try {
     const comments_response = await fetch(`http://localhost:8000/api/post/${post_id}/comments`, { method: 'GET' });
     const fetchedComments: Comment[] = await comments_response.json();
@@ -85,15 +100,29 @@ async function getComment(post_id: number) {
     const user_response = await fetch(`http://localhost:8000/api/users`, { method: 'GET' });
     const usersDATA: User[] = await user_response.json();
 
-    comments.value = fetchedComments.map(comment => ({
-      ...comment,
-      author: usersDATA.find(user => user.user_id === comment.user_id) || null
-    }));
+    comments.value = fetchedComments.map(comment => {
+      const author = usersDATA.find(u => u.user_id === comment.author_user_id) || {
+        username: 'Unknown',
+        displayname: 'Unknown',
+      };
+
+      return {
+        ...comment,
+        username: author.username,
+        displayname: author.displayname,
+      };
+    });
 
     console.log(comments.value);
   } catch (e) {
     console.error(e);
   }
+}
+
+function copyLink(post_id: string | number) {
+  const tocopy = `http://localhost:5173/post/${post_id}`;
+  navigator.clipboard.writeText(tocopy);
+  alert("Copied to clipboard");
 }
 
 </script>
@@ -126,11 +155,11 @@ async function getComment(post_id: number) {
               <label class="text-sm m-1 text-weiss" v-if="post.comments != undefined">{{ post.comments }}</label>
               <label class="text-sm m-1 text-weiss" v-else>Comments disabled</label>
             </div>
-
             <div class="flex items-center" @click="addLike(post.post_uuid)"> <!-- Likes -->
               <img alt="" src="../assets/icons/herz.png" class="align-middle">
               <label class="text-sm m-1 text-weiss">{{ post.likes }}</label>
             </div>
+            <button @click="copyLink(post_id)" class="text-schwarz  pl-1 mx-1 px-1 rounded-lg bg-button-farbe">Share Post</button>
           </div>
         </div>
       </div>
@@ -147,17 +176,31 @@ async function getComment(post_id: number) {
 
         <div> <!-- VIEW COMMENTS -->
           <div> <!-- VIEW COMMENTS -->
-            <div v-if="comments && comments.length > 0">
-              <div v-for="c in comments" :key="c.comment_uuid" class="p-4 border-b border-gray-700">
-                <p class="text-sm text-weiss">{{ c.author?.displayname || 'Unknown' }}: {{ c.comment_text }}</p>
+            <div v-if="comments && comments.length > 0" class="overflow-y-auto h-screen scrollbar" >
+              <div v-for="c in comments" :key="c.comment_id" class="p-4 border-b border-gray-700">
+                <div class="flex">
+                  <img src="../assets/default_pp.png" alt="" class="rounded-full w-16 h-16">
+                  <div>
+                    <div> <!-- POST HEADER -->
+                      <label class="text-lg font-bold m-1 text-weiss">{{c.displayname}}</label>
+                      <label class="text-base m-1 text-grau2">@{{ c.username }}</label>
+                    </div>
+                    <div class="m-2"> <!-- POST CONTENT -->
+                      <p class="text-sm m-1 text-weiss">{{ c.text }}</p>
+                    </div>
+                    <div class="flex"> <!-- POST FOOTER -->
+
+                      <div class="flex items-center" @click="addLike(post.post_uuid)"> <!-- Likes -->
+                        <img alt="" src="../assets/icons/herz.png" class="align-middle">
+                        <label class="text-sm m-1 text-weiss">{{ c.likes }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div v-else class="p-4 text-gray-400">No comments yet.</div>
           </div>
-
-
-
-
         </div>
       </div>
     </div>

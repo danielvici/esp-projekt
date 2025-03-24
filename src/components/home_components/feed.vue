@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
-  import router from "../../router";
+import router from "../../router";
   // PLACEHOLDER
 const upc = ref([]); // user post computed
 let post_nr = "";
@@ -77,9 +77,15 @@ onMounted(async () => {
     }
   }
 
-  function gotoPost(post_id: number) {
+  function gotoPost(post_id: string | number) {
     localStorage.setItem("viewedpost", post_id.toString());
     router.push(`/post/${post_id}`);
+  }
+
+  function copyLink(post_id: string | number) {
+    const tocopy = `http://localhost:5173/post/${post_id}`;
+    navigator.clipboard.writeText(tocopy);
+    alert("Copied to clipboard");
   }
 </script>
 
@@ -101,7 +107,7 @@ onMounted(async () => {
       </div>
     </div>
 
-    <div class="overflow-y-auto h-[650px] scrollbar"> <!-- CONTENT -->
+    <div class="overflow-y-auto h-screen scrollbar"> <!-- CONTENT -->
       <ul>
         <li v-for="(postitem, indexus) in upc" :key="upc" class="border-2 border-b-grau2 p-3 flex">
           <!-- POST -->
@@ -127,7 +133,8 @@ onMounted(async () => {
               </div>
 
               <div class="flex items-center mx-2"> <!-- View Post -->
-                <button @click="gotoPost(postitem.post_id)" class="text-weiss">View Post</button>
+                <button @click="gotoPost(postitem.post_id)" class="text-schwarz mx-1 px-1 rounded-lg bg-button-farbe">View Post</button>
+                <button @click="copyLink(postitem.post_id)" class="text-schwarz  pl-1 mx-1 px-1 rounded-lg bg-button-farbe">Share Post</button>
               </div><!-- ENDE -->
             </div>
           </div>

@@ -14,7 +14,7 @@ function route_home() {
       <img src="../assets/esp-logo_no_text.png" alt="" class="rounded-lg h-12 w-24 hover:shadow-2xl hover:shadow-grau-dunkel" @click="route_home">
     </div>
     <register_main class="inset-0"></register_main>
-    <div class="inset-y-0 right-0 ">
+    <div class="inset-y-0 right-0 max-w-36">
       <legal></legal>
     </div>
   </div>
