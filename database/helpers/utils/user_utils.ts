@@ -7,8 +7,8 @@
  */
 
 // +++ IMPORTS ------------------------------------------------------ //
-import { DB } from "https://deno.land/x/sqlite@v3.9.1/mod.ts";
-import { queryDatabase, mapAccountRow } from "./mod.ts";
+import { DB, Row } from "https://deno.land/x/sqlite@v3.9.1/mod.ts";
+import { mapAccountRow, queryDatabase } from "./mod.ts";
 import { Accounts } from "../interfaces.ts";
 
 /**
@@ -28,8 +28,9 @@ function registerUser(
   firstname: string,
   surname: string,
   account_created: string,
-): string {
-  const query_user_exists = `SELECT * FROM accounts WHERE user_username = '${user}'`;
+): any {
+  const query_user_exists =
+    `SELECT * FROM accounts WHERE displayname = '${user}'`;
   if (!query_user_exists) {
     return "noUser";
   }
@@ -67,8 +68,8 @@ function registerUser(
             '[]'
         )`;
   db.query(query_add_user);
-  let userId = db.query(
-    `SELECT user_id FROM accounts WHERE user_username = '${user}'`,
+  const userId = db.query(
+    `SELECT user_id FROM accounts WHERE displayname = '${user}'`,
   );
   console.log(`New user: ${user}`);
 
@@ -99,4 +100,4 @@ async function getUserByUsername(db: DB, username: string): Promise<Accounts> {
   return result[0];
 }
 
-export { registerUser, getAllUsersFromDB, getUserByUsername };
+export { getAllUsersFromDB, getUserByUsername, registerUser };

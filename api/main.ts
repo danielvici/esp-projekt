@@ -55,10 +55,10 @@ type ApiResponse = {
 
 // Docs Routes
 router
-  .get("/", (ctx) => {
+  .get("/", (ctx: any) => {
     ctx.response.body = "For endpoints, use /api/{name}";
   })
-  .get("/api", (ctx) => {
+  .get("/api", (ctx: any) => {
     ctx.response.body = "For API Documentation, visit /docs";
   });
 
@@ -82,8 +82,7 @@ router
   .get("/api/auth/refresh", () => {}); // TODO
 
 // -- User routes -- //
-router
-  .get("/api/users", api_getAllUsers);
+router.get("/api/users", api_getAllUsers);
 // .get("/api/user/:id/info", api_user_getInfo);
 
 // -- Chat routes -- //
@@ -176,12 +175,20 @@ async function api_register(ctx: Context): Promise<void> {
     } = result;
     // Claude 3-5 Sonnet was used for the first Date formatting
     const account_created = `${Math.floor(Date.now() / 1000)}-${
-      new Date().toLocaleDateString("en-GB").split("/").join("-")
+      new Date()
+        .toLocaleDateString("en-GB")
+        .split("/")
+        .join("-")
     }`;
 
     if (
-      !username || !password || !userGroup || !displayname || !user_email ||
-      !firstname || !surname
+      !username ||
+      !password ||
+      !userGroup ||
+      !displayname ||
+      !user_email ||
+      !firstname ||
+      !surname
     ) {
       helper_utils.errorResponse(ctx, 400, "Missing required fields");
       return;
@@ -204,9 +211,20 @@ async function api_register(ctx: Context): Promise<void> {
       account_created,
     );
 
+    const user = await db_utils.getUserByUsername(username);
+
+    const responseBody: any = {
+      success: true,
+      message: "Register successful",
+    };
+
+    if (user.user_id !== undefined) {
+      responseBody.userId = user.user_id;
+    }
+
     helper_utils.sendResponse(ctx, {
       status: 200,
-      body: `Registered under name: ${userId}`,
+      body: responseBody,
     });
   } catch (error) {
     console.log(error);
@@ -232,20 +250,32 @@ async function api_login(ctx: Context): Promise<string> {
       return "Error";
     }
 
-    // Get the stored salt for this user
     const storedSalt = user.password_salt;
-    // Salt the provided password with the stored salt
     const saltedPassword = `${password}${storedSalt}`;
-    // Hash the salted password
     const hash = await helper_utils.hashPassword(saltedPassword);
 
-    // Compare the phashed password with the stored hash
+    // Compare the hashed password with the stored hash
     if (user.password !== hash) {
       helper_utils.errorResponse(ctx, 401, "Invalid password");
       return "Error";
     }
 
-    helper_utils.sendResponse(ctx, { status: 200, body: "Success" });
+    // Return success with the user ID if it exists
+    const responseBody: any = {
+      success: true,
+      message: "Login successful",
+    };
+
+    // Only add userId if it exists
+    if (user.user_id !== undefined) {
+      responseBody.userId = user.user_id;
+    }
+
+    helper_utils.sendResponse(ctx, {
+      status: 200,
+      body: responseBody,
+    });
+
     return "Success";
   } catch (error) {
     console.log(error);
@@ -255,10 +285,12 @@ async function api_login(ctx: Context): Promise<string> {
 }
 
 // +++ APP ---------------------------------------------------------- //
-app.use(oakCors({
-  origin: "*",
-  credentials: true,
-}));
+app.use(
+  oakCors({
+    origin: "*",
+    credentials: true,
+  }),
+);
 app.use(router.routes());
 app.use(router.allowedMethods());
 
