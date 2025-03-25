@@ -32,6 +32,10 @@ async function register() {
 
     if (response["status"] == 200) {
       alert("Account created! You will be now redirected");
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('username', username.value);
+      localStorage.setItem('self_id', response["userId"]);
+      console.log("self_id: " + response["userId"]);
       router.push('/');
       router.go(1);
     } else {
@@ -43,11 +47,6 @@ async function register() {
   } catch (e) {
     console.log("An error has occurred. Please try again later.");
   }
-}
-
-function handleSubmit(event: Event) {
-  event.preventDefault();
-  register();
 }
 </script>
 

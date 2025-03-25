@@ -6,6 +6,7 @@ const upc = ref([]); // user post computed
 let post_nr = "";
 let current_user = "";
 let pust_create_text = "";
+let self_id ;
 
 /*
 
@@ -48,7 +49,8 @@ async function createFeed() {
 
 onMounted(async () => {
   await createFeed();
-
+  self_id = localStorage.getItem("self_id");
+  console.log("ICH: "+self_id);
 });
 
 
@@ -91,6 +93,10 @@ onMounted(async () => {
     navigator.clipboard.writeText(tocopy);
     alert("Copied to clipboard");
   }
+
+  function post_create(post_text: string, user_id: number) {
+    console.log(post_text);
+  }
 </script>
 
 <template>
@@ -105,7 +111,7 @@ onMounted(async () => {
           <textarea v-model="pust_create_text" name="post_text" class="bg-hintergrund-farbe rounded-lg m-2 p-1 focus:outline-none text-grau2 w-200p resize-none" rows="3" placeholder="Write something..."></textarea>
           <div class="">
             <input class="text-weiss" type="file" accept=".png, .jpg, .jpeg">
-            <button id="post_publish" name="post_publishss" class="text-weiss p-1 m-2 rounded-lg py-3 px-5 bg-button-farbe" @click.prevent="post_create_func(pust_create_text)" type="button">Post</button>
+            <button id="post_publish" name="post_publishss" class="text-weiss p-1 m-2 rounded-lg py-3 px-5 bg-button-farbe" @click.prevent="post_create(pust_create_text, )" type="button">Post</button>
           </div>
         </form>
       </div>
