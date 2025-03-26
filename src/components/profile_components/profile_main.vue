@@ -4,73 +4,102 @@ import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
-const profile = ref(null);
 
-
-const post = ref([
-  {id: 541242,
-    profile_picture: "../../assets/danielvici_pp.png",
-    author_display_name: "danielvici123", author_username: "danielvici",
-    content: "I created this WebApp with VUE3 and TailwindCSS. It was a lot of fun.",
-    comments_count: undefined, likes: 532844},
-  {id: 145,
-    profile_picture: "../../assets/danielvici_pp.png",
-    author_display_name: "danielvici123", author_username: "danielvici",
-    content: "I like Animes. I use Anilist to track them.",
-    comments_count: undefined, likes: 5325466844},
-  {id: 246,
-    profile_picture: "../../assets/danielvici_pp.png",
-    author_display_name: "danielvici123", author_username: "danielvici",
-    content: "sfsafhffgf",
-    comments_count: undefined, likes: 5},
-
-])
+const upc = ref([]);
+let self_id ;
+let profile_id = ref();
 
 onMounted(async () => {
-  const countPosts = post.value.length;
+  console.log("PARAMS: "+ route.path);
+  const pathArray = route.path.split('/');
+  console.log(pathArray);
+
+  if (pathArray.length > 2) {
+    profile_id.value = pathArray[2];
+    console.log("profile_id 0: ", profile_id.value);
+
+  }
+
+  if (!profile_id) {
+    alert('No profile selected. Redirecting to feed.');
+    await router.push('/');
+    return;
+  }
+  await create_own_posts();
 });
-//Wird bearbeitet wenn API dazu da ist.
-/*
-function fetchProfile(userId) {
-  return fetch(`/api/profile/${userId}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      });
+
+async function create_own_posts() {
+  try {
+    // posts und user holen und schauen ob sie richtig sidn
+    const post_response = await fetch('http://localhost:8000/api/posts', { method: 'GET' });
+    if (!post_response.ok) {
+      throw new Error(`HTTP error! status: ${post_response.status}`);
+    }
+    const postsDATA = await post_response.json();
+
+    const user_response = await fetch('http://localhost:8000/api/users', { method: 'GET' });
+    if (!user_response.ok) {
+      throw new Error(`HTTP error! status: ${user_response.status}`);
+    }
+    const usersDATA = await user_response.json();
+
+    // posts und user kombinieren
+    const combinedPosts = postsDATA.filter(post => post.user_id === profile_id).map(post => {
+      const user = usersDATA.find(user => user.user_id === post.user_id);
+
+      return {
+        post_id: post.posts_uuid,
+        post_text: post.post_text,
+        likes: post.likes,
+        comments: post.comments,
+        displayname: user ? user.displayname : 'Unknown',
+        username: user ? user.username : 'unknown_user',
+        user_id: post.user_id,
+      };
+    });
+    console.log("upc: " + upc.value);
+    console.log("combinedPosts: " + combinedPosts);
+
+    //upc.value = combinedPosts;
+
+    upc.value = combinedPosts.sort((a, b) => b.post_id - a.post_id);;
+
+    console.log("upc 2: " + upc.value);
+    console.log("combinedPosts 2: " + combinedPosts);
+  } catch (e) {
+    console.error("An error has occurred. Please try again later.");
+    console.error(e);
+  }
+  console.log(upc.value);
 }
 
-onMounted(async () => {
-  const userId = route.params.id;
+async function addLike(post_id: string | number, user_id: number, index: number) {
   try {
-    const data = await fetchProfile(userId);
-    profile.value = data;
-  } catch (error) {
-    console.error('Error fetching profile:', error);
-  }
-});
-router.beforeEach((to, from, next) => {
-  if ((from.name === 'Feed' || from.name === 'Settings') && to.name === 'Profile') {
-    // Set profile to 'danielvici123'
-    fetchProfile('danielvici123')
-        .then(data => {
-          profile.value = data;
-          next();
-        })
-        .catch(error => {
-          console.error('Error fetching profile:', error);
-          next();
-        });
-  } else {
-    next();
-  }
-});
-*/
+    console.log("UPC: ", upc.value);
+    console.log("post_id: ", post_id);
+    upc.value[index].likes++;
+    const response = await fetch(`http://localhost:8000/api/post/${post_id}/like`, {
+      method: 'POST',
+      headers: {'content-type': 'application/json'},
+      body: `{"userId":${user_id}}`,
+    });
 
-function addLike(index: number) {
-  post.value[index].likes += 1;
-  console.log("New Like Amount: ", post.value[index].likes);
+    console.log('Antwort-Status:', response.status);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Server-Fehlertext:', errorText);
+      //upc.value[index].likes--;
+      throw new Error(`HTTP error! status: ${response.status}, text: ${errorText}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error('Fehler beim Liken des Posts:', error);
+    throw error;
+  }
 }
 
 </script>
@@ -101,7 +130,7 @@ function addLike(index: number) {
       <h2 class="align-middle  mt-4 p-6 text-2xl text-weiss border-y-grau2 border-y ">Posts (x)</h2>
     </div>
     <ul>
-      <li v-for="(postitem, indexus) in post" :key="post" class="border-2 border-b-grau2 p-3 flex">
+      <li v-for="(postitem, indexus) in upc" :key="postitem.user_id" class="border-2 border-b-grau2 p-3 flex">
         <!-- POST -->
         <img src="../../assets/danielvici_pp.png" alt="" class="rounded-full w-16 h-16">
         <div>
@@ -119,7 +148,7 @@ function addLike(index: number) {
               <label class="text-sm m-1 text-weiss" v-else>Comments disabled</label>
             </div>
 
-            <div class="flex items-center" @click="addLike(indexus)"> <!-- Likes -->
+            <div class="flex items-center" @click="addLike(postitem.post_id, postitem.user_id, indexus)"> <!-- Likes -->
               <img alt="" src="../../assets/icons/herz.png" class="align-middle">
               <label class="text-sm m-1 text-weiss">{{ postitem.likes }}</label>
             </div>

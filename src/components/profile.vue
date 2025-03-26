@@ -7,14 +7,14 @@ import Profile_main from "./profile_components/profile_main.vue";
 </script>
 
 <template>
-  <div id="main" class="bg-hintergrund-farbe flex">
-    <div id="left" class="w-72">
+  <div id="main" class="bg-hintergrund-farbe sm:flex overflow-y-auto h-screen scrollbar">
+    <div id="left" class="sm:w-72 min-w-72">
       <navigationbar></navigationbar>
     </div>
-    <div class="w-100p border-x border-x-grau2">
+    <div class="sm:w-100p w-screen sm:border-x sm:border-x-grau2">
       <profile_main></profile_main>
     </div>
-    <div id="right" class="w-1/4">
+    <div id="right" class="sm:w-1/4 w-screen">
       <contacts></contacts>
       <legal></legal>
     </div>

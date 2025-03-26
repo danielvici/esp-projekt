@@ -8,14 +8,14 @@ import Trending from "./home_components/trending.vue";
 
 
 <template>
-  <div id="main" class="flex md:flex-col">
-    <div id="left" class="w-72 min-w-72 md:full">
+  <div id="main" class="sm:flex overflow-y-auto h-screen scrollbar">
+    <div id="left" class="sm:w-72 min-w-72">
       <navigationbar></navigationbar>
     </div>
-    <div class="w-100p sm:w-screen">
+    <div class="sm:w-100p w-screen">
       <feed></feed>
     </div>
-    <div class="w-1/4 sm:w-screen">
+    <div class="sm:w-1/4 w-screen">
       <contacts></contacts>
       <legal></legal>
     </div>

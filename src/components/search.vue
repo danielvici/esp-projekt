@@ -9,10 +9,10 @@ import Contacts from "./home_components/contacts.vue";
 
 <template>
   <div class="text-weiss flex">
-    <div id="left" class="border-1 border-b-grau w-72">
+    <div id="left" class="sm:w-72 min-w-72 border-1 border-b-grau">
       <navigationbar></navigationbar>
     </div>
-    <div class="w-100p border-x-2 border-x-grau2">
+    <div class="sm:w-100p w-screen border-x-2 border-x-grau2">
       <div class="border-b-grau2 border-b-2">
         <h1 class="text-weiss text-3xl p-4">Search</h1>
       </div>

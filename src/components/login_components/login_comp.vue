@@ -47,22 +47,21 @@ async function login(event: Event) {
 </script>
 
 <template>
-  <div class="px-20 border-x border-x-grau2 pb-32">
+  <div class="px-20 sm:border-x sm:border-x-grau2 pb-32">
     <div class="text-3xl pt-32"> <!-- ÜBERSCHRIFT-->
       <p class="text-weiss text-center">Welcome to <label class="bg-schwarz p-1 rounded-lg mr-1"><span class="text-logo-farbe-lila">E</span><span class="text-logo-farbe-rot">S</span><span class="text-logo-farbe-blau">P</span></label>!</p>
       <p class="text-weiss text-center">Login to continue</p>
     </div>
     <div class="px-20 pt-7"><!--  FORM --->
       <form class="flex flex-col items-center" @submit.prevent="login">
-        <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="input_username_mail" type="text" placeholder="Username or E-Mail"><br>
-        <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="input_user_password" type="password" placeholder="Password"><br>
-        <button class="m-4 bg-button-farbe w-full max-w-xs p-4 text-schwarz rounded-lg">Login</button>
-        <p class="text-weiss"><input type="checkbox" v-model="rememberMe"> Remeber me</p>
+        <input class="m-4 md:w-full md:max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="input_username_mail" type="text" placeholder="Username or E-Mail"><br>
+        <input class="m-4 md:w-full md:max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="input_user_password" type="password" placeholder="Password"><br>
+        <button class="m-4 bg-button-farbe w-full md:max-w-xs p-4 text-schwarz rounded-lg">Login</button>
       </form>
     </div>
     <div>
-      <p class="text-weiss text-center">No Account? <router-link to="/register" class="text-button-farbe">Register here</router-link></p>
-      <p class="text-weiss text-center"> <router-link to="/wip" class="text-button-farbe">Forgot password?</router-link> </p>
+      <p class="text-weiss text-center pb-2 ">No Account? <router-link to="/register" class="text-button-farbe">Register here</router-link></p>
+      <p class="text-weiss text-center pt-2"> <router-link to="/wip" class="text-button-farbe">Forgot password?</router-link> </p>
     </div>
   </div>
 

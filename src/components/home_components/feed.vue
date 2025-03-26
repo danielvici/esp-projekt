@@ -3,14 +3,14 @@ import {onMounted, ref} from "vue";
 import router from "../../router";
   // PLACEHOLDER
 const upc = ref([]); // user post computed
-let post_nr = "";
-let current_user = "";
-let pust_create_text = "";
+let post_create_text = "";
 let self_id ;
 
-/*
+onMounted(async () => {
+  self_id = localStorage.getItem("self_id");
+  await createFeed();
+});
 
- */
 async function createFeed() {
   try {
     // posts und user holen und schauen ob sie richtig sidn
@@ -37,7 +37,7 @@ async function createFeed() {
 
     //upc.value = combinedPosts;
 
-    upc.value = combinedPosts.sort(() => Math.random() - 0.5);
+    upc.value = combinedPosts.sort((a, b) => b.post_id - a.post_id);;
 
   } catch (e) {
     console.error("An error has occurred. Please try again later.");
@@ -46,78 +46,82 @@ async function createFeed() {
   console.log(upc.value);
 }
 
+async function addLike(post_id: string | number, user_id: number, index: number) {
+  try {
+    console.log("UPC: ", upc.value);
+    console.log("post_id: ", post_id);
+    upc.value[index].likes++;
+    const response = await fetch(`http://localhost:8000/api/post/${post_id}/like`, {
+      method: 'POST',
+      headers: {'content-type': 'application/json'},
+      body: `{"userId":${user_id}}`,
+    });
 
-onMounted(async () => {
-  await createFeed();
-  self_id = localStorage.getItem("self_id");
-  console.log("ICH: "+self_id);
-});
+    console.log('Antwort-Status:', response.status);
 
-
-
-  async function addLike(post_id: string | number, user_id: number, index: number) {
-    try {
-      upc.value[index].likes++;
-      const response = await fetch(`http://localhost:8000/api/post/${post_id}/like`, {
-        method: 'POST',
-        headers: {'content-type': 'application/json'},
-        body: `{"userId":${user_id}}`,
-      });
-
-      console.log('Antwort-Status:', response.status);
-
-      if (!response.ok) {
-        const errorText = await response.text(); // Versuche, den Fehlertext vom Server zu bekommen
-        console.error('Server-Fehlertext:', errorText);
-        upc.value[index].likes--;
-        throw new Error(`HTTP error! status: ${response.status}, text: ${errorText}`);
-      }
-
-      const data = await response.json();
-      console.log('Antwort vom Server:', data);
-
-      return data;
-    } catch (error) {
-      console.error('Fehler beim Liken des Posts:', error);
-      throw error;
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Server-Fehlertext:', errorText);
+      //upc.value[index].likes--;
+      throw new Error(`HTTP error! status: ${response.status}, text: ${errorText}`);
     }
-  }
 
-  function gotoPost(post_id: string | number) {
-    localStorage.setItem("viewedpost", post_id.toString());
-    router.push(`/post/${post_id}`);
-  }
+    const data = await response.json();
 
-  function copyLink(post_id: string | number) {
-    const tocopy = `http://localhost:5173/post/${post_id}`;
-    navigator.clipboard.writeText(tocopy);
-    alert("Copied to clipboard");
+    return data;
+  } catch (error) {
+    console.error('Fehler beim Liken des Posts:', error);
+    throw error;
   }
+}
 
-  function post_create(post_text: string, user_id: number) {
-    console.log(post_text);
+function gotoPost(post_id: string | number) {
+  localStorage.setItem("viewedpost", post_id.toString());
+  router.push(`/post/${post_id}`);
+}
+
+function copyLink(post_id: string | number) {
+  const tocopy = `http://localhost:5173/post/${post_id}`;
+  navigator.clipboard.writeText(tocopy);
+  alert("Copied to clipboard");
+}
+
+async function post_create(post_text: string) {
+  console.log(self_id);
+  console.log(post_text);
+  const response = await fetch(`http://localhost:8000/api/post/create`, {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: `{"userId":${self_id},"postText":"${post_create_text}","postType":"text"}`});
+  const data = await response.json();
+  if (response.ok) {
+    console.log(response.text);
+    await createFeed();
   }
+  console.log(data);
+
+  console.log(post_text);
+}
 </script>
 
 <template>
-  <div class="border-x border-x-grau2"> <!-- MAIN -->
+  <div class="sm:border-x sm:border-x-grau2"> <!-- MAIN -->
     <div> <!-- FEED HEADER -->
-      <h2 class="align-middle p-6 text-3xl text-weiss border-b-grau2 border-b ">Feed</h2>
+      <h2 class="align-middle p-6 text-3xl text-weiss border-b-grau2 border-b-2 ">Feed</h2>
       <!-- POSTING-->
       <div class="flex border-2 border-b-grau2">
         <img src="../../assets/danielvici_pp.png" alt="" class="p-2 rounded-full w-16 h-16">
         <form class="w-full pr-5">
           <!-- post_publish ist richtig aber wird falsch angezeigt. File Input geht nicht-->
-          <textarea v-model="pust_create_text" name="post_text" class="bg-hintergrund-farbe rounded-lg m-2 p-1 focus:outline-none text-grau2 w-full resize-none" rows="3" placeholder="Write something..."></textarea>
+          <textarea v-model="post_create_text" name="post_text" class="bg-hintergrund-farbe rounded-lg m-2 p-1 focus:outline-none text-grau2 w-full resize-none" rows="3" placeholder="Write something..."></textarea>
           <div class="">
-            <input class="text-weiss" type="file" accept=".png, .jpg, .jpeg">
-            <button id="post_publish" name="post_publishss" class="text-weiss p-1 m-2 rounded-lg py-3 px-5 bg-button-farbe" @click.prevent="post_create(pust_create_text, )" type="button">Post</button>
+            <button id="post_publish" name="post_publishss" class="text-weiss p-1 m-2 rounded-lg py-3 px-5 bg-button-farbe" @click.prevent="post_create(post_create_text)" type="button">Post</button>
           </div>
         </form>
       </div>
     </div>
 
-    <div class="overflow-y-auto h-screen scrollbar"> <!-- CONTENT -->
+    <div class="sm:overflow-y-auto sm:h-screen sm:scrollbar"> <!-- CONTENT -->
       <ul>
         <li v-for="(postitem, indexus) in upc" :key="upc" class="border-2 border-b-grau2 p-3 flex">
           <!-- POST -->

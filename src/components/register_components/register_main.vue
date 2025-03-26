@@ -8,9 +8,8 @@ let register_input_displayname = ref("");
 let register_input_password = ref("");
 let register_input_email = ref("");
 
+
 async function register() {
-
-
   const username = register_input_username;
   const displayname = register_input_displayname;
   const email = register_input_email;
@@ -51,20 +50,20 @@ async function register() {
 </script>
 
 <template>
-  <div id="main" class="bg-hintergrund-farbe p-2 border-x border-x-grau2 px-20">
-    <div class="text-3xl pt-32"> <!-- ÜBERSCHRIFT-->
+  <div id="main" class="bg-hintergrund-farbe p-2 sm:border-x sm:border-x-grau2 sm:px-20">
+    <div class="text-3xl pt-20px sm:pt-32"> <!-- ÜBERSCHRIFT-->
       <p class="text-weiss text-center">Welcome to <label class="bg-schwarz p-1 rounded-lg mr-1"><span class="text-logo-farbe-lila">E</span><span class="text-logo-farbe-rot">S</span><span class="text-logo-farbe-blau">P</span></label>!</p>
       <p class="text-weiss text-center pt-2">Join today!</p>
     </div>
     <div class="px-20 pt-7"> <!--  FORM --->
       <form class="flex flex-col items-center" @submit.prevent="register">
-        <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="register_input_username" type="text" placeholder="Username" required><br>
-        <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="register_input_displayname" type="text" placeholder="Displayname" required><br>
-        <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="register_input_email" type="email" placeholder="E-Mail" required><br>
-        <input class="m-4 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="register_input_password " type="password" placeholder="Password" required><br>
-        <button class="m-4 bg-button-farbe w-full max-w-xs p-4 text-schwarz rounded-lg">Create Account</button>
+        <input class="m-4 sm:w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="register_input_username" type="text" placeholder="Username" required><br>
+        <input class="m-4 sm:w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="register_input_displayname" type="text" placeholder="Displayname" required><br>
+        <input class="m-4 sm:w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="register_input_email" type="email" placeholder="E-Mail" required><br>
+        <input class="m-4 sm:w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg" v-model="register_input_password " type="password" placeholder="Password" required><br>
+        <button class="m-4 bg-button-farbe sm:w-full max-w-xs p-4 text-schwarz rounded-lg">Create Account</button>
       </form>
-      <p class="text-weiss text-center">Already have an account? <router-link to="/login" class="text-button-farbe">Login</router-link></p>
+      <p class="text-weiss w-100p text-center">Already have an account? <router-link to="/login" class="text-button-farbe">Login</router-link></p>
     </div>
   </div>
 </template>

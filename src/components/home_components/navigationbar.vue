@@ -12,25 +12,39 @@ const show = ref(false);
 
 const getShowMobileElements = () => {
   const value = localStorage.getItem("mobile");
+  console.log("localStorage mobile:", value); // Debugging-Ausgabe
   return value === 'true';
 };
 
 const setShowMobileElements = (value) => {
+  console.log("localStorage set mobile:", value.toString()); // Debugging-Ausgabe
   localStorage.setItem("mobile", value.toString());
 };
 
 const toggleElements = () => {
-  show.value = !show.value;
-  setShowMobileElements(show.value); // Zustand im localStorage speichern
+  if (isMobile.value){
+    show.value = !show.value;
+    setShowMobileElements(show.value);
+
+  }
 };
 
 const checkScreenWidth = () => {
   isMobile.value = window.innerWidth < 640;
+  if(isMobile.value === false){
+    show.value = true;
+  } else {
+    show.value = false;
+  }
 };
 
 onMounted(() => {
   checkScreenWidth();
   window.addEventListener('resize', checkScreenWidth);
+  const show = ref(getShowMobileElements());
+  if(localStorage.getItem("mobile") === null){
+    show.value = false;
+  }
 });
 
 onUnmounted(() => {
