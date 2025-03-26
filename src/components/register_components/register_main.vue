@@ -31,11 +31,11 @@ async function register() {
 
 
     if (response["status"] == 200) {
-      alert("Account created! You will be now redirected");
+      const data = await response.json();
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('username', username.value);
-      localStorage.setItem('self_id', response["userId"]);
-      console.log("self_id: " + response["userId"]);
+      localStorage.setItem('self_id', data["userId"]);
+      alert("Account created! You will be now redirected");
       router.push('/');
       router.go(1);
     } else {

@@ -8,14 +8,14 @@ import Trending from "./home_components/trending.vue";
 
 
 <template>
-  <div id="main" class="flex">
-    <div id="left" class="w-72">
+  <div id="main" class="flex md:flex-col">
+    <div id="left" class="w-72 min-w-72 md:full">
       <navigationbar></navigationbar>
     </div>
-    <div class="w-100p">
+    <div class="w-100p sm:w-screen">
       <feed></feed>
     </div>
-    <div class="w-1/4">
+    <div class="w-1/4 sm:w-screen">
       <contacts></contacts>
       <legal></legal>
     </div>

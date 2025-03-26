@@ -106,9 +106,9 @@ onMounted(async () => {
       <!-- POSTING-->
       <div class="flex border-2 border-b-grau2">
         <img src="../../assets/danielvici_pp.png" alt="" class="p-2 rounded-full w-16 h-16">
-        <form>
+        <form class="w-full pr-5">
           <!-- post_publish ist richtig aber wird falsch angezeigt. File Input geht nicht-->
-          <textarea v-model="pust_create_text" name="post_text" class="bg-hintergrund-farbe rounded-lg m-2 p-1 focus:outline-none text-grau2 w-200p resize-none" rows="3" placeholder="Write something..."></textarea>
+          <textarea v-model="pust_create_text" name="post_text" class="bg-hintergrund-farbe rounded-lg m-2 p-1 focus:outline-none text-grau2 w-full resize-none" rows="3" placeholder="Write something..."></textarea>
           <div class="">
             <input class="text-weiss" type="file" accept=".png, .jpg, .jpeg">
             <button id="post_publish" name="post_publishss" class="text-weiss p-1 m-2 rounded-lg py-3 px-5 bg-button-farbe" @click.prevent="post_create(pust_create_text, )" type="button">Post</button>

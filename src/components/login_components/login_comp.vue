@@ -30,11 +30,10 @@ async function login(event: Event) {
     });
 
     if (response.status === 200) {
+      const data = await response.json();
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('username', username.value);
-      localStorage.setItem('self_id', response["userId"]);
-      console.log("self_id: " + response["userId"]);
-      console.log(response);
+      localStorage.setItem('self_id', data["userId"]);
       alert("You will be now redirected");
       router.push('/');
     } else {
