@@ -12,6 +12,12 @@ import {
   Router,
 } from "https://deno.land/x/oak@v17.1.2/mod.ts";
 import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
+import {
+  dirname,
+  fromFileUrl,
+  join,
+} from "https://deno.land/std@0.224.0/path/mod.ts";
+
 import * as db_utils from "../database/utils.ts";
 import * as helper_utils from "./helpers.ts";
 
@@ -47,6 +53,9 @@ type ApiResponse = {
   status: number;
   body: unknown;
 };
+
+// database creation if missing, runs here because this is the main file executed by the API.
+db_utils.ensureDatabaseExists();
 
 // +++ ROUTER ------------------------------------------------------- //
 // Creates the routes for the API server.

@@ -55,7 +55,7 @@ export function createDatabase(): void {
             date_created_at TEXT,
             text TEXT,
             likes INTEGER
-        ); -- Added semicolon here
+        );
 
         CREATE TABLE IF NOT EXISTS messages (
             message_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -105,6 +105,3 @@ export function insertSampleData(): void {
     `,
   );
 }
-
-createDatabase();
-insertSampleData();

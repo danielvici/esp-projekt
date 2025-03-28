@@ -16,41 +16,37 @@ import * as db_create from "./create_db.ts";
 
 // Import all internal utilities with renamed imports to avoid naming conflicts
 import {
-  // --- Account Functions --- //
-  getAllUsersFromDB as getAllUsersFromDBInternal,
-  getUserByUsername as getUserByUsernameInternal,
-  // getAllUserInfoByID as getAllUserInfoByIDInternal,
-  // Accidentally deleted function...
-  registerUser as registerUserInternal,
-
-  // --- Post Functions --- //
-  getPostsFromDB as getPostsFromDBInternal,
-  getPostById as getPostByIdInternal,
-  createPost as createPostInternal,
-  updatePost as updatePostInternal,
-  deletePost as deletePostInternal,
-  likePost as likePostInternal,
-  filterPosts,
-
-  // --- Comment Functions --- //
-  getCommentsFromDB as getCommentsFromDBInternal,
+  addMessageToChat as addMessageToChatInternal,
+  createChat as createChatInternal,
   // getCommentsForComments as getCommentsForCommentsInternal,
   // Accidentally deleted function...
   createComment as createCommentInternal,
-  updateComment as updateCommentInternal,
+  createPost as createPostInternal,
+  deleteChat as deleteChatInternal,
   deleteComment as deleteCommentInternal,
-  likeComment as likeCommentInternal,
-
-  // --- Chat Functions --- //
-  getUserChats as getUserChatsInternal,
+  deletePost as deletePostInternal,
+  filterPosts,
+  // --- Account Functions --- //
+  getAllUsersFromDB as getAllUsersFromDBInternal,
   getChatById as getChatByIdInternal,
   getChatMessages as getChatMessagesInternal,
-  createChat as createChatInternal,
-  addMessageToChat as addMessageToChatInternal,
-  deleteChat as deleteChatInternal,
-
+  // --- Comment Functions --- //
+  getCommentsFromDB as getCommentsFromDBInternal,
+  getPostById as getPostByIdInternal,
+  // --- Post Functions --- //
+  getPostsFromDB as getPostsFromDBInternal,
+  getUserByUsername as getUserByUsernameInternal,
+  // --- Chat Functions --- //
+  getUserChats as getUserChatsInternal,
+  likeComment as likeCommentInternal,
+  likePost as likePostInternal,
   // --- Mapper Functions --- //
   queryDatabase as queryDatabaseInternal,
+  // getAllUserInfoByID as getAllUserInfoByIDInternal,
+  // Accidentally deleted function...
+  registerUser as registerUserInternal,
+  updateComment as updateCommentInternal,
+  updatePost as updatePostInternal,
 } from "./helpers/utils/mod.ts";
 
 // +++ VARIABLES ---------------------------------------------------- //
@@ -64,11 +60,11 @@ const db = new DB(dbPath);
 // +++ INTERFACES --------------------------------------------------- //
 // Only re-export interfaces that are needed by external code
 export type {
-  Post,
   Accounts,
-  Comments,
   Chat,
+  Comments,
   Message,
+  Post,
 } from "./helpers/interfaces.ts";
 // +++ HELPER FUNCTIONS --------------------------------------------- //
 export function queryDatabase<T>(
@@ -80,6 +76,42 @@ export function queryDatabase<T>(
 }
 
 // +++ DATABASE INITIALIZATION -------------------------------------- //
+export async function ensureDatabaseExists(): Promise<void> {
+  try {
+    // Check if the database directory exists, create it if not
+    const dbDir = dirname(dbPath);
+    try {
+      await Deno.stat(dbDir);
+    } catch (error) {
+      if (error instanceof Deno.errors.NotFound) {
+        // Create the database directory
+        await Deno.mkdir(dbDir, { recursive: true });
+        console.log(`Created database directory: ${dbDir}`);
+      } else {
+        throw error;
+      }
+    }
+
+    // Check if the database file exists
+    try {
+      await Deno.stat(dbPath);
+      console.log("Database file already exists");
+    } catch (error) {
+      if (error instanceof Deno.errors.NotFound) {
+        // Nothing, file will be created below
+      } else {
+        throw error;
+      }
+    }
+
+    createDatabaseIfNotExist();
+    insertSamples();
+  } catch (error) {
+    console.error("Error ensuring database exists:", error);
+    throw error;
+  }
+}
+
 export function createDatabaseIfNotExist(): void {
   db_create.createDatabase();
 }
