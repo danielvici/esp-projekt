@@ -20,6 +20,12 @@ async function createFeed() {
     const user_response = await fetch('http://localhost:8000/api/users', { method: 'GET' });
     const usersDATA = await user_response.json();
 
+    if(post_response.status === 404 || user_response.status === 404) {
+      console.error("ERRROR");
+      await router.push('/');
+      return;
+    }
+
     // posts und user kombinieren
     const combinedPosts = postsDATA.map(post => {
       const user = usersDATA.find(user => user.user_id === post.user_id);
@@ -87,6 +93,10 @@ function copyLink(post_id: string | number) {
 }
 
 async function post_create(post_text: string) {
+  if (post_text === "") {
+    alert("Please write something before posting.");
+    return;
+  }
   console.log(self_id);
   console.log(post_text);
   const response = await fetch(`http://localhost:8000/api/post/create`, {
@@ -94,6 +104,7 @@ async function post_create(post_text: string) {
     headers: {'content-type': 'application/json'},
     body: `{"userId":${self_id},"postText":"${post_create_text}","postType":"text"}`});
   const data = await response.json();
+
   if (response.ok) {
     console.log(response.text);
     await createFeed();
@@ -102,6 +113,11 @@ async function post_create(post_text: string) {
 
   console.log(post_text);
 }
+
+function gotoProfile(user_id: string | number) {
+  router.push(`/profile/${user_id}`);
+}
+
 </script>
 
 <template>
@@ -121,7 +137,7 @@ async function post_create(post_text: string) {
       </div>
     </div>
 
-    <div class="sm:overflow-y-auto sm:h-screen sm:scrollbar"> <!-- CONTENT -->
+    <div class="sm:overflow-y-auto sm:h-[650px] sm:scrollbar"> <!-- CONTENT -->
       <ul>
         <li v-for="(postitem, indexus) in upc" :key="upc" class="border-2 border-b-grau2 p-3 flex">
           <!-- POST -->
@@ -134,21 +150,24 @@ async function post_create(post_text: string) {
             <div class="m-2"> <!-- POST CONTENT -->
               <p class="text-sm m-1 text-weiss">{{ postitem.post_text }}</p>
             </div>
-            <div class="flex"> <!-- POST FOOTER -->
-              <div class="flex"> <!-- Comments -->
-                <img src="../../assets/icons/comment.png" alt="" class="rounded-full align-middle">
-                <label class="text-sm m-1 text-weiss" v-if="postitem.comments != undefined">{{ postitem.comments }}</label>
-                <label class="text-sm m-1 text-weiss" v-else>Comments disabled</label>
-              </div>
+            <div class="sm:flex"><!-- POST FOOTER -->
+              <div class="flex">
+                <div class="flex"> <!-- Comments -->
+                  <img src="../../assets/icons/comment.png" alt="" class="rounded-full align-middle">
+                  <label class="text-sm m-1 text-weiss" v-if="postitem.comments != undefined">{{ postitem.comments }}</label>
+                  <label class="text-sm m-1 text-weiss" v-else>Comments disabled</label>
+                </div>
 
-              <div class="flex items-center" @click="addLike(postitem.post_id, postitem.user_id, indexus)"> <!-- Likes -->
-                <img alt="" src="../../assets/icons/herz.png" class="align-middle">
-                <label class="text-sm m-1 text-weiss">{{ postitem.likes }}</label>
+                <div class="flex items-center" @click="addLike(postitem.post_id, postitem.user_id, indexus)"> <!-- Likes -->
+                  <img alt="" src="../../assets/icons/herz.png" class="align-middle">
+                  <label class="text-sm m-1 text-weiss">{{ postitem.likes }}</label>
+                </div>
               </div>
-
-              <div class="flex items-center mx-2"> <!-- View Post -->
+              <br class="sm:hidden">
+              <div class="flex sm:tems-center mx-2"> <!-- View Post -->
                 <button @click="gotoPost(postitem.post_id)" class="text-schwarz mx-1 px-1 rounded-lg bg-button-farbe">View Post</button>
                 <button @click="copyLink(postitem.post_id)" class="text-schwarz  pl-1 mx-1 px-1 rounded-lg bg-button-farbe">Share Post</button>
+                <button @click="gotoProfile(postitem.user_id)" class="text-schwarz  pl-1 mx-1 px-1 rounded-lg bg-button-farbe"> Go to Profile</button>
               </div><!-- ENDE -->
             </div>
           </div>

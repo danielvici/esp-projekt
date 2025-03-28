@@ -8,7 +8,7 @@ import Trending from "./home_components/trending.vue";
 
 
 <template>
-  <div id="main" class="sm:flex overflow-y-auto h-screen scrollbar">
+  <div id="main" class="sm:flex overflow-y-auto sm:h-full sm:scrollbar">
     <div id="left" class="sm:w-72 min-w-72">
       <navigationbar></navigationbar>
     </div>

@@ -72,6 +72,7 @@ async function getPost(post_id: any) {
 
     if(post_response.status === 404) {
       console.error("No comments found.");
+      alert("Post not found")
       await router.push('/');
       return;
     }
@@ -102,6 +103,13 @@ async function getComment(post_id: any) {
     const user_response = await fetch(`http://localhost:8000/api/users`, { method: 'GET' });
     const usersDATA: User[] = await user_response.json();
 
+    if(comments_response.status === 404 || user_response.status === 404) {
+      console.error("ERRROR");
+      alert("Error try it again later.");
+      await router.push('/');
+      return;
+    }
+
     comments.value = fetchedComments.map(comment => {
       const author = usersDATA.find(u => u.user_id === comment.author_user_id) || {
         username: 'Unknown',
@@ -114,6 +122,8 @@ async function getComment(post_id: any) {
         displayname: author.displayname,
       };
     });
+
+    comments.value.sort((a, b) => b.post_id - a.post_id);
 
     console.log(comments.value);
   } catch (e) {
@@ -136,11 +146,10 @@ async function addLike() { // Post liken
       body: `{"userId":${self_id}}`,
     });
 
-    if (!response_like.ok) {
-      const errorText = await response_like.text();
-      console.error('Server-Fehlertext:', errorText);
-      //post.value.likes--;
-      throw new Error(`HTTP error! status: ${response_like.status}, text: ${errorText}`);
+    if(response_like.status === 404) {
+      console.error("ERROR");
+      await router.push('/');
+      return;
     }
 
     const data = await response_like.json();
@@ -154,6 +163,10 @@ async function addLike() { // Post liken
 }
 
 async function comment_create_text(comment_text: string) {
+  if (comment_text === null) {
+    alert("Please write something before commenting.");
+    return;
+  }
   try {
     const response = await fetch(`http://localhost:8000/api/post/${post_uuid.value}/comment`, {
       method: 'POST',
@@ -162,11 +175,13 @@ async function comment_create_text(comment_text: string) {
 
     const data = await response.json();
 
-    if(response.ok) {
-      await getComment(parseInt(post_uuid.value));
-    } else {
-      alert("Error while posting comment.");
+    if(response.status === 404) {
+      console.error("ERROR");
+      await router.push('/');
+      return;
     }
+
+    await getComment(parseInt(post_uuid.value));
     return data;
   } catch (error) {
     console.error(error);
@@ -183,11 +198,10 @@ async function addLike_comment(comment_id: number | string) {
       body: `{"userId":${self_id}}`,
     });
 
-    if (!response_like.ok) {
-      const errorText = await response_like.text();
-      console.error('Server-Fehlertext:', errorText);
-      post.value.likes--;
-      throw new Error(`HTTP error! status: ${response_like.status}, text: ${errorText}`);
+    if(response_like.status === 404) {
+      console.error("ERROR");
+      await router.push('/');
+      return;
     }
 
     const data = await response_like.json();
@@ -201,11 +215,15 @@ async function addLike_comment(comment_id: number | string) {
     throw error;
   }
 }
+
+function gotoProfile(user_id: string | number) {
+  router.push(`/profile/${user_id}`);
+}
 </script>
 
 <template>
   <div id="main" class="bg-hintergrund-farbe flex">
-    <div id="left" class="w-72">
+    <div id="left" class="sm:w-72 min-w-72">
       <navigationbar></navigationbar>
     </div>
     <div class="text-weiss w-100p border-x border-x-grau2" v-if="post">

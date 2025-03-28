@@ -16,15 +16,15 @@ function handleUpdateSetting(setting: string) {
 </script>
 
 <template>
-  <div id="main" class="bg-hintergrund-farbe flex">
-    <div id="left" class=" w-72">
+  <div id="main" class="bg-hintergrund-farbe sm:flex">
+    <div id="left" class="sm:w-72 min-w-72">
       <navigationbar></navigationbar>
       <settings_sidebar @updateSetting="handleUpdateSetting"></settings_sidebar>
     </div>
-    <div class="w-100p border-x-grau2 border-x-2">
+    <div class="w-100p sm:border-x-grau2 sm:border-x-2 border-y border-y-grau2 my-2">
       <settings_main :selectedSetting="selectedSetting"></settings_main>
     </div>
-    <div class="w-1/4">
+    <div class="sm:w-1/4">
       <contacts></contacts>
       <legal></legal>
     </div>

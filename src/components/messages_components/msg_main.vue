@@ -40,10 +40,10 @@ function openChat(contact) {
         <div class="flex p-4">
           <img src="../../assets/default_pp.png" alt="user profile picture" class="rounded-full w-16 h-16">
           <div>
-            <div class="flex">
-              <label class="text-lg font-bold m-1 text-weiss">{{nachricht.display_name}}</label>
-              <label class="text-lg m-1 text-grau2">@{{nachricht.username}}</label>
-              <label class="m-2 text-grau2">{{nachricht.date}}</label>
+            <div class="flex mb-1">
+              <label class="text-lg font-bold sm:m-1 ml-1 text-weiss">{{nachricht.display_name}}</label>
+              <label class="text-lg sm:m-1 ml-1 text-grau2">@{{nachricht.username}}</label>
+              <label class="sm:m-2  ml-1 text-grau2">{{nachricht.date}}</label>
             </div>
             <a class="ml-1 text-weiss">{{nachricht.content}}</a>
           </div>

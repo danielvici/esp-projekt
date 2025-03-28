@@ -20,6 +20,11 @@ async function login(event: Event) {
   const username = input_username_mail;
   const password = input_user_password;
 
+  if (username.value === "" || password.value === "") {
+    alert("Please fill all fields");
+    return;
+  }
+
   try {
     const response = await fetch('http://localhost:8000/api/account/login', {
       method: 'POST',
@@ -34,6 +39,7 @@ async function login(event: Event) {
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('username', username.value);
       localStorage.setItem('self_id', data["userId"]);
+      console.log("SELF LOG: " + data["userId"]);
       alert("You will be now redirected");
       router.push('/');
     } else {

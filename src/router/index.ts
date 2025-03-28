@@ -80,10 +80,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth && localStorage.getItem("isLoggedIn") !== "true") {
-        console.log("User not logged in: redirecting to login.");
+        alert("not logged in ");
         next({ name: "login" });
     } else {
-        console.log("User logged in or no auth required.");
         next();
     }
 });

@@ -8,14 +8,14 @@ import Msg_main from "./messages_components/msg_main.vue";
 </script>
 
 <template>
-  <div id="main" class=" flex">
-    <div id="left" class="w-72">
+  <div id="main" class=" sm:flex">
+    <div id="left" class="sm:w-72 min-w-72">
       <navigationbar></navigationbar>
     </div>
     <div class="w-100p">
       <msg_main></msg_main>
     </div>
-    <div class="w-1/4">
+    <div class="sm:w-1/4">
       <contacts></contacts>
       <legal></legal>
     </div>

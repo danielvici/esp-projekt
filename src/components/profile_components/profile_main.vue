@@ -6,90 +6,64 @@ const route = useRoute();
 const router = useRouter();
 
 const upc = ref([]);
-let self_id ;
-let profile_id = ref();
+const profile_id = ref<number | null>(null);
+const userData = ref<any>(null);
 
 onMounted(async () => {
-  console.log("PARAMS: "+ route.path);
   const pathArray = route.path.split('/');
-  console.log(pathArray);
 
   if (pathArray.length > 2) {
-    profile_id.value = pathArray[2];
-    console.log("profile_id 0: ", profile_id.value);
-
+    profile_id.value = parseInt(pathArray[2], 10);
+  } else {
+    console.warn("No profile ID found in the route.");
   }
 
-  if (!profile_id) {
+  if (!profile_id.value) {
     alert('No profile selected. Redirecting to feed.');
     await router.push('/');
     return;
   }
   await create_own_posts();
+  await getUser();
 });
 
 async function create_own_posts() {
   try {
-    // posts und user holen und schauen ob sie richtig sidn
-    const post_response = await fetch('http://localhost:8000/api/posts', { method: 'GET' });
+    const post_response = await fetch('http://localhost:8000/api/posts', {
+      method: 'GET',
+    });
     if (!post_response.ok) {
       throw new Error(`HTTP error! status: ${post_response.status}`);
     }
     const postsDATA = await post_response.json();
 
-    const user_response = await fetch('http://localhost:8000/api/users', { method: 'GET' });
-    if (!user_response.ok) {
-      throw new Error(`HTTP error! status: ${user_response.status}`);
+    upc.value = postsDATA.filter((post) => post.user_id === profile_id.value);
+
+    if (upc.value.length === 0) {
+      console.warn('No posts found for this user.');
+      return;
     }
-    const usersDATA = await user_response.json();
+    //console.log("upc: "+ JSON.stringify(upc.value, null, 2));
 
-    // posts und user kombinieren
-    const combinedPosts = postsDATA.filter(post => post.user_id === profile_id).map(post => {
-      const user = usersDATA.find(user => user.user_id === post.user_id);
-
-      return {
-        post_id: post.posts_uuid,
-        post_text: post.post_text,
-        likes: post.likes,
-        comments: post.comments,
-        displayname: user ? user.displayname : 'Unknown',
-        username: user ? user.username : 'unknown_user',
-        user_id: post.user_id,
-      };
-    });
-    console.log("upc: " + upc.value);
-    console.log("combinedPosts: " + combinedPosts);
-
-    //upc.value = combinedPosts;
-
-    upc.value = combinedPosts.sort((a, b) => b.post_id - a.post_id);;
-
-    console.log("upc 2: " + upc.value);
-    console.log("combinedPosts 2: " + combinedPosts);
-  } catch (e) {
-    console.error("An error has occurred. Please try again later.");
-    console.error(e);
+    return upc.value;
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    upc.value = [];
   }
-  console.log(upc.value);
 }
 
 async function addLike(post_id: string | number, user_id: number, index: number) {
   try {
-    console.log("UPC: ", upc.value);
-    console.log("post_id: ", post_id);
     upc.value[index].likes++;
     const response = await fetch(`http://localhost:8000/api/post/${post_id}/like`, {
       method: 'POST',
-      headers: {'content-type': 'application/json'},
+      headers: { 'content-type': 'application/json' },
       body: `{"userId":${user_id}}`,
     });
-
-    console.log('Antwort-Status:', response.status);
 
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Server-Fehlertext:', errorText);
-      //upc.value[index].likes--;
       throw new Error(`HTTP error! status: ${response.status}, text: ${errorText}`);
     }
 
@@ -102,66 +76,122 @@ async function addLike(post_id: string | number, user_id: number, index: number)
   }
 }
 
+function consoleLog() {
+  console.log("upc: ", upc.value);
+  console.log("profile_id: ", profile_id.value);
+}
+
+function gotoPost(post_id: string | number) {
+  localStorage.setItem("viewedpost", post_id.toString());
+  router.push(`/post/${post_id}`);
+}
+
+function copyLink(post_id: string | number) {
+  const tocopy = `http://localhost:5173/post/${post_id}`;
+  navigator.clipboard.writeText(tocopy);
+  alert("Copied to clipboard with");
+}
+
+async function getUser() {
+  try {
+    const response = await fetch('http://localhost:8000/api/users/');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const users = await response.json();
+    const user = users.find((u) => u.user_id === profile_id.value);
+
+    if (user) {
+      const followerCount = JSON.parse(user.followers).length;
+      const followingCount = JSON.parse(user.following).length;
+
+      userData.value = {
+        ...user,
+        followerCount,
+        followingCount,
+      };
+      console.log("userData: ", userData.value);
+      return userData;
+    } else {
+      console.error('Benutzer nicht gefunden.');
+      userData.value = null;
+    }
+  } catch (error) {
+    console.error('Fehler beim Abrufen der Benutzerdaten:', error);
+    userData.value = null;
+  }
+}
+
+function copyUser(){
+  const tocopy = `http://localhost:5173/profile/${profile_id.value}`;
+  navigator.clipboard.writeText(tocopy);
+  alert("Copied to clipboard");
+}
 </script>
 
 <template>
-<div><!-- MAIN -->
-    <div> <!-- FEED HEADER -->
-      <h2 class="align-middle p-6 text-3xl text-weiss border-b-grau2 border-b ">Profile</h2>
-    </div>
   <div>
-    <div class="text-weiss p-4"> <!-- PROFILE-->
-      <div class="flex justify-center">
-        <img src="../../assets/danielvici_pp.png" alt="" class="size-48 rounded-full"/>
+    <h2 class="align-middle p-6 text-3xl text-weiss border-b-grau2 border-b ">Profile</h2>
+    <div class="mb-12" v-if="userData">
+      <div class="text-weiss p-4 flex justify-center">
+        <img src="../../assets/default_pp.png" alt="" class="size-36 rounded-full" />
       </div>
       <div class="text-center p-5 flex flex-col">
-        <label class="text-xl font-bold m-1 text-weiss">danielvici123</label>
-        <label class="text-base m-1 text-grau2">@danielvici</label>
+        <label class="text-xl font-bold m-1 text-weiss" @click="consoleLog()">{{ userData.displayname }}</label>
+        <label class="text-base m-1 text-grau2">@{{ userData.username }}</label>
       </div>
       <div class="text-grau2 p2 text-center">
-        <label class="text-base m-1 p-2"> Followers <a class="text-weiss">151</a></label>
-        <label class="text-base m-1 p-2"> Following <a class="text-weiss">2625</a></label>
+        <label class="text-base m-1 p-2"> Followers <a class="text-weiss">{{ userData.followerCount }}</a></label>
+        <label class="text-base m-1 p-2"> Following <a class="text-weiss">{{ userData.followingCount }}</a></label>
+      </div>
+      <div class="flex justify-center pt-5">
+        <button @click="copyUser" class="text-schwarz mx-1 px-1 rounded-lg bg-button-farbe">Share Profile</button>
       </div>
     </div>
-  </div>
-
-  <div> <!-- POSTS -->
-    <div>
-      <h2 class="align-middle  mt-4 p-6 text-2xl text-weiss border-y-grau2 border-y ">Posts (x)</h2>
+    <div v-else class="flex-col justify-center p-5 text-center">
+        <a class="text-weiss text-3xl"> USER NOT FOUND</a> <br>
+        <router-link to="/" class="text-button-farbe text-3xl text-center"> Go to Feed</router-link>
     </div>
-    <ul>
-      <li v-for="(postitem, indexus) in upc" :key="postitem.user_id" class="border-2 border-b-grau2 p-3 flex">
-        <!-- POST -->
-        <img src="../../assets/danielvici_pp.png" alt="" class="rounded-full w-16 h-16">
-        <div>
-          <div> <!-- POST HEADER -->
-            <label class="text-lg font-bold m-1 text-weiss">{{postitem.author_display_name}}</label>
-            <label class="text-base m-1 text-grau2">@{{ postitem.author_username }}</label>
-          </div>
-          <div class="m-2"> <!-- POST CONTENT -->
-            <p class="text-sm m-1 text-weiss">{{ postitem.content }}</p>
-          </div>
-          <div class="flex"> <!-- POST FOOTER -->
-            <div class="flex"> <!-- Comments -->
-              <img src="../../assets/icons/comment.png" alt="" class="rounded-full align-middle">
-              <label class="text-sm m-1 text-weiss" v-if="postitem.comments_count != undefined">{{ postitem.comments_count }}</label>
-              <label class="text-sm m-1 text-weiss" v-else>Comments disabled</label>
+    <div>
+      <h2 class="align-middle p-6 text-xl text-weiss border-y-grau2 border-y ">Posts</h2>
+    </div>
+    <div class="sm:overflow-y-auto sm:h-[350px] sm:scrollbar">
+      <ul v-if="upc.length > 0">
+        <li v-for="(postitem, indexus) in upc" :key="postitem.user_id" class="border border-grau2 p-3 flex">
+          <img src="../../assets/default_pp.png" alt="" class="rounded-full w-16 h-16">
+          <div>
+            <div>
+              <label class="text-lg font-bold m-1 text-weiss">{{ userData.displayname }}</label>
+              <label class="text-base m-1 text-grau2">@{{ userData.username }}</label>
             </div>
-
-            <div class="flex items-center" @click="addLike(postitem.post_id, postitem.user_id, indexus)"> <!-- Likes -->
-              <img alt="" src="../../assets/icons/herz.png" class="align-middle">
-              <label class="text-sm m-1 text-weiss">{{ postitem.likes }}</label>
+            <div class="m-2">
+              <p class="text-sm m-1 text-weiss">{{ postitem.post_text }}</p>
             </div>
+            <div class="sm:flex">
+              <div class="flex items-center">
+                <div class="flex">
+                  <img src="../../assets/icons/comment.png" alt="" class="rounded-full align-middle">
+                  <label class="text-sm m-1 text-weiss" v-if="postitem.comments != undefined">{{ postitem.comments }}</label>
+                  <label class="text-sm m-1 text-weiss" v-else>Comments disabled or no comments</label>
+                </div>
 
-            <div class="flex items-center mx-2"> <!-- View Post -->
-              <router-link :to="{ name: 'PostDetail', params: { id: postitem.id } }" class="text-weiss">View Post</router-link>
-            </div><!-- ENDE -->
+                <div class="flex items-center" @click="addLike(postitem.post_id, postitem.user_id, indexus)">
+                  <img alt="" src="../../assets/icons/herz.png" class="align-middle">
+                  <label class="text-sm m-1 text-weiss">{{ postitem.likes }}</label>
+                </div>
+              </div>
+              <br class="sm:hidden">
+              <div class="flex sm:items-center mx-2">
+                <button @click="gotoPost(postitem.posts_uuid)" class="text-schwarz mx-1 px-1 rounded-lg bg-button-farbe">View Post</button>
+                <button @click="copyLink(postitem.posts_uuid)" class="text-schwarz pl-1 mx-1 px-1 rounded-lg bg-button-farbe">Share Post</button>
+              </div>
+            </div>
           </div>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+      <p v-else class="text-weiss text-center justify-center text-lg pt-5"> This user has not posted anything yet. </p>
+    </div>
   </div>
-</div>
 </template>
 
 <style scoped>

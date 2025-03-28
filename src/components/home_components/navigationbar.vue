@@ -5,7 +5,7 @@
 import router from "../../router";
 import { ref, onMounted, onUnmounted } from 'vue';
 
-let self = localStorage.getItem("self_id");
+let self;
 const isMobile = ref(false);
 const show = ref(false);
 
@@ -45,6 +45,8 @@ onMounted(() => {
   if(localStorage.getItem("mobile") === null){
     show.value = false;
   }
+  self = localStorage.getItem("self_id");
+  console.log("SELF NB: " + self);
 });
 
 onUnmounted(() => {

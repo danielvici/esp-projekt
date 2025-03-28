@@ -16,6 +16,11 @@ async function register() {
   const password = register_input_password;
   const std_text = "default";
 
+  if (username.value === "" || password.value === "" || displayname.value === "" || email.value === "") {
+    alert("Please fill all fields");
+    return;
+  }
+
 
   console.log("Username: " + username.value + ", Password: " + password.value);
 
@@ -34,17 +39,17 @@ async function register() {
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('username', username.value);
       localStorage.setItem('self_id', data["userId"]);
+      console.log("SELF REG: " + data["userId"]);
       alert("Account created! You will be now redirected");
       router.push('/');
       router.go(1);
-    } else {
-      alert("Something went wrong. Please try again later.");
     }
 
     const data = await response.json();
     console.log(response);
   } catch (e) {
     console.log("An error has occurred. Please try again later.");
+    console.error(e);
   }
 }
 </script>

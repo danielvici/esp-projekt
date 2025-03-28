@@ -7,7 +7,7 @@ import Profile_main from "./profile_components/profile_main.vue";
 </script>
 
 <template>
-  <div id="main" class="bg-hintergrund-farbe sm:flex overflow-y-auto h-screen scrollbar">
+  <div id="main" class="bg-hintergrund-farbe sm:flex overflow-visible scrollbar sm:overflow-y-auto sm:h-full sm:scrollbar">
     <div id="left" class="sm:w-72 min-w-72">
       <navigationbar></navigationbar>
     </div>

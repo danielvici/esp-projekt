@@ -46,7 +46,7 @@ console.log(`Setting got (SM): ${props.selectedSetting}`);
 
 
     <div v-else-if="props.selectedSetting === 'setting_messages'"> <!-- MESSAGES-->
-      <label>MOIN2</label>
+      <label class="text-center">Hey! So you found this setting? </label>
     </div>
 
     <div v-else-if="props.selectedSetting === 'setting_other'"> <!-- OTHER -->

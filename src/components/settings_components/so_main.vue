@@ -13,7 +13,7 @@ function logout() {
 </script>
 
 <template>
-<div class="text-grau2 font-bold space-y-4 pl-2 pt-5">
+<div class="text-grau2 font-bold space-y-4 pl-2 pt-5 mb-4">
   <label class="flex text-center shadow-2xl rounded-lg active:text-weiss" @click="logout"><img class="pr-2" src="../../assets/icons/logout.png" alt="">Logout</label>
 </div>
 </template>

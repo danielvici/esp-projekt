@@ -119,30 +119,18 @@ function go_fs(){
 <div>
   <div class="flex justify-center"> <!-- Search-->
     <div class="w-1/2">
-      <form @submit.prevent="go_fs">
+      <form @submit.prevent="go_fs" class="flex flex-col">
         <input type="text" placeholder="Search..." class="w-full m-2 mt-6 p-4 bg-grau-dunkel focus:outline-none rounded-xl placeholder:text-center text-center" v-model="usr_search">
         <div class="flex justify-center text-grau2">
           <label class="m-2 accent-logo-farbe-blau"><input type="checkbox" class="mr-1" v-model="search_filter_status.u">User</label>
           <label class="m-2 accent-logo-farbe-rot" ><input type="checkbox" class="mr-1" v-model="search_filter_status.h">Hashtag</label>
           <label class="m-2 accent-logo-farbe-lila"><input type="checkbox" class="mr-1" v-model="search_filter_status.p">Post</label>
-          <button class="px-1 text-weiss rounded-lg">Filter</button>
         </div>
+        <button class="text-schwarz  pl-1 mx-1 px-1 rounded-lg bg-button-farbe w-1/2 place-self-center">Filter</button>
       </form>
     </div>
   </div>
 
-  <div> <!-- TRENDING HASHTAGS -->
-    <a class="text-2xl flex justify-center mt-4">Trending</a>
-    <ul class="flex justify-center ">
-      <li v-for="(bing, i) in most_posts_hashtags" :key="bing.id" class="w-2/12">
-        <div class="p-5 mt-4 border-b-grau2 border-b">
-          <p class="text-sm m-1 text-grau2">{{ i+1 }} - {{ bing.category}}</p>
-          <h1 class="text-xl font-bold m-1 text-weiss">#{{ bing.name }}</h1>
-          <p class="text-sm m-1 text-grau2">{{ bing.nr_posts }} posts</p>
-        </div>
-      </li>
-    </ul>
-  </div>
   <!-- ### ### ### ### ### ### ### -->
   <div>
     <div>
@@ -150,7 +138,7 @@ function go_fs(){
     </div>
     <div v-if="feed.length > 0">
       <div v-for="(bing, i) in feed" :key="bing" class=""> <!-- SEARCH RESULTS -->
-        <div v-if="bing.type === 'user'" class="pt-2 p-3 border-b-grau2 border-b" @click="router.push('/profile/${bing.username}')"> <!-- --- USER RESULT --- -->
+        <div v-if="bing.type === 'user'" class="pt-2 p-3 border-b-grau2 border-b"> <!-- --- USER RESULT --- -->
           <div class="flex">
             <img src="/src/assets/default_pp.png" alt="profile picture" class="rounded-full w-16 h-16">
             <div class="">
