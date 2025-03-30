@@ -77,46 +77,51 @@ export function queryDatabase<T>(
 
 // +++ DATABASE INITIALIZATION -------------------------------------- //
 export async function ensureDatabaseExists(): Promise<void> {
+  const dbDir = dirname(dbPath);
+  let dbInstance: DB | null = null; // Avoids hard to decode errors because it Throws one if it cant continue.
+
   try {
-    // Check if the database directory exists, create it if not
-    const dbDir = dirname(dbPath);
     try {
       await Deno.stat(dbDir);
     } catch (error) {
-      if (error instanceof Deno.errors.NotFound) {
-        // Create the database directory
-        await Deno.mkdir(dbDir, { recursive: true });
+      if (error instanceof Deno.errors.NotFound) { // Deno.errors.NotFound is a type of error that is thrown when a file or directory is not found.
+        // In short, It's a type, and it makes sure that the "error" variable is of type Deno.errors.NotFound.
         console.log(`Created database directory: ${dbDir}`);
       } else {
         throw error;
       }
     }
+    console.log(`Opening database connection: ${dbPath}`);
+    dbInstance = new DB(dbPath);
 
-    // Check if the database file exists
     try {
-      await Deno.stat(dbPath);
-      console.log("Database file already exists");
+      dbInstance.query("SELECT 1 FROM marker LIMIT 1;");
+      console.log("Database already initialized (marker table found).");
     } catch (error) {
-      if (error instanceof Deno.errors.NotFound) {
-        createDatabaseIfNotExist();
-        insertSamples();
-        // Nothing, file will be created below
+      if (error instanceof Error) {
+        console.log(
+          "Marker table not found or query failed. Initializing database tables.",
+        );
+        db_create.createDatabase(dbInstance);
+        db_create.insertSampleData(dbInstance);
+        console.log("Database initialization complete.");
       } else {
         throw error;
       }
     }
   } catch (error) {
-    console.error("Error ensuring database exists:", error);
-    throw error;
+    console.error(
+      "Error during database existence check or initialization:",
+      error,
+    );
+  } finally {
+    if (dbInstance) {
+      dbInstance.close();
+      console.log("Database connection closed.");
+    } else {
+      console.log("Database connection was not opened.");
+    }
   }
-}
-
-export function createDatabaseIfNotExist(): void {
-  db_create.createDatabase();
-}
-
-export function insertSamples(): void {
-  db_create.insertSampleData();
 }
 
 // +++ ACCOUNT FUNCTIONS -------------------------------------------- //

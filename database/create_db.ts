@@ -7,18 +7,10 @@
 
 // +++ IMPORTS ------------------------------------------------------ //
 import { DB } from "https://deno.land/x/sqlite@v3.9.1/mod.ts";
-import {
-  dirname,
-  fromFileUrl,
-  join,
-} from "https://deno.land/std@0.224.0/path/mod.ts";
 
 // +++ VARIABLES ---------------------------------------------------- //
-const _dirname: string = dirname(fromFileUrl(import.meta.url));
-const dbPath: string = join(_dirname, "../database/esp-projekt.sqlite");
-const db = new DB(dbPath);
 
-export function createDatabase(): void {
+export function createDatabase(db: DB): void {
   db.execute(`
         CREATE TABLE IF NOT EXISTS accounts (
             user_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -72,12 +64,17 @@ export function createDatabase(): void {
     chat_name TEXT,
     participants TEXT,
     created_at TEXT
-  )
+  );
+
+  CREATE TABLE IF NOT EXISTS marker (
+    id INTEGER PRIMARY KEY AUTOINCREMENT
+  );
+
     `);
 }
 
 // Sample data generated using AI, does not work yet and will be adjusted
-export function insertSampleData(): void {
+export function insertSampleData(db: DB): void {
   db.query(
     `INSERT INTO accounts (user_group, bio, displayname, username, user_email, password, password_salt, firstname, surname, account_created, blocked_users, followers, following, contacts) VALUES
         ('admin', 'Admin bio', 'Admin User', 'admin', 'admin@example.com', 'pw1', 'salt1', 'Admin', 'User', '2024-01-01', '[]', '[]', '[]', '[]'),

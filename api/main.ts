@@ -55,7 +55,7 @@ type ApiResponse = {
 };
 
 // database creation if missing, runs here because this is the main file executed by the API.
-db_utils.ensureDatabaseExists();
+await db_utils.ensureDatabaseExists();
 
 // +++ ROUTER ------------------------------------------------------- //
 // Creates the routes for the API server.
