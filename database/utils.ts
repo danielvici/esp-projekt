@@ -98,14 +98,13 @@ export async function ensureDatabaseExists(): Promise<void> {
       console.log("Database file already exists");
     } catch (error) {
       if (error instanceof Deno.errors.NotFound) {
+        createDatabaseIfNotExist();
+        insertSamples();
         // Nothing, file will be created below
       } else {
         throw error;
       }
     }
-
-    createDatabaseIfNotExist();
-    insertSamples();
   } catch (error) {
     console.error("Error ensuring database exists:", error);
     throw error;
