@@ -36,6 +36,6 @@ jobs:
         with:
           project: "esp-projekt"
           entrypoint: "src/main.ts"
-          root: "/"
+          root: ""
           
           
