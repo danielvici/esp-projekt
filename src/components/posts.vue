@@ -42,42 +42,24 @@ const comments = ref<Comment[] | null>(null);
 let comment_text = ref();
 let self_id;
 
+const loading = ref(true);
+
 let post_uuid = ref();
 
-onMounted(async () => {
-  console.log("PARAMS: "+ route.path);
-  const pathArray = route.path.split('/');
-  console.log(pathArray);
-
-  if (pathArray.length > 2) {
-    post_uuid.value = pathArray[2];
-    console.log("post_id 0: ", post_uuid.value);
-
-  }
-
-  if (!post_uuid) {
-    alert('No post selected. Redirecting to feed.');
-    await router.push('/');
-    return;
-  }
-  self_id = localStorage.getItem('self_id');
-  getPost(parseInt(post_uuid.value));
-  getComment(parseInt(post_uuid.value));
-});
 
 async function getPost(post_id: any) {
   try {
-    const post_response =  await fetch(`http://localhost:8000/api/post/${post_id}`, { method: 'GET' });
+    const post_response = await fetch(`http://localhost:8000/api/post/${post_id}`, {method: 'GET'});
     const fetchedPost: Post = await post_response.json();
 
-    if(post_response.status === 404) {
+    if (post_response.status === 404) {
       console.error("No comments found.");
       alert("Post not found")
       await router.push('/');
       return;
     }
 
-    const user_response = await fetch('http://localhost:8000/api/users', { method: 'GET' });
+    const user_response = await fetch('http://localhost:8000/api/users', {method: 'GET'});
     const usersDATA = await user_response.json();
 
     const postAuthor = usersDATA.find(user => user.user_id === fetchedPost.user_id);
@@ -92,6 +74,8 @@ async function getPost(post_id: any) {
     console.log(post.value);
   } catch (e) {
     console.error(e);
+  } finally {
+    loading.value = false;
   }
 }
 
@@ -219,6 +203,26 @@ async function addLike_comment(comment_id: number | string) {
 function gotoProfile(user_id: string | number) {
   router.push(`/profile/${user_id}`);
 }
+
+onMounted(async () => {
+  console.log("PARAMS: "+ route.path);
+  const pathArray = route.path.split('/');
+  console.log(pathArray);
+
+  if (pathArray.length > 2) {
+    post_uuid.value = pathArray[2];
+    console.log("post_id 0: ", post_uuid.value);
+  }
+
+  if (!post_uuid) {
+    alert('No post selected. Redirecting to feed.');
+    await router.push('/');
+    return;
+  }
+  self_id = localStorage.getItem('self_id');
+  getPost(parseInt(post_uuid.value));
+  getComment(parseInt(post_uuid.value));
+});
 </script>
 
 <template>
@@ -233,7 +237,8 @@ function gotoProfile(user_id: string | number) {
 
 
       <div class="flex px-2 py-4 border-b-grau2 border-b">
-        <img src="../assets/default_pp.png" alt="" class="rounded-full w-16 h-16">
+        <img v-if="user.username != 'danielvici' " src="../assets/default_pp.png" alt="" class="rounded-full w-16 h-16">
+        <img v-else src="../assets/danielvici_pp.png" alt="" class="rounded-full w-16 h-16">
         <div>
           <div> <!-- POST HEADER -->
             <label class="text-lg font-bold m-1 text-weiss">{{user.displayname}}</label>
@@ -266,7 +271,9 @@ function gotoProfile(user_id: string | number) {
 
         <div> <!-- WRITE COMMENTS -->
           <div class="flex border-b-2 border-b-grau2">
-            <img src="../assets/danielvici_pp.png" alt="" class="p-2 rounded-full w-16 h-16">
+            <img v-if="self_id != '99' " src="../assets/default_pp.png" alt="" class="p-2 rounded-full w-16 h-16">
+            <img v-else src="../assets/danielvici_pp.png" alt="" class="p-2 rounded-full w-16 h-16">
+             <!-- <img src="../assets/danielvici_pp.png" alt="" class="p-2 rounded-full w-16 h-16">-->
             <form class="w-full pr-5">
               <!-- post_publish ist richtig aber wird falsch angezeigt. File Input geht nicht-->
               <textarea v-model="comment_text" name="post_text" class="bg-hintergrund-farbe rounded-lg m-2 p-1 focus:outline-none text-grau2 w-full resize-none" rows="3" placeholder="Write something..."></textarea>
@@ -282,7 +289,8 @@ function gotoProfile(user_id: string | number) {
             <ul v-if="comments && comments.length > 0">
               <li v-for="c in comments" :key="c.comment_id" class="p-4 border-b border-gray-700">
                 <div class="flex">
-                  <img src="../assets/default_pp.png" alt="" class="rounded-full w-16 h-16">
+                  <img v-if="c.author_user_id != '99' " src="../assets/default_pp.png" alt="" class="p-2 rounded-full w-16 h-16">
+                  <img v-else src="../assets/danielvici_pp.png" alt="" class="p-2 rounded-full w-16 h-16">
                   <div>
                     <div> <!-- POST HEADER -->
                       <label class="text-lg font-bold m-1 text-weiss">{{c.displayname}}</label>

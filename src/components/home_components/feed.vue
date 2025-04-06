@@ -81,17 +81,6 @@ async function addLike(post_id: string | number, user_id: number, index: number)
   }
 }
 
-function gotoPost(post_id: string | number) {
-  localStorage.setItem("viewedpost", post_id.toString());
-  router.push(`/post/${post_id}`);
-}
-
-function copyLink(post_id: string | number) {
-  const tocopy = `http://localhost:5173/post/${post_id}`;
-  navigator.clipboard.writeText(tocopy);
-  alert("Copied to clipboard");
-}
-
 async function post_create(post_text: string) {
   if (post_text === "") {
     alert("Please write something before posting.");
@@ -114,6 +103,17 @@ async function post_create(post_text: string) {
   console.log(post_text);
 }
 
+function gotoPost(post_id: string | number) {
+  localStorage.setItem("viewedpost", post_id.toString());
+  router.push(`/post/${post_id}`);
+}
+
+function copyLink(post_id: string | number) {
+  const tocopy = `http://localhost:5173/post/${post_id}`;
+  navigator.clipboard.writeText(tocopy);
+  alert("Copied to clipboard");
+}
+
 function gotoProfile(user_id: string | number) {
   router.push(`/profile/${user_id}`);
 }
@@ -126,7 +126,8 @@ function gotoProfile(user_id: string | number) {
       <h2 class="align-middle p-6 text-3xl text-weiss border-b-grau2 border-b-2 ">Feed</h2>
       <!-- POSTING-->
       <div class="flex border-2 border-b-grau2">
-        <img src="../../assets/danielvici_pp.png" alt="" class="p-2 rounded-full w-16 h-16">
+        <img v-if="self_id != '99' " src="../../assets/default_pp.png" alt="" class="rounded-full w-16 h-16">
+        <img v-else src="../../assets/danielvici_pp.png" alt="" class="rounded-full w-16 h-16">
         <form class="w-full pr-5">
           <!-- post_publish ist richtig aber wird falsch angezeigt. File Input geht nicht-->
           <textarea v-model="post_create_text" name="post_text" class="bg-hintergrund-farbe rounded-lg m-2 p-1 focus:outline-none text-grau2 w-full resize-none" rows="3" placeholder="Write something..."></textarea>
@@ -141,7 +142,9 @@ function gotoProfile(user_id: string | number) {
       <ul>
         <li v-for="(postitem, indexus) in upc" :key="upc" class="border-2 border-b-grau2 p-3 flex">
           <!-- POST -->
-          <img src="../../assets/default_pp.png" alt="" class="rounded-full w-16 h-16">
+
+          <img v-if="postitem.username != 'danielvici' " src="../../assets/default_pp.png" alt="" class="rounded-full w-16 h-16">
+          <img v-else src="../../assets/danielvici_pp.png" alt="" class="rounded-full w-16 h-16">
           <div>
             <div> <!-- POST HEADER -->
               <label class="text-lg font-bold m-1 text-weiss">{{postitem.displayname}}</label>

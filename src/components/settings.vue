@@ -21,7 +21,7 @@ function handleUpdateSetting(setting: string) {
       <navigationbar></navigationbar>
       <settings_sidebar @updateSetting="handleUpdateSetting"></settings_sidebar>
     </div>
-    <div class="w-100p sm:border-x-grau2 sm:border-x-2 border-y border-y-grau2 my-2">
+    <div class="w-100p sm:border-x-grau2 sm:border-x-2 my-2">
       <settings_main :selectedSetting="selectedSetting"></settings_main>
     </div>
     <div class="sm:w-1/4">

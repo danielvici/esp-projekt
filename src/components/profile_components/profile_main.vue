@@ -132,11 +132,12 @@ function copyUser(){
 <template>
   <div>
     <h2 class="align-middle p-6 text-3xl text-weiss border-b-grau2 border-b ">Profile</h2>
-    <div class="mb-12" v-if="userData">
-      <div class="text-weiss p-4 flex justify-center">
-        <img src="../../assets/default_pp.png" alt="" class="size-36 rounded-full" />
+    <div class="mb-6" v-if="userData">
+      <div class="text-weiss p-2 flex justify-center">
+        <img v-if="userData.user_id != '99' " src="../../assets/default_pp.png" alt="" class="rounded-full size-36">
+        <img v-else src="../../assets/danielvici_pp.png" alt="" class="rounded-full size-36">
       </div>
-      <div class="text-center p-5 flex flex-col">
+      <div class="text-center p-2 flex flex-col">
         <label class="text-xl font-bold m-1 text-weiss" @click="consoleLog()">{{ userData.displayname }}</label>
         <label class="text-base m-1 text-grau2">@{{ userData.username }}</label>
       </div>
@@ -155,10 +156,11 @@ function copyUser(){
     <div>
       <h2 class="align-middle p-6 text-xl text-weiss border-y-grau2 border-y ">Posts</h2>
     </div>
-    <div class="sm:overflow-y-auto sm:h-[350px] sm:scrollbar">
+    <div class="sm:overflow-y-auto sm:h-[400px] sm:scrollbar">
       <ul v-if="upc.length > 0">
         <li v-for="(postitem, indexus) in upc" :key="postitem.user_id" class="border border-grau2 p-3 flex">
-          <img src="../../assets/default_pp.png" alt="" class="rounded-full w-16 h-16">
+          <img v-if="postitem.user_id != '99' " src="../../assets/default_pp.png" alt="" class="rounded-full w-16 h-16">
+          <img v-else src="../../assets/danielvici_pp.png" alt="" class="rounded-full w-16 h-16">
           <div>
             <div>
               <label class="text-lg font-bold m-1 text-weiss">{{ userData.displayname }}</label>
