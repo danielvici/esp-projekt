@@ -29,7 +29,6 @@ function handleSubmit(event: Event) {
         <input type="password" name="new-password-repeat" id="new-password-repeat" placeholder=" Repeat new passoword" class="mt-4 m-2 w-full max-w-xs bg-grau-dunkel p-4 text-weiss placeholder-grau2 focus:outline-none rounded-lg invalid:border-logo-farbe-rot invalid:border-2">
       </div>
       <button type="submit" class="bg-button-farbe text-schwarz text-xl font-bold p-4 mt-8 rounded-lg">Change Password</button>
-      <label class="text-logo-farbe-rot text-2xl">! INFO: PASSWÖRTER WIRD IN URLBAR ANGEZEIGT !</label>
     </form>
   </div>
 </div>

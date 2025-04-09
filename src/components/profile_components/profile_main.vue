@@ -141,6 +141,10 @@ function copyUser(){
         <label class="text-xl font-bold m-1 text-weiss" @click="consoleLog()">{{ userData.displayname }}</label>
         <label class="text-base m-1 text-grau2">@{{ userData.username }}</label>
       </div>
+      <div class="text-center py-4">
+        <label class="text-base m-1 text-grau2">Bio:</label>
+        <p class="text-sm m-1 text-weiss italic">"{{ userData.bio }}"</p>
+      </div>
       <div class="text-grau2 p2 text-center">
         <label class="text-base m-1 p-2"> Followers <a class="text-weiss">{{ userData.followerCount }}</a></label>
         <label class="text-base m-1 p-2"> Following <a class="text-weiss">{{ userData.followingCount }}</a></label>

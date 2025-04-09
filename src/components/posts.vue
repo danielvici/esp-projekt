@@ -226,11 +226,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div id="main" class="bg-hintergrund-farbe flex">
+  <div id="main" class="bg-hintergrund-farbe sm:flex overflow-y-auto sm:h-full sm:scrollbar">
     <div id="left" class="sm:w-72 min-w-72">
       <navigationbar></navigationbar>
     </div>
-    <div class="text-weiss w-100p border-x border-x-grau2" v-if="post">
+    <div class="text-weiss sm:w-100p w-screen sm:border-x sm:border-x-grau2" v-if="post">
       <div> <!-- HEADER -->
         <h2 class="align-middle p-6 text-3xl text-weiss border-b-grau2 border-b">Post</h2>
       </div>
@@ -315,7 +315,7 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <div class="w-1/4">
+    <div class="sm:w-1/4 w-screen">
       <contacts></contacts>
       <legal></legal>
     </div>
